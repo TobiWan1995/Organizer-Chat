@@ -11,6 +11,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Lul der erste Code V37 Milliarden
+        //Lul der erste Code V37 Milliarden und 2
     }
 }
