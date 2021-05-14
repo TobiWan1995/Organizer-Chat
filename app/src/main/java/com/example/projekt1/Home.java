@@ -1,5 +1,6 @@
 package com.example.projekt1;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
     String data[];
-    Context context;
+    //Context context;
+    Activity context;
+
+
+
 
     public Home(){
         this.data = this.getChats();
@@ -22,6 +31,7 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     public Home(String[] data){
 
     }
+
 
     @NonNull
     @Override
@@ -43,14 +53,19 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
         });
     }
 
+
+
     @Override
     public int getItemCount() {
         return getChats().length;
+
     }
 
     public String[] getChats(){
         return new String[] {"Chat1", "Chat2", "Chat3", "Chat4", "Chat5"};
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -62,3 +77,4 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
         }
     }
 }
+

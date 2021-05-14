@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!-- THM Farben                         -->
+    <color name="thm_grün">#80ba24</color>
+    <color name="thm_grau">#4a5c66</color>
+    <color name="thm_rot">#9C132E</color>
+    <color name="thm_gelb">#F4AA00</color>
+    <color name="thm_hellblau">#00B8E4</color>
+    <color name="thm_dunkelblau">#002878</color>
+    <!--                                    -->
+    <color name="chat_grün">#D5E8B7</color>
+
+
 </resources>
