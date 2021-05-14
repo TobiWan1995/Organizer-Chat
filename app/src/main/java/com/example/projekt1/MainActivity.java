@@ -11,6 +11,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity //implements View.OnClickListener
 {
+    public static Context context;
+
     //Deklarieren von Variablen
     RecyclerView recyclerView;
     Home home;
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity //implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MainActivity.context = getApplicationContext();
 
         //addChatButton = findViewById(R.id.addChatButton); Muss noch im Design hinzugefügt werden
 
@@ -32,10 +36,7 @@ public class MainActivity extends AppCompatActivity //implements View.OnClickLis
         home = new Home();
         recyclerView.setAdapter(home);
 
-
         //addChatButton.setOnClickListener(this);
-
-
 
 
     }
