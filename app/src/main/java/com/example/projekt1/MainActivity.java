@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +15,6 @@ public class MainActivity extends AppCompatActivity //implements View.OnClickLis
     RecyclerView recyclerView;
     Home home;
     Button addChatButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,10 @@ public class MainActivity extends AppCompatActivity //implements View.OnClickLis
 
 
 
+
     }
+
+
 
     /*@Override
     public void onClick(View view) {

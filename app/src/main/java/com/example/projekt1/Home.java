@@ -18,8 +18,8 @@ import java.util.List;
 public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
     String data[];
-    //Context context;
-    Activity context;
+    Context context;
+    //Activity context;
 
 
 
