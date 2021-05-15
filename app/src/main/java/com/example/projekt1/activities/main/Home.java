@@ -1,7 +1,8 @@
-package com.example.projekt1;
+package com.example.projekt1.activities.main;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +10,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projekt1.R;
+import com.example.projekt1.activities.chat.ChatActivity;
+import com.example.projekt1.models.Chat;
+import com.example.projekt1.models.Message;
+import com.example.projekt1.models.User;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
-    String data[];
+    Chat[] data;
     //Context context;
     Activity context;
-
-
 
 
     public Home(){
@@ -44,16 +50,14 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull Home.ViewHolder holder, final int position) {
-        holder.textView.setText(data[position]);
+        holder.textView.setText(data[position].getTitel());
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Clicked on "+ data[position], Toast.LENGTH_SHORT).show();
+                openChat(data[position]);
             }
         });
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -61,11 +65,24 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
     }
 
-    public String[] getChats(){
-        return new String[] {"Chat1", "Chat2", "Chat3", "Chat4", "Chat5"};
+    public Chat[] getChats(){
+        return new Chat[] {
+                new Chat(1, "Chat1", new ArrayList<User>()),
+                new Chat(2, "Chat2", new ArrayList<User>()),
+                new Chat(3, "Chat3", new ArrayList<User>()),
+                new Chat(4, "Chat4", new ArrayList<User>()),
+                new Chat(5, "Chat5", new ArrayList<User>()),
+                new Chat(6, "Chat6", new ArrayList<User>()),
+                new Chat(7, "Chat7", new ArrayList<User>())
+        };
     }
 
-
+    public void openChat(Chat chat){
+        Intent intent = new Intent(MainActivity.context, ChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("CHAT", chat);
+        MainActivity.context.startActivity(intent);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
