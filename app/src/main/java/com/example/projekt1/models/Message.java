@@ -4,15 +4,15 @@ import java.sql.Date;
 
 public class Message {
     private long id;
-    private long chatIdent;
     private Date timeStamp;
     private String content;
+    private User user;
 
-    public Message(long id, String content, long chatIdent){
+    public Message(long id, String content, User user){
         this.id = id;
-        this.chatIdent = chatIdent;
         this.content = content;
         this.timeStamp = new java.sql.Date(System.currentTimeMillis());
+        this.user = user;
     }
 
     public long getId(){ return this.id;}

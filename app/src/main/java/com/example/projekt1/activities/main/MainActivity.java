@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity //implements View.OnClickLis
         //addChatButton = findViewById(R.id.addChatButton); Muss noch im Design hinzugefügt werden
 
         // Home - RecyclerView - Implementation
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.main_activity_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         /*
         Wie man mit der Recycler View umgeht muss noch in einer Adapterklasse definiert werden

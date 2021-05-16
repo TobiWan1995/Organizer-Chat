@@ -9,7 +9,8 @@ import java.util.List;
 public class Chat implements Parcelable {
     private long id;
     private String titel = "default";
-    private List<User> userList = new ArrayList<User>();
+    private ArrayList<User> userList = new ArrayList<User>();
+    private ArrayList<Message> messageList = new ArrayList<Message>();
 
     public Chat(){}
 
@@ -18,10 +19,11 @@ public class Chat implements Parcelable {
         this.titel = titel;
     }
 
-    public Chat(long id, String titel, List<User> uList) {
+    public Chat(long id, String titel, ArrayList<User> uList, ArrayList<Message> mList) {
         this.id = id;
         this.titel = titel;
         this.userList = uList;
+        this.messageList = mList;
     }
 
     // Parcelable.Creator
@@ -43,8 +45,16 @@ public class Chat implements Parcelable {
     };
 
     public long getId(){return this.id;}
+    
     public String getTitel(){return this.titel;}
-    public List<User> getUsers(){return this.userList;}
+
+    public ArrayList<User> getUsers(){return this.userList;}
+    
+    public ArrayList<Message> getMessages(){return this.messageList;}
+
+    public void sendMessage(Message message){
+        this.messageList.add(message);
+    }
 
     @Override
     public int describeContents() {

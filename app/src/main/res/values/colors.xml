@@ -18,6 +18,6 @@
     <color name="thm_dunkelblau">#002878</color>
     <!--                                    -->
     <color name="chat_grün">#D5E8B7</color>
-
+    <color name="transparent">#00000000</color>
 
 </resources>
