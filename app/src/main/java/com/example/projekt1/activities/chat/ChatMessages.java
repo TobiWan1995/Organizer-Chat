@@ -1,4 +1,4 @@
-package com.example.projekt1.activities.main;
+package com.example.projekt1.activities.chat;
 
 import android.app.Activity;
 import android.content.Intent;
