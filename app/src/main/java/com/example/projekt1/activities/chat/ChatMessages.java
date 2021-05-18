@@ -47,11 +47,9 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());;
         if(viewType == VIEWTYPE_MYMESSAGE){
             view = layoutInflater.inflate(R.layout.message_send_layout, parent, false);
-            System.out.println("View1");
         }
         else {
             view = layoutInflater.inflate(R.layout.message_received_layout, parent, false);
-            System.out.println("View2");
         }
 
         ViewHolder viewHolder = new ViewHolder(view);;
@@ -67,14 +65,8 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
-
-        holder.textView.setText(data.get(position).getContent());
-
-        holder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+        holder.sendMessage.setText(data.get(position).getContent());
+        //holder.receiveMessage.setText(data.get(position).getContent());
     }
 
     @Override
@@ -88,11 +80,13 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textView;
+        TextView sendMessage;
+        TextView receiveMessage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.home_textView_chat);
+            sendMessage = itemView.findViewById(R.id.textView_chat_send);
+            receiveMessage = itemView.findViewById(R.id.textView_chat_received);
         }
     }
 }
