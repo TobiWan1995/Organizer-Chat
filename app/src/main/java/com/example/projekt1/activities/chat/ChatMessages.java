@@ -1,4 +1,4 @@
-package com.example.projekt1.activities.main;
+package com.example.projekt1.activities.chat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,10 +24,13 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> {
-
+    public static final int VIEWTYPE_MYMESSAGE = 0;
+    public static final int VIEWTYPE_OTHERMESSAGE = 1;
     ArrayList<Message> data;
     //Context context;
     Activity context;
+
+    public static int globalId = 0;
 
     public ChatMessages(){
         this.data = this.getMessages();
@@ -40,17 +43,32 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     @NonNull
     @Override
     public ChatMessages.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.home_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        View view;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());;
+        if(viewType == VIEWTYPE_MYMESSAGE){
+            view = layoutInflater.inflate(R.layout.message_send_layout, parent, false);
+            System.out.println("View1");
+        }
+        else {
+            view = layoutInflater.inflate(R.layout.message_received_layout, parent, false);
+            System.out.println("View2");
+        }
+
+        ViewHolder viewHolder = new ViewHolder(view);;
+
         return viewHolder;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if(data.get(position).getId() == globalId) return VIEWTYPE_MYMESSAGE;
+        else return VIEWTYPE_OTHERMESSAGE;
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
-        //holder.textView.setText(data[position].getContent());
-        if(position % 2 == 0)holder.textView.setText("Text1");
-        else holder.textView.setText("Text2");
+
+        holder.textView.setText(data.get(position).getContent());
 
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +79,7 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 5;
+        return data.size();
     }
 
     public ArrayList<Message> getMessages(){

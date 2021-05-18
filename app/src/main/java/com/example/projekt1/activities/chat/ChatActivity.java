@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.main.ChatMessages;
+import com.example.projekt1.activities.chat.ChatMessages;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
@@ -39,13 +39,13 @@ public class ChatActivity extends AppCompatActivity {
 
         chat.addUser(new User(1L, "Firstname", "Lastname", "Sheeeesh"));
 
-        chat.sendMessage(new Message(1, "This is a chat message.", chat.getUsers().get(0)));
+        chat.sendMessage(new Message(0, "This is a chat message.", chat.getUsers().get(0)));
+        chat.sendMessage(new Message(0, "This is another a chat message.", chat.getUsers().get(0)));
+        chat.sendMessage(new Message(1, "This is a chat message......... asasddas  idaoasd asodason osasoh", chat.getUsers().get(0)));
 
         ArrayList<Message> chat_messages = chat.getMessages();
 
-        for (Message m : chat_messages) System.out.println(m.getContent());
-
-        ChatMessages chatMessages = new ChatMessages();
+        ChatMessages chatMessages = new ChatMessages(chat_messages);
         recyclerView.setAdapter(chatMessages);
     }
 }
