@@ -28,10 +28,8 @@ public class ChatActivity extends AppCompatActivity {
 
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
-    // Get User-Table-Reference from FireDB
-    DatabaseReference userref = root.getReference("User");
-    // Get Chat-Table-Reference from FireDB
-    DatabaseReference chatref = root.getReference("Chat");
+    // Get Message-Table-Reference from FireDB
+    DatabaseReference messageref = root.getReference("Message");
 
     // Testuser2
     User testuser = new User(1, "sdds", "sdds", "ssd");
@@ -57,7 +55,7 @@ public class ChatActivity extends AppCompatActivity {
         ChatMessages chatMessages = new ChatMessages(chat_messages);
         recyclerView.setAdapter(chatMessages);
 
-        //init sendMessageButton and editText
+        // init sendMessageButton and editText
         sendMessageButton = findViewById(R.id.sendMessageButton);
         enteredText = findViewById(R.id.enterMessageET);
 
