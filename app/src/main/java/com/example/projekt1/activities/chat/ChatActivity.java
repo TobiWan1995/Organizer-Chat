@@ -69,6 +69,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+
+        // fix async
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
