@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projekt1.R;
 import com.example.projekt1.activities.chat.ChatActivity;
+import com.example.projekt1.activities.login.LoginActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
@@ -24,13 +26,14 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> {
+    // to identify Viewtype
+    public static final int VIEWTYPE_MYMESSAGE = 0;
+    public static final int VIEWTYPE_OTHERMESSAGE = 1;
 
     ArrayList<Message> data;
-    //Context context;
     Activity context;
 
     public ChatMessages(){
-        this.data = this.getMessages();
     }
 
     public ChatMessages(ArrayList<Message> data){
@@ -40,41 +43,50 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     @NonNull
     @Override
     public ChatMessages.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.home_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        View view;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());;
+        if(viewType == VIEWTYPE_MYMESSAGE){
+            view = layoutInflater.inflate(R.layout.message_send_layout, parent, false);
+        }
+        else {
+            view = layoutInflater.inflate(R.layout.message_received_layout, parent, false);
+        }
+
+        ViewHolder viewHolder = new ViewHolder(view);;
+
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
-        //holder.textView.setText(data[position].getContent());
-        if(position % 2 == 0)holder.textView.setText("Text1");
-        else holder.textView.setText("Text2");
+    public int getItemViewType(int position) {
+        if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) return VIEWTYPE_MYMESSAGE;
+        else return VIEWTYPE_OTHERMESSAGE;
+    }
 
-        holder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+    @Override
+    public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
+        if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
+        else holder.receiveMessage.setText(data.get(position).getContent());;
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return data.size();
     }
 
-    public ArrayList<Message> getMessages(){
-        return new ArrayList<Message>(){};
+    public void setMessages(ArrayList<Message> newData){
+        this.data = newData;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textView;
+        TextView sendMessage;
+        TextView receiveMessage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.home_textView_chat);
+            sendMessage = itemView.findViewById(R.id.textView_chat_send);
+            receiveMessage = itemView.findViewById(R.id.textView_chat_received);
         }
     }
 }

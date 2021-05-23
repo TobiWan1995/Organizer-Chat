@@ -2,12 +2,10 @@ package com.example.projekt1.activities.main;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +16,7 @@ import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
@@ -29,20 +24,17 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     //Context context;
     Activity context;
 
-
     public Home(){
         this.data = this.getChats();
     }
 
-    public Home(String[] data){
-
-    }
+    public Home(String[] data){}
 
     @NonNull
     @Override
     public Home.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.home_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.activity_home_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -77,10 +69,10 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     }
 
     public void openChat(Chat chat){
-        Intent intent = new Intent(MainActivity.context, ChatActivity.class);
+        Intent intent = new Intent(HomeActivity.context, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("CHAT", chat);
-        MainActivity.context.startActivity(intent);
+        HomeActivity.context.startActivity(intent);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
