@@ -6,17 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
+import android.os.health.SystemHealthManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.login.LoginActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -24,49 +21,30 @@ public class ChatActivity extends AppCompatActivity {
     public static Context context;
     RecyclerView recyclerView;
     ImageButton sendMessageButton;
-    EditText enteredText;
-
-    // Setup Firebase-Database
-    FirebaseDatabase root =  FirebaseDatabase.getInstance();
-    // Get User-Table-Reference from FireDB
-    DatabaseReference userref = root.getReference("User");
-    // Get Chat-Table-Reference from FireDB
-    DatabaseReference chatref = root.getReference("Chat");
-
-    // Testuser2
-    User testuser = new User(1, "sdds", "sdds", "ssd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        ChatActivity.context = getApplicationContext();
+        //---- Variablen zuweisen
+        sendMessageButton = findViewById(R.id.sendMessageButton);
 
-        // get chat passed as value to activity and extract messages
-        Chat chat = getIntent().getParcelableExtra("CHAT");
-        ArrayList<Message> chat_messages = chat.getMessages();
-        chat_messages.add(new Message(chat_messages.size()+1, "testmessage", LoginActivity.currentUser));
-        chat_messages.add(new Message(chat_messages.size()+1, "testmessage2", testuser));
-        chat_messages.add(new Message(chat_messages.size()+1, "testmessage3", LoginActivity.currentUser));
-        chat_messages.add(new Message(chat_messages.size()+1, "testmessage4", testuser));
-
-        // init Recycler-View with chatMessages
         recyclerView = findViewById(R.id.chat_activity_RecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ChatMessages chatMessages = new ChatMessages(chat_messages);
+        ChatActivity.context = getApplicationContext();
+
+        Chat chat = getIntent().getParcelableExtra("CHAT");
+
+        chat.addUser(new User(1L, "Firstname", "Lastname", "Sheeeesh"));
+
+        chat.sendMessage(new Message(1, "This is a chat message.", chat.getUsers().get(0)));
+
+        ArrayList<Message> chat_messages = chat.getMessages();
+
+        for (Message m : chat_messages) System.out.println(m.getContent());
+
+        ChatMessages chatMessages = new ChatMessages();
         recyclerView.setAdapter(chatMessages);
-
-        //init sendMessageButton and editText
-        sendMessageButton = findViewById(R.id.sendMessageButton);
-        enteredText = findViewById(R.id.enterMessageET);
-
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chat_messages.add(new Message(chat_messages.size()+1, enteredText.getText().toString(), LoginActivity.currentUser));
-                chatMessages.setMessages(chat_messages);
-            }
-        });
     }
 }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/thm_grün"
     tools:context=".activities.main.HomeActivity">
 
     <LinearLayout
@@ -30,5 +31,19 @@
 
     </LinearLayout>
 
-    
+    <ImageButton
+        android:id="@+id/addChatsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/transparent"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:padding="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
