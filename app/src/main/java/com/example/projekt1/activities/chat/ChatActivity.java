@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.chat.ChatMessages;
+import com.example.projekt1.activities.main.ChatMessages;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
