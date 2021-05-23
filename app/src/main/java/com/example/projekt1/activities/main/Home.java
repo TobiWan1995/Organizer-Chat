@@ -24,14 +24,11 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     //Context context;
     Activity context;
 
-
     public Home(){
         this.data = this.getChats();
     }
 
-    public Home(String[] data){
-
-    }
+    public Home(String[] data){}
 
     @NonNull
     @Override

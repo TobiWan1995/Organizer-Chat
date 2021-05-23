@@ -34,7 +34,6 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     Activity context;
 
     public ChatMessages(){
-        this.data = this.getMessages();
     }
 
     public ChatMessages(ArrayList<Message> data){
@@ -62,14 +61,14 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if(data.get(position).getUserId() == LoginActivity.currentUser.getId()) return VIEWTYPE_MYMESSAGE;
+        if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) return VIEWTYPE_MYMESSAGE;
         else return VIEWTYPE_OTHERMESSAGE;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
         System.out.println(data.get(position).getContent());
-        if(data.get(position).getUserId() == LoginActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
+        if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
         else holder.receiveMessage.setText(data.get(position).getContent());;
     }
 
@@ -78,13 +77,8 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
         return data.size();
     }
 
-    public ArrayList<Message> getMessages(){
-        return new ArrayList<Message>(){};
-    }
-
     public void setMessages(ArrayList<Message> newData){
         this.data = newData;
-        for( Message m : data) System.out.println(m.getContent() + m.getUserId());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
