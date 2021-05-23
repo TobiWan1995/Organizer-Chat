@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "705363866077",
+    "project_id": "organizerchat-75127",
+    "storage_bucket": "organizerchat-75127.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705363866077:android:7da62a43a8defb2bd48634",
+        "android_client_info": {
+          "package_name": "com.example.projekt1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705363866077-rgpebpmhmo2vhmjbishh655par3q47hm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projekt1",
+            "certificate_hash": "d46f1b1786b17478050b14a41564e5a7548c66cc"
+          }
+        },
+        {
+          "client_id": "705363866077-q1qkiaht4i4oq333ski8lq6srq7pb1ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACTV6VQlNegTdFpQLCpiPv38FzLXyQPY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705363866077-q1qkiaht4i4oq333ski8lq6srq7pb1ke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

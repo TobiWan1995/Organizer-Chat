@@ -15,7 +15,7 @@ public class Message {
         this.user = user;
     }
 
-    public long getId(){ return this.id;}
+    public long getUserId(){ return this.user.getId();}
     public Date getTimeStamp(){ return this.timeStamp;}
     public String getContent(){ return this.content;}
 }
