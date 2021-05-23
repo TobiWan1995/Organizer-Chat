@@ -16,4 +16,10 @@ public class User {
     }
 
     public long getId() { return this.id; }
+
+    public String getFirstName() { return this.firstName; }
+
+    public String getLastName() { return this.lastName; }
+
+    public String getNickName() { return this.nickName; }
 }
