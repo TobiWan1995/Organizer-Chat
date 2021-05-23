@@ -52,7 +52,6 @@ public class HomeActivity extends AppCompatActivity //implements View.OnClickLis
 
     }
 
-
     /*@Override
     public void onClick(View view) {
         switch(view.getId()){

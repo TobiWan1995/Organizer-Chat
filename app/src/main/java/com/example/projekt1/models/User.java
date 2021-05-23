@@ -8,6 +8,8 @@ public class User {
     String firstName, lastName;
     String nickName;
 
+    public User(){}
+
     public User(long id, String firstName, String lastName, String nickName){
         this.id = id;
         this.firstName = firstName;
