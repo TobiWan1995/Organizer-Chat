@@ -6,12 +6,12 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/authNext3"
         android:layout_width="200dp"
         android:layout_height="75dp"
+        android:layout_marginBottom="24dp"
         android:text="Next"
         android:textSize="30sp"
-        android:translationY="-100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -41,18 +41,19 @@
         android:id="@+id/editTextPhone"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:ems="10"
         android:inputType="phone"
         android:text="Phonenumber"
-        android:translationY="-250dp"
-        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintBottom_toTopOf="@+id/authNext3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.hbb20.CountryCodePicker
+        android:id="@+id/countryPicker"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:translationY="-275dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
