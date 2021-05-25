@@ -15,7 +15,6 @@
             android:layout_weight=".5"
             android:gravity="center"
             android:textSize="30sp"
-            android:translationY="50dp"
             android:text="Login with your account" />
 
         <Button
@@ -34,7 +33,6 @@
             android:textSize="30sp"
             android:layout_weight=".5"
             android:gravity="center"
-            android:translationY="50dp"
             android:text="Create an account" />
 
         <Button
