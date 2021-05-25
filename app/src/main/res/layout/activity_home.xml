@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/thm_grün"
-    tools:context=".activities.main.HomeActivity">
+    tools:context=".activities.home.HomeActivity">
 
     <LinearLayout
         android:id="@+id/linearChatLayout"

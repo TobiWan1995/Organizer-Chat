@@ -1,4 +1,4 @@
-package com.example.projekt1.activities.main;
+package com.example.projekt1.activities.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

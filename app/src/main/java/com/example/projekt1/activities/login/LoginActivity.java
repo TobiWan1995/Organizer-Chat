@@ -7,13 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.projekt1.R;
 import com.example.projekt1.activities.authentication.AuthenticationActivity;
-import com.example.projekt1.activities.chat.ChatActivity;
-import com.example.projekt1.activities.main.Home;
-import com.example.projekt1.activities.main.HomeActivity;
 import com.example.projekt1.models.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
