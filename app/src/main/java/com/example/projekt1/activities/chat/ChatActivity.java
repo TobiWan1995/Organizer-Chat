@@ -34,7 +34,10 @@ public class ChatActivity extends AppCompatActivity {
     ImageButton sendMessageButton;
     EditText enteredText;
 
-    // Setup Firebase-Database
+    // List to hold firebase-messages - inital and update chat
+    ArrayList<Message> chat_messages, chat_messages_initial;
+
+            // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
@@ -51,16 +54,17 @@ public class ChatActivity extends AppCompatActivity {
 
         // get chat passed as value to activity and extract messages
         Chat chat = getIntent().getParcelableExtra("CHAT");
-        ArrayList<Message> chat_messages = chat.getMessages();
+        chat_messages_initial = chat.getMessages();
+        chat_messages = chat.getMessages();
 
-        // init chat data
+        // init chat data with initial list
         messageref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for(DataSnapshot child : snapshot.getChildren()){
+                    chat_messages_initial.add(child.getValue(Message.class));
                     chat_messages.add(child.getValue(Message.class));
                 }
-                System.out.println("first");
             }
 
             @Override
@@ -69,30 +73,28 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
         // fix async
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         // init adapter for recycler-view
-        System.out.println("second");
-        ChatMessages chatMessages = new ChatMessages(chat_messages);
+        ChatMessages chatMessages = new ChatMessages(chat_messages_initial);
 
-        // get data from Firebase and also listen to changes
+        // get data from Firebase when changed and update chat with new list
         messageref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                chat_messages = new ArrayList<Message>();
                 for(DataSnapshot child : snapshot.getChildren()){
                     chat_messages.add(child.getValue(Message.class));
                     chatMessages.setMessages(chat_messages);
                 }
             }
-
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
                 Toast.makeText(ChatActivity.context, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,21 +104,15 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(chatMessages);
 
-        // init dummy Messages - Firebase
-        /*
-        Message m1 = new Message(1, "testmessage", LoginActivity.currentUser);
-        Message m2 = new Message(2, "testmessage", testuser);
-        messageref.child(String.valueOf(1)).setValue(m1);
-        messageref.child(String.valueOf(2)).setValue(m2); */
-
         // init sendMessageButton and editText
         sendMessageButton = findViewById(R.id.sendMessageButton);
         enteredText = findViewById(R.id.enterMessageET);
 
+        // set sendMessageButton onClickListener
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageref.child(String.valueOf(chat_messages.size()+1)).setValue(new Message(chat_messages.size()+1, enteredText.getText().toString(), LoginActivity.currentUser));
+                messageref.child(String.valueOf(chat_messages.get(chat_messages.size() - 1).getId()+1)).setValue(new Message(chat_messages.size()+1, enteredText.getText().toString(), LoginActivity.currentUser));
                 enteredText.setText("");
             }
         });
