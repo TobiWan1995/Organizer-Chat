@@ -70,4 +70,7 @@ public class Chat implements Parcelable {
     public void addUser(User user) {
         this.userList.add(user);
     }
+    public void addMessage(Message m) {
+        this.messageList.add(m);
+    }
 }

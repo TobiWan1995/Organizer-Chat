@@ -20,15 +20,17 @@ import java.util.ArrayList;
 
 public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
-    Chat[] data;
-    //Context context;
+    ArrayList<Chat> data;
+    // Context context;
     Activity context;
 
     public Home(){
         this.data = this.getChats();
     }
 
-    public Home(String[] data){}
+    public Home(ArrayList<Chat> data){
+        this.data = data;
+    }
 
     @NonNull
     @Override
@@ -41,31 +43,24 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull Home.ViewHolder holder, final int position) {
-        holder.textView.setText(data[position].getTitel());
+        holder.textView.setText(data.get(position).getTitel());
+        System.out.println(data.get(position).getTitel());
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openChat(data[position]);
+                openChat(data.get(position));
             }
         });
     }
 
+    // how much items displayed
     @Override
     public int getItemCount() {
-        return getChats().length;
-
+        return this.data.size();
     }
 
-    public Chat[] getChats(){
-        return new Chat[] {
-                new Chat(1, "Chat1", new ArrayList<User>(), new ArrayList<Message>()),
-                new Chat(2, "Chat2", new ArrayList<User>(), new ArrayList<Message>()),
-                new Chat(3, "Chat3", new ArrayList<User>(), new ArrayList<Message>()),
-                new Chat(4, "Chat4", new ArrayList<User>(), new ArrayList<Message>()),
-                new Chat(5, "Chat5", new ArrayList<User>(), new ArrayList<Message>()),
-                new Chat(6, "Chat6", new ArrayList<User>(), new ArrayList<Message>()),
-                new Chat(7, "Chat7", new ArrayList<User>(), new ArrayList<Message>())
-        };
+    public ArrayList<Chat> getChats(){
+        return new ArrayList<Chat>();
     }
 
     public void openChat(Chat chat){
