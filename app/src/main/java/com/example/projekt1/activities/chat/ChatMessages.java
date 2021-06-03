@@ -47,11 +47,9 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());;
         if(viewType == VIEWTYPE_MYMESSAGE){
             view = layoutInflater.inflate(R.layout.message_send_layout, parent, false);
-            System.out.println("Inflate send.");
         }
         else {
             view = layoutInflater.inflate(R.layout.message_received_layout, parent, false);
-            System.out.println("Inflate received.");
         }
 
         ViewHolder viewHolder = new ViewHolder(view);;
@@ -67,7 +65,6 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
-        System.out.println(data.get(position).getContent());
         if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
         else holder.receiveMessage.setText(data.get(position).getContent());;
     }

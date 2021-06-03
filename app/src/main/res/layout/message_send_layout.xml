@@ -16,7 +16,7 @@
             android:padding="16dp"
             android:background="@drawable/send_message_design"
             tools:text="Jaaaa moin der Text skalliert mit der Größe der Nachricht!!"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
