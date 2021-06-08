@@ -16,13 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class LauncherActivity extends AppCompatActivity {
-    public static User currentUser = new User("0", "SuperUser", "SuperUser", "SuperUser", "SuperUser", "SuperUser", "SuperUser");
     public static Context context;
-
-    // Setup Firebase-Database
-    FirebaseDatabase root =  FirebaseDatabase.getInstance();
-    // Get User-Table-Reference from FireDB
-    DatabaseReference userref = root.getReference("User");
 
     // Selection (Login/Auth) Buttons
     Button login, auth;
@@ -31,9 +25,6 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_selection);
-
-        // dummy-user firebase
-        userref.child(String.valueOf(LauncherActivity.currentUser.getId())).setValue(LauncherActivity.currentUser);
 
         LauncherActivity.context = getApplicationContext();
 

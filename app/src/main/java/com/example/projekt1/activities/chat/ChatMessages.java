@@ -19,6 +19,7 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     // to identify Viewtype
     public static final int VIEWTYPE_MYMESSAGE = 0;
     public static final int VIEWTYPE_OTHERMESSAGE = 1;
+    String userId;
 
     ArrayList<Message> data;
     Activity context;
@@ -26,15 +27,18 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     public ChatMessages(){
     }
 
-    public ChatMessages(ArrayList<Message> data){
+    public ChatMessages(ArrayList<Message> data, String userId)
+    {
         this.data = data;
+        this.userId = userId;
     }
 
     @NonNull
     @Override
     public ChatMessages.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+
         if(viewType == VIEWTYPE_MYMESSAGE){
             view = layoutInflater.inflate(R.layout.message_send_layout, parent, false);
         }
@@ -49,13 +53,13 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if(data.get(position).getUser().getId() == LauncherActivity.currentUser.getId()) return VIEWTYPE_MYMESSAGE;
+        if(data.get(position).getUserId().equals(this.userId)) return VIEWTYPE_MYMESSAGE;
         else return VIEWTYPE_OTHERMESSAGE;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
-        if(data.get(position).getUser().getId() == LauncherActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
+        if(data.get(position).getUserId().equals(this.userId)) holder.sendMessage.setText(data.get(position).getContent());
         else holder.receiveMessage.setText(data.get(position).getContent());;
     }
 

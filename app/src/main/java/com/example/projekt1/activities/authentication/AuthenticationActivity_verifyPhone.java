@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.projekt1.R;
 import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.activities.login.LoginActivity;
+import com.example.projekt1.models.Session;
 import com.example.projekt1.models.User;
 import com.goodiebag.pinview.Pinview;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +49,9 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
     // auth Data
     String phoneNumber;
     String codeBySystem;
+
+    // Session for current User
+    Session session;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
