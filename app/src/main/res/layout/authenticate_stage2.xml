@@ -39,7 +39,7 @@
 
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/buttonBirth"
         android:layout_width="300dp"
         android:layout_height="75dp"
         android:layout_marginBottom="150dp"
@@ -58,8 +58,8 @@
         android:text="Date of birth:"
         android:textSize="20sp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
-        app:layout_constraintStart_toStartOf="@+id/button7" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonBirth"
+        app:layout_constraintStart_toStartOf="@+id/buttonBirth" />
 
     <TextView
         android:id="@+id/textView12"
@@ -82,7 +82,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <RadioButton
             android:id="@+id/radioButton2"
@@ -91,7 +92,8 @@
             android:layout_margin="10dp"
             android:text="Female"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="323dp" />
+            tools:layout_editor_absoluteY="323dp"
+            android:checked="true"/>
 
         <RadioButton
             android:id="@+id/radioButton"

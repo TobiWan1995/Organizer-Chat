@@ -1,29 +1,19 @@
 package com.example.projekt1.activities.chat;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.chat.ChatActivity;
-import com.example.projekt1.activities.login.LoginActivity;
-import com.example.projekt1.models.Chat;
+import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.models.Message;
-import com.example.projekt1.models.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> {
     // to identify Viewtype
@@ -59,13 +49,13 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) return VIEWTYPE_MYMESSAGE;
+        if(data.get(position).getUser().getId() == LauncherActivity.currentUser.getId()) return VIEWTYPE_MYMESSAGE;
         else return VIEWTYPE_OTHERMESSAGE;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessages.ViewHolder holder, final int position) {
-        if(data.get(position).getUser().getId() == LoginActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
+        if(data.get(position).getUser().getId() == LauncherActivity.currentUser.getId()) holder.sendMessage.setText(data.get(position).getContent());
         else holder.receiveMessage.setText(data.get(position).getContent());;
     }
 

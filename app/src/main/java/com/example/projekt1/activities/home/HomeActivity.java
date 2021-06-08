@@ -11,8 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.chat.ChatActivity;
-import com.example.projekt1.activities.login.LoginActivity;
+import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
@@ -48,14 +47,16 @@ public class HomeActivity extends AppCompatActivity //implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Chats
+        ArrayList<Chat> dummyChats = new ArrayList<Chat>();
+
         // dummy-user firebase
-        // Setup Firebase-Database
-        userref.child(String.valueOf(LoginActivity.currentUser.getId())).setValue(LoginActivity.currentUser);
+        userref.child(String.valueOf(LauncherActivity.currentUser.getId())).setValue(LauncherActivity.currentUser);
 
         // dummy-chat firebase
         Chat chat1 = new Chat(1, "Chat1 - Firebase", new ArrayList<User>(), new ArrayList<Message>());
-        Message initialMessage = new Message( 1, "Hello World.", LoginActivity.currentUser);
-        chat1.addUser(LoginActivity.currentUser);
+        Message initialMessage = new Message( 1, "Hello World.", LauncherActivity.currentUser);
+        chat1.addUser(LauncherActivity.currentUser);
         chat1.addMessage(initialMessage);
         chatref.child(String.valueOf(chat1.getId())).setValue(chat1);
         chatref.child(String.valueOf(2)).setValue(chat1);
@@ -66,23 +67,22 @@ public class HomeActivity extends AppCompatActivity //implements View.OnClickLis
 
         HomeActivity.context = getApplicationContext();
 
-        // addChatButton = findViewById(R.id.addChatButton); Muss noch im Design hinzugefügt werden
-        // addChatButton.setOnClickListener(this);
+        // Home - RecyclerView - Implementation
+        recyclerView = findViewById(R.id.home_activity_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.context));
+
+        home = new Home(dummyChats);
+        recyclerView.setAdapter(home);
 
         // init chat data with initial list - late ValueEventListener
-        userref.addListenerForSingleValueEvent(new ValueEventListener() {
+        chatref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                ArrayList<Chat> dummyChats = new ArrayList<Chat>();
                 for(DataSnapshot child : snapshot.getChildren()){
                     dummyChats.add(child.getValue(Chat.class));
                 }
 
-                // Home - RecyclerView - Implementation
-                recyclerView = findViewById(R.id.home_activity_recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.context));
-                home = new Home(dummyChats);
-                recyclerView.setAdapter(home);
+                home.notifyDataSetChanged();
             }
 
             @Override
@@ -91,17 +91,14 @@ public class HomeActivity extends AppCompatActivity //implements View.OnClickLis
             }
         });
 
-
+        // addChatButton = findViewById(R.id.addChatButton); Muss noch im Design hinzugefügt werden
+        // addChatButton.setOnClickListener(this);
     }
-
     /*@Override
     public void onClick(View view) {    // init chat data with initial list - late ValueEventListener
-
             /*case R.id.addChatButton:
                 //chatHinzufügen();
               break;
         }
     }*/
-
-
 }

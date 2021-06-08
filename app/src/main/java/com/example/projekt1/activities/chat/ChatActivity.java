@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.login.LoginActivity;
+import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.User;
@@ -41,9 +41,6 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
-
-    // Testuser2
-    User testuser = new User(1, "sdds", "sdds", "ssd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageref.child(String.valueOf(chat_messages.get(chat_messages.size() - 1).getId()+1)).setValue(new Message(chat_messages.size()+1, enteredText.getText().toString(), LoginActivity.currentUser));
+                messageref.child(String.valueOf(chat_messages.get(chat_messages.size() - 1).getId()+1)).setValue(new Message(chat_messages.size()+1, enteredText.getText().toString(), LauncherActivity.currentUser));
                 enteredText.setText("");
             }
         });
