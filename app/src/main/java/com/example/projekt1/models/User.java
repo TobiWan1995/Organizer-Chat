@@ -4,24 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    long id;
-    String firstName, lastName;
-    String nickName;
+    private String id;
+    private String fullname, userName;
+    private String eMail, password;
+    private String gender, birth;
 
     public User(){}
 
-    public User(long id, String firstName, String lastName, String nickName){
+    public User(String id, String fullName, String userName, String eMail, String password, String gender, String birth){
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nickName = nickName;
+        this.fullname = fullName;
+        this.userName = userName;
+        this.eMail = eMail;
+        this.password = password;
+        this.gender = gender;
+        this.birth = birth;
     }
 
-    public long getId() { return this.id; }
+    public String getId() { return this.id; }
 
-    public String getFirstName() { return this.firstName; }
+    public String getFullname() { return this.fullname; }
 
-    public String getLastName() { return this.lastName; }
+    public String getUserName() { return this.userName; }
 
-    public String getNickName() { return this.nickName; }
+    public String geteMail() { return this.eMail; }
+
+    public String getPassword() { return this.password;}
+
+    public String getGender(){ return this.gender;}
+
+    public String getBirth(){ return this.birth;}
 }

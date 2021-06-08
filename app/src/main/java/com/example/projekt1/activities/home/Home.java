@@ -25,7 +25,6 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     Activity context;
 
     public Home(){
-        this.data = this.getChats();
     }
 
     public Home(ArrayList<Chat> data){
@@ -44,7 +43,6 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull Home.ViewHolder holder, final int position) {
         holder.textView.setText(data.get(position).getTitel());
-        System.out.println(data.get(position).getTitel());
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,8 +57,8 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
         return this.data.size();
     }
 
-    public ArrayList<Chat> getChats(){
-        return new ArrayList<Chat>();
+    public void setChats(ArrayList<Chat> data){
+        this.data = data;
     }
 
     public void openChat(Chat chat){
