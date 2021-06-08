@@ -16,6 +16,7 @@ import com.example.projekt1.R;
 import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
+import com.example.projekt1.models.Session;
 import com.example.projekt1.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,10 +38,13 @@ public class ChatActivity extends AppCompatActivity {
     // List to hold firebase-messages - inital and update chat
     ArrayList<Message> chat_messages, chat_messages_initial;
 
-            // Setup Firebase-Database
+    // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
+
+    // Session for current-user
+    Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,9 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         ChatActivity.context = getApplicationContext();
+
+        // get Session
+        session = new Session(getApplicationContext());
 
         // get chat passed as value to activity and extract messages
         Chat chat = getIntent().getParcelableExtra("CHAT");
@@ -78,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         // init adapter for recycler-view
-        ChatMessages chatMessages = new ChatMessages(chat_messages_initial);
+        ChatMessages chatMessages = new ChatMessages(chat_messages_initial, session.getId());
 
         // get data from Firebase when changed and update chat with new list
         messageref.addValueEventListener(new ValueEventListener() {
@@ -109,7 +116,11 @@ public class ChatActivity extends AppCompatActivity {
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageref.child(String.valueOf(chat_messages.get(chat_messages.size() - 1).getId()+1)).setValue(new Message(chat_messages.size()+1, enteredText.getText().toString(), LauncherActivity.currentUser));
+                // generate unique ID
+                String key =  messageref.push().getKey();
+                // save message to firebase
+                messageref.child(key).setValue(
+                        new Message(key, enteredText.getText().toString(), session.getId()));
                 enteredText.setText("");
             }
         });

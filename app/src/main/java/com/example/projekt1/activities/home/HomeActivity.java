@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.example.projekt1.R;
 import com.example.projekt1.activities.launcher.LauncherActivity;
+import com.example.projekt1.activities.login.LoginActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
+import com.example.projekt1.models.Session;
 import com.example.projekt1.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,28 +44,31 @@ public class HomeActivity extends AppCompatActivity //implements View.OnClickLis
     Home home;
     Button addChatButton;
 
+    // Session for current-user
+    Session session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // init session
+        session = new Session(LoginActivity.context);
+
         // Chats
         ArrayList<Chat> dummyChats = new ArrayList<Chat>();
 
-        // dummy-user firebase
-        userref.child(String.valueOf(LauncherActivity.currentUser.getId())).setValue(LauncherActivity.currentUser);
+        // check current-user
+        System.out.println("Current-User: " + session.getUserName() + ", " + session.getId());
 
         // dummy-chat firebase
+        /*
         Chat chat1 = new Chat(1, "Chat1 - Firebase", new ArrayList<User>(), new ArrayList<Message>());
         Message initialMessage = new Message( 1, "Hello World.", LauncherActivity.currentUser);
         chat1.addUser(LauncherActivity.currentUser);
         chat1.addMessage(initialMessage);
         chatref.child(String.valueOf(chat1.getId())).setValue(chat1);
-        chatref.child(String.valueOf(2)).setValue(chat1);
-        chatref.child(String.valueOf(3)).setValue(chat1);
-        chatref.child(String.valueOf(4)).setValue(chat1);
-        chatref.child(String.valueOf(5)).setValue(chat1);
-        chatref.child(String.valueOf(6)).setValue(chat1);
+        */
 
         HomeActivity.context = getApplicationContext();
 
