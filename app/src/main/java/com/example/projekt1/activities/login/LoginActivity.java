@@ -69,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     private class ChildListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-            System.out.println("Password from firebase: " + dataSnapshot.getValue(User.class).getPassword());
-            System.out.println("Entered Password: " + password);
             if(dataSnapshot.getValue(User.class).getPassword().equals(password)){
                 User currentUser = dataSnapshot.getValue(User.class);
 

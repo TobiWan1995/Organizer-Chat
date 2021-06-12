@@ -1,23 +1,29 @@
 package com.example.projekt1.activities.chat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.projekt1.R;
+import com.example.projekt1.activities.home.HomeActivity;
 import com.example.projekt1.activities.launcher.LauncherActivity;
+import com.example.projekt1.activities.login.LoginActivity;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.Session;
 import com.example.projekt1.models.User;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,8 +41,14 @@ public class ChatActivity extends AppCompatActivity {
     ImageButton sendMessageButton;
     EditText enteredText;
 
-    // List to hold firebase-messages - inital and update chat
-    ArrayList<Message> chat_messages, chat_messages_initial;
+    // recylcer adapter
+    ChatMessages chatMessages;
+
+    // current Chat
+    Chat chat;
+
+    // List to hold firebase-messages
+    ArrayList<Message> chat_messages = new ArrayList<Message>();
 
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
@@ -57,51 +69,13 @@ public class ChatActivity extends AppCompatActivity {
         session = new Session(getApplicationContext());
 
         // get chat passed as value to activity and extract messages
-        Chat chat = getIntent().getParcelableExtra("CHAT");
-        chat_messages_initial = chat.getMessages();
-        chat_messages = chat.getMessages();
-
-        // init chat data with initial list
-        messageref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for(DataSnapshot child : snapshot.getChildren()){
-                    chat_messages_initial.add(child.getValue(Message.class));
-                    chat_messages.add(child.getValue(Message.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Toast.makeText(ChatActivity.context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // fix async
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        chat = getIntent().getParcelableExtra("CHAT");
 
         // init adapter for recycler-view
-        ChatMessages chatMessages = new ChatMessages(chat_messages_initial, session.getId());
+        chatMessages = new ChatMessages(chat_messages, session.getId());
 
-        // get data from Firebase when changed and update chat with new list
-        messageref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                chat_messages = new ArrayList<Message>();
-                for(DataSnapshot child : snapshot.getChildren()){
-                    chat_messages.add(child.getValue(Message.class));
-                    chatMessages.setMessages(chat_messages);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Toast.makeText(ChatActivity.context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // get data from Firebase when changed and update chat with new messageList
+        messageref.orderByChild("chatId").equalTo(chat.getId()).addChildEventListener(new ChatActivity.ChildListener());
 
         // init Recycler-View with chatMessages
         recyclerView = findViewById(R.id.chat_activity_RecyclerView);
@@ -119,10 +93,34 @@ public class ChatActivity extends AppCompatActivity {
                 // generate unique ID
                 String key =  messageref.push().getKey();
                 // save message to firebase
-                messageref.child(key).setValue(
-                        new Message(key, enteredText.getText().toString(), session.getId()));
+                messageref.child(key).setValue(new Message(key, enteredText.getText().toString(), session.getId(), chat.getId()));
+                // reset message-input
                 enteredText.setText("");
             }
         });
+    }
+
+    private class ChildListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+            chat_messages.add(dataSnapshot.getValue(Message.class));
+            chatMessages.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+        }
+
+        @Override
+        public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+        }
+
+        @Override
+        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+        }
     }
 }
