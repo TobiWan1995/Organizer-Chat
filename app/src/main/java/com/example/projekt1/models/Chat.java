@@ -7,28 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat implements Parcelable {
-    private long id;
+    private String id;
     private String titel = "default";
-    private ArrayList<User> userList = new ArrayList<User>();
-    private ArrayList<Message> messageList = new ArrayList<Message>();
+    private ArrayList<String> userList = new ArrayList<String>();
 
     public Chat(){}
 
-    public Chat(long id, String titel) {
+    public Chat(String id, String titel) {
         this.id = id;
         this.titel = titel;
     }
 
-    public Chat(long id, String titel, ArrayList<User> uList, ArrayList<Message> mList) {
+    public Chat(String id, String titel, ArrayList<String> uList) {
         this.id = id;
         this.titel = titel;
         this.userList = uList;
-        this.messageList = mList;
     }
 
     // Parcelable.Creator
     protected Chat(Parcel in) {
-        id = in.readLong();
+        id = in.readString();
         titel = in.readString();
     }
 
@@ -44,17 +42,11 @@ public class Chat implements Parcelable {
         }
     };
 
-    public long getId(){return this.id;}
+    public String getId(){return this.id;}
     
     public String getTitel(){return this.titel;}
 
-    public ArrayList<User> getUsers(){return this.userList;}
-    
-    public ArrayList<Message> getMessages(){return this.messageList;}
-
-    public void sendMessage(Message message){
-        this.messageList.add(message);
-    }
+    public ArrayList<String> getUsers(){return this.userList;}
 
     @Override
     public int describeContents() {
@@ -63,14 +55,11 @@ public class Chat implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeString(id);
         dest.writeString(titel);
     }
 
-    public void addUser(User user) {
+    public void addUser(String user) {
         this.userList.add(user);
-    }
-    public void addMessage(Message m) {
-        this.messageList.add(m);
     }
 }

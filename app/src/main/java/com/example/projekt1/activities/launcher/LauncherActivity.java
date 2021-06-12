@@ -51,7 +51,4 @@ public class LauncherActivity extends AppCompatActivity {
             }
         });
     }
-    // Login
-    // Firebase get user
-    // redirect view to home
 }

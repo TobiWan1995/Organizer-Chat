@@ -3,6 +3,9 @@ package com.example.projekt1.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.ArraySet;
+
+import java.util.Set;
 
 public class Session {
 
@@ -21,6 +24,7 @@ public class Session {
         prefs.edit().putString("password", user.getPassword()).apply();
         prefs.edit().putString("gender", user.getGender()).apply();
         prefs.edit().putString("birth", user.getBirth()).apply();
+        prefs.edit().putStringSet("users", (Set<String>) user.getUsers()).apply();
     }
 
     public String getId() {
@@ -50,4 +54,6 @@ public class Session {
     public String getBirth(){
         return prefs.getString("birth", "");
     }
+
+    public ArraySet<String> getUsers() { return (ArraySet<String>) prefs.getStringSet("users", null ); }
 }

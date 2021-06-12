@@ -2,6 +2,7 @@ package com.example.projekt1.activities.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -182,7 +183,12 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
 
         // generate unique ID
         String key =  userref.push().getKey();
-        User newUser = new User(key, fullname, username, eMail, password, gender, birth);
+
+        // initial userList
+        ArraySet<String> users = new ArraySet<>();
+        users.add(key);
+
+        User newUser = new User(key, fullname, username, eMail, password, gender, birth, users);
         userref.child(key).setValue(newUser);
 
         // TODO: remove on deployment
