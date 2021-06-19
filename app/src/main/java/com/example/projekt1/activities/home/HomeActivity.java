@@ -1,11 +1,13 @@
 package com.example.projekt1.activities.home;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.ArraySet;
 import android.view.View;
@@ -87,10 +89,10 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         System.out.println("Current-User: " + session.getUserName() + ", " + session.getId());
 
         // dummy-chat firebase
-        // Chat chat1 = new Chat("1", "Chat1 - Firebase", new ArrayList<String>());
-        // chat1.addUser(session.getId());
-        // chat1.addUser("0");
-        // chatref.child(String.valueOf(chat1.getId())).setValue(chat1);
+        Chat chat1 = new Chat("1", "Chat1 - Firebase", new ArrayList<String>());
+        chat1.addUser(session.getId());
+        chat1.addUser("0");
+        chatref.child(String.valueOf(chat1.getId())).setValue(chat1);
 
         HomeActivity.context = getApplicationContext();
 
@@ -111,11 +113,11 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                     Chat currChat  = child.getValue(Chat.class);
                     // get userlist of current chat - no Firebase-Support for Array or List
                     // need to fetch ref and iterate through it
-                    DataSnapshot userListRef = child.child("users");
+                    DataSnapshot userListDS = child.child("users");
                     // iterate through users of chat and check for matches
-                    for (int i=0;i< userListRef.getChildrenCount() ;i++) {
+                    for (int i=0;i< userListDS.getChildrenCount() ;i++) {
                         // get current User of chat
-                        String currUser = userListRef.child(String.valueOf(i)).getValue(String.class);
+                        String currUser = userListDS.child(String.valueOf(i)).getValue(String.class);
                         if(currUser.equals(session.getId())){
                             chats.add(currChat);
                         }
@@ -131,6 +133,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void applyData(String chatTitle, ArrayList<String> users) {
         System.out.println(chatTitle);
@@ -138,17 +141,20 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         // generate unique id
         String key = chatref.push().getKey();
         // save new chat to firebase
-        // chatref.child(key).setValue(new Chat(key, chatTitle, users));
+        chatref.child(key).setValue(new Chat(key, chatTitle, users));
         System.out.println(chatTitle + Arrays.toString(users.toArray()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void applyData(ArraySet<String> users) {
+        // check users to update
         System.out.println(Arrays.toString(users.toArray()));
+
         // update User
         User updatedUser = new User(session.getId(), session.getFullname(), session.getUserName(), session.geteMail(), session.getPassword(), session.getGender(), session.getBirth());
-        updatedUser.addUser(users);
-        updatedUser.addUser(session.getUsers());
+        updatedUser.addUserCollection(users);
+        updatedUser.addUserCollection(session.getUsers());
         userref.child(session.getId()).setValue(updatedUser);
 
         // update Session

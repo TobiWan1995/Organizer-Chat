@@ -3,6 +3,7 @@ package com.example.projekt1.models;
 import android.util.ArraySet;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ public class User {
     private String fullname, userName;
     private String eMail, password;
     private String gender, birth;
-    private ArrayList<String> userList;
+    private ArrayList<String> userList = new ArrayList<>();
 
     public User(){}
 
@@ -23,7 +24,6 @@ public class User {
         this.password = password;
         this.gender = gender;
         this.birth = birth;
-        this.userList = new ArrayList<>();
     }
 
     public User(String id, String fullName, String userName, String eMail, String password, String gender, String birth, ArraySet<String> users){
@@ -34,7 +34,6 @@ public class User {
         this.password = password;
         this.gender = gender;
         this.birth = birth;
-        this.userList = new ArrayList<>();
         userList.addAll(users);
     }
 
@@ -53,8 +52,12 @@ public class User {
 
     public String getBirth(){ return this.birth;}
     
-    public void addUser(ArraySet<String> users){
+    public void addUserCollection(Collection<String> users){
         this.userList.addAll(users);
+    }
+
+    public void addUser(String user){
+        this.userList.add(user);
     }
 
     public ArrayList<String> getUsers(){ return this.userList;}

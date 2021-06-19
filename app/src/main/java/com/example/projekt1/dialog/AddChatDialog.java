@@ -59,8 +59,18 @@ public class AddChatDialog extends AppCompatDialogFragment implements AddUserToC
         // set Drop
         // down-List with users to add
         spinner = view.findViewById(R.id.spinner2);
+
+        System.out.println(session.getUsers().size());
+
+        // user-hashset to array
+        String arr[] = new String[session.getUsers().size()];
+        int i=0;
+        // iterating over the hashset
+        for(String ele:session.getUsers()){
+            arr[i++] = ele;
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
-                android.R.layout.simple_spinner_item , new String[] {"1", "2", "3"});
+                android.R.layout.simple_spinner_item , arr);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 

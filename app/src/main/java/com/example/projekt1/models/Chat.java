@@ -60,6 +60,6 @@ public class Chat implements Parcelable {
     }
 
     public void addUser(String user) {
-        this.userList.add(user);
+        if(this.userList.stream().noneMatch(value -> value.equals(user))) this.userList.add(user);
     }
 }

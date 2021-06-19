@@ -69,10 +69,10 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
 
 
             // send phoneVerification TODO: uncomment on deployment
-            // sendPhoneVerificationCode(phoneNumber);
+            sendPhoneVerificationCode(phoneNumber);
 
             // for testing - TODO: delete line on deployment
-            saveUserToFirebase();
+            // saveUserToFirebase();
         }
 
         void sendPhoneVerificationCode(String phoneNo){
@@ -86,7 +86,7 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
 
             PhoneAuthOptions options =
                     PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                            .setPhoneNumber(phoneNo) // Phone number to verify
+                            .setPhoneNumber("+4915203444676") // Phone number to verify
                             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                             .setActivity(this) // Activity (for callback binding)
                             .setCallbacks(mCallbacks) // OnVerificationStateChangedCallbacks
@@ -152,10 +152,10 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
                             saveUserToFirebase();
 
                             // Update UI
-                            /* Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getApplicationContext().startActivity(intent);
-                            finish(); */
+                            finish();
 
                             System.out.println("Verification success.");
                         } else {
@@ -192,9 +192,9 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
         userref.child(key).setValue(newUser);
 
         // TODO: remove on deployment
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        /* Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(intent);
-        finish();
+        finish(); */
     }
 }

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.ArraySet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +20,7 @@ import com.example.projekt1.R;
 import com.example.projekt1.activities.home.HomeActivity;
 import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.activities.login.LoginActivity;
+import com.example.projekt1.dialog.AddUserDialog;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.Session;
@@ -33,12 +35,13 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements AddUserDialog.UserDialogListener {
     public static Context context;
     RecyclerView recyclerView;
-    ImageButton sendMessageButton;
+    ImageButton sendMessageButton, addUser;
     EditText enteredText;
 
     // recylcer adapter
@@ -54,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
+    DatabaseReference chatref = root.getReference("Chat");
 
     // Session for current-user
     Session session;
@@ -98,6 +102,24 @@ public class ChatActivity extends AppCompatActivity {
                 enteredText.setText("");
             }
         });
+
+        // init addUser-Button
+        addUser = findViewById(R.id.addUsersButtonChat);
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddUserDialog addUserDialog = new AddUserDialog();
+                addUserDialog.show(getSupportFragmentManager(), "Add User - Dialog");
+            }
+        });
+    }
+
+    @Override
+    public void applyData(ArraySet<String> users) {
+        for(String user : users){
+            this.chat.addUser(user);
+        }
+        chatref.child(this.chat.getId()).setValue(this.chat);
     }
 
     private class ChildListener implements ChildEventListener {
