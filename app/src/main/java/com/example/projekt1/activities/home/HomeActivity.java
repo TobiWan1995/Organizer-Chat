@@ -34,16 +34,12 @@ import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity implements AddChatDialog.ChatDialogListener, AddUserDialog.UserDialogListener
 {
-    public static Context context;
-
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get User-Table-Reference from FireDB
     DatabaseReference userref = root.getReference("User");
     // Get Chat-Table-Reference from FireDB
     DatabaseReference chatref = root.getReference("Chat");
-    // Get Chat-Table-Reference from FireDB
-
     // Deklarieren von Variablen
     RecyclerView recyclerView;
     Home home;
@@ -85,25 +81,17 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         // Chats
         chats = new ArrayList<Chat>();
 
-        // TODO: check current-user - remove later
-        System.out.println("Current-User: " + session.getUserName() + ", " + session.getId());
-
-        // dummy-chat firebase
-        Chat chat1 = new Chat("1", "Chat1 - Firebase", new ArrayList<String>());
-        chat1.addUser(session.getId());
-        chat1.addUser("0");
-        chatref.child(String.valueOf(chat1.getId())).setValue(chat1);
-
-        HomeActivity.context = getApplicationContext();
-
         // Home - RecyclerView - Implementation
         recyclerView = findViewById(R.id.home_activity_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
 
-        home = new Home(chats);
+        home = new Home(chats, this.getApplicationContext());
         recyclerView.setAdapter(home);
 
         // init chat data with data from firebase
+        // to get every chat for the user, we need to iterate through every chats userList and check
+        // if the current user is present - because of this complex situation the approach without a Query and a ChildEventListener
+        // seems better to implement, but it will later be necessary for higher scale
         chatref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -111,16 +99,31 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                 for(DataSnapshot child : snapshot.getChildren()){
                     // get current chat - will always hold an empty userList (missing list support)
                     Chat currChat  = child.getValue(Chat.class);
-                    // get userlist of current chat - no Firebase-Support for Array or List
+                    // throw assertion error if currChat is null
+                    assert currChat != null;
+                    // get userList of current chat - no Firebase-Support for Array or List
                     // need to fetch ref and iterate through it
                     DataSnapshot userListDS = child.child("users");
+                    // temp save of users - extract them in for loop - add them after
+                    ArraySet<String> tempUsers = new ArraySet<>();
+                    // temp flag - to check if user belongs to chat - autoReset to false 'cause of loop
+                    boolean isChatFromUser = false;
                     // iterate through users of chat and check for matches
                     for (int i=0;i< userListDS.getChildrenCount() ;i++) {
                         // get current User of chat
                         String currUser = userListDS.child(String.valueOf(i)).getValue(String.class);
+                        // throw assertion-error if currUser is null
+                        assert currUser != null;
+                        // add user to tempUserSet - save after loop
+                        tempUsers.add(currUser);
+                        // check if user sessionUser belongs to chat
                         if(currUser.equals(session.getId())){
-                            chats.add(currChat);
+                            isChatFromUser = true;
                         }
+                    }
+                    if(isChatFromUser) {
+                        currChat.addUsers(tempUsers);
+                        chats.add(currChat);
                     }
                 }
                 home.notifyDataSetChanged();
@@ -128,31 +131,29 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Toast.makeText(HomeActivity.context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
-    public void applyData(String chatTitle, ArrayList<String> users) {
-        System.out.println(chatTitle);
-        System.out.println(Arrays.toString(users.toArray()));
+    public void applyData(String chatTitle, ArraySet<String> users) {
+        // switching to arraylist for firebase compatibility
+        ArrayList<String> newUsers = new ArrayList<>(users);
         // generate unique id
         String key = chatref.push().getKey();
         // save new chat to firebase
-        chatref.child(key).setValue(new Chat(key, chatTitle, users));
-        System.out.println(chatTitle + Arrays.toString(users.toArray()));
+        // throw assertion-error if key is null
+        assert key != null;
+        chatref.child(key).setValue(new Chat(key, chatTitle, newUsers));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void applyData(ArraySet<String> users) {
-        // check users to update
-        System.out.println(Arrays.toString(users.toArray()));
-
         // update User
-        User updatedUser = new User(session.getId(), session.getFullname(), session.getUserName(), session.geteMail(), session.getPassword(), session.getGender(), session.getBirth());
+        User updatedUser = new User(session.getId(), session.getFullname(), session.getUserName(), session.geteMail(), session.getPassword(), session.getGender(), session.getBirth(), session.getPhoneNumber());
         updatedUser.addUserCollection(users);
         updatedUser.addUserCollection(session.getUsers());
         userref.child(session.getId()).setValue(updatedUser);

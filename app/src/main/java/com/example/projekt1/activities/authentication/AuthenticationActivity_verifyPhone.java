@@ -12,15 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.launcher.LauncherActivity;
 import com.example.projekt1.activities.login.LoginActivity;
-import com.example.projekt1.models.Session;
 import com.example.projekt1.models.User;
 import com.goodiebag.pinview.Pinview;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthSettings;
@@ -33,13 +28,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class AuthenticationActivity_verifyPhone extends AppCompatActivity implements View.OnClickListener {
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get User-Table-Reference from FireDB
-    DatabaseReference userref = root.getReference("User");
+    DatabaseReference userRef = root.getReference("User");
     // Firebase-Authentication
     FirebaseAuth firebaseAuth;
 
@@ -51,9 +47,6 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
     String phoneNumber;
     String codeBySystem;
 
-    // Session for current User
-    Session session;
-
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -63,30 +56,28 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
             phoneNumber = getIntent().getStringExtra("phoneNumber");
 
             nextVPhone = findViewById(R.id.nextPV);
-            nextVPhone.setOnClickListener(this::onClick);
+            nextVPhone.setOnClickListener(this);
 
             pinview = findViewById(R.id.pinview);
 
 
             // send phoneVerification TODO: uncomment on deployment
-            sendPhoneVerificationCode(phoneNumber);
+            // sendPhoneVerificationCode(phoneNumber);
 
             // for testing - TODO: delete line on deployment
-            // saveUserToFirebase();
+            saveUserToFirebase();
         }
 
         void sendPhoneVerificationCode(String phoneNo){
             firebaseAuth = FirebaseAuth.getInstance();
             FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
 
-            System.out.println("PhoneNumber for Verification: " + phoneNo);
-
             // Configure faking the auto-retrieval with the whitelisted numbers.
             // firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNo, "1234");
 
             PhoneAuthOptions options =
                     PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                            .setPhoneNumber("+4915203444676") // Phone number to verify
+                            .setPhoneNumber(phoneNo) // Phone number to verify
                             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                             .setActivity(this) // Activity (for callback binding)
                             .setCallbacks(mCallbacks) // OnVerificationStateChangedCallbacks
@@ -104,7 +95,7 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
             verifyCode(code);
         }
         else {
-            Toast.makeText(getApplicationContext(), "Code is null.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Code is null", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -127,7 +118,6 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken){
             super.onCodeSent(s, forceResendingToken);
             codeBySystem = s;
-            System.out.println("Code sent.");
         }
     };
 
@@ -138,33 +128,27 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    private String TAG = "";
+                .addOnCompleteListener(this, task -> {
+                    String TAG = "";
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
 
-                            FirebaseUser user = task.getResult().getUser();
+                        saveUserToFirebase();
 
-                            saveUserToFirebase();
-
-                            // Update UI
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getApplicationContext().startActivity(intent);
-                            finish();
-
-                            System.out.println("Verification success.");
-                        } else {
-                            // Sign in failed, display a message and update the UI
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                Toast.makeText(getApplicationContext(), "Verification-Code invalid.", Toast.LENGTH_LONG).show();
-                            }
+                        // Update UI
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getApplicationContext().startActivity(intent);
+                        finish();
+                    } else {
+                        // Sign in failed, display a message and update the UI
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            // The verification code entered was invalid
+                            Toast.makeText(getApplicationContext(), "Verification-Code invalid", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -172,9 +156,9 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
 
     public void saveUserToFirebase() {
         // get UserData from Intent
-        String fullname, username, eMail, password, gender, birth;
+        String fullName, username, eMail, password, gender, birth;
 
-        fullname = getIntent().getStringExtra("fullname");
+        fullName = getIntent().getStringExtra("fullname");
         username = getIntent().getStringExtra("username");
         eMail = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
@@ -182,19 +166,20 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
         birth = getIntent().getStringExtra("birth");
 
         // generate unique ID
-        String key =  userref.push().getKey();
-
+        String key =  userRef.push().getKey();
+        // throw assertion-error if null
+        assert key != null;
         // initial userList
         ArraySet<String> users = new ArraySet<>();
-        users.add(key);
 
-        User newUser = new User(key, fullname, username, eMail, password, gender, birth, users);
-        userref.child(key).setValue(newUser);
+        User newUser = new User(key, fullName, username, eMail, password, gender, birth, phoneNumber, users);
+
+        userRef.child(key).setValue(newUser);
 
         // TODO: remove on deployment
-        /* Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(intent);
-        finish(); */
+        finish();
     }
 }

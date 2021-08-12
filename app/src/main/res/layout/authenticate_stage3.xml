@@ -8,10 +8,10 @@
     <Button
         android:id="@+id/authNext3"
         android:layout_width="200dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
         android:text="Next"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -41,10 +41,10 @@
         android:id="@+id/editTextPhone"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="150dp"
         android:ems="10"
+        android:hint="Phonenumber"
         android:inputType="phone"
-        android:text="Phonenumber"
         app:layout_constraintBottom_toTopOf="@+id/authNext3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

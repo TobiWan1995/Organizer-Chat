@@ -8,10 +8,10 @@
     <Button
         android:id="@+id/authNext2"
         android:layout_width="200dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
         android:text="Next"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -46,18 +46,20 @@
         android:background="@color/transparent"
         android:text="00/Jan/0000"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
+        android:layout_marginBottom="15dp"
         android:text="Date of birth:"
-        android:textSize="20sp"
         android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonBirth"
         app:layout_constraintStart_toStartOf="@+id/buttonBirth" />
 
@@ -65,7 +67,7 @@
         android:id="@+id/textView12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="56dp"
         android:layout_marginBottom="15dp"
         android:text="Gender:"
         android:textColor="@color/black"
@@ -73,27 +75,25 @@
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintStart_toStartOf="parent" />
 
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="290dp"
+        android:layout_marginBottom="275dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"
+            android:checked="true"
             android:text="Female"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="323dp"
-            android:checked="true"/>
+            tools:layout_editor_absoluteY="323dp" />
 
         <RadioButton
             android:id="@+id/radioButton"

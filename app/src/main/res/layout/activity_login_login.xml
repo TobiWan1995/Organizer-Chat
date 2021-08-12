@@ -12,7 +12,7 @@
         android:layout_marginBottom="25dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="E-Mail"
+        android:hint="E-Mail"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextLoginPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,22 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="150dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/loginLoginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Password"
-        android:textColor="@color/black"
-        android:clickable="false"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextLoginPassword"
-        app:layout_constraintStart_toStartOf="@+id/editTextLoginPassword"
-        app:layout_constraintTop_toTopOf="@+id/editTextLoginPassword" />
 
     <TextView
         android:id="@+id/textView8"
@@ -53,9 +42,9 @@
 
     <Button
         android:id="@+id/loginLoginButton"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="24dp"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
         android:text="Login"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

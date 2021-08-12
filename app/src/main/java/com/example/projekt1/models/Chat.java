@@ -2,14 +2,15 @@ package com.example.projekt1.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.ArraySet;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class Chat implements Parcelable {
     private String id;
     private String titel = "default";
-    private ArrayList<String> userList = new ArrayList<String>();
+    private ArrayList<String> userList = new ArrayList<>();
 
     public Chat(){}
 
@@ -59,7 +60,17 @@ public class Chat implements Parcelable {
         dest.writeString(titel);
     }
 
-    public void addUser(String user) {
-        if(this.userList.stream().noneMatch(value -> value.equals(user))) this.userList.add(user);
+    public void addUsers(ArraySet<String> users) {
+        users.addAll(this.userList);
+        this.userList.clear();
+        this.userList.addAll(users);
+
+    }
+
+    public void addUsers(ArrayList<String> users) {
+        for(String user: this.userList){
+            users = (ArrayList<String>) users.stream().filter(u -> !u.equals(user)).collect(Collectors.toList());
+        }
+        this.userList.addAll(users);
     }
 }

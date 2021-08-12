@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Session {
 
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
     public Session(Context cntx) {
         // TODO Auto-generated constructor stub
@@ -29,6 +29,7 @@ public class Session {
         prefs.edit().putString("password", user.getPassword()).apply();
         prefs.edit().putString("gender", user.getGender()).apply();
         prefs.edit().putString("birth", user.getBirth()).apply();
+        prefs.edit().putString("phoneNumber", user.getPhoneNumber()).apply();
         prefs.edit().putStringSet("users", userSet).apply();
     }
 
@@ -59,6 +60,8 @@ public class Session {
     public String getBirth(){
         return prefs.getString("birth", "");
     }
+
+    public String getPhoneNumber() { return  prefs.getString("phoneNumber", ""); }
 
     public Set<String> getUsers() { return prefs.getStringSet("users", null ); }
 }

@@ -88,9 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                     currentUser.addUser(userID);
                 }
 
-                System.out.println("Key: " + dataSnapshot.getKey());
-                System.out.println("Login successful for user: " + dataSnapshot.getValue(User.class).getUserName());
-
                 // set Session
                 session = new Session(LoginActivity.context);
                 session.setUser(currentUser);
@@ -99,8 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
+                finish();
             } else {
-                Toast.makeText(getApplicationContext(), "Login failed - e-mail or password incorrect.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Login failed - Password incorrect", Toast.LENGTH_LONG).show();
             }
         }
 
