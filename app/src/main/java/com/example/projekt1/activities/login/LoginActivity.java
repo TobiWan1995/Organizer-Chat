@@ -2,7 +2,9 @@ package com.example.projekt1.activities.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.ArraySet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.projekt1.R;
 import com.example.projekt1.activities.authentication.AuthenticationActivity_first;
@@ -24,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     public static Context context;
@@ -67,13 +72,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class ChildListener implements ChildEventListener {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
             if(dataSnapshot.getValue(User.class).getPassword().equals(password)){
                 User currentUser = dataSnapshot.getValue(User.class);
 
-                System.out.println("Key: " + dataSnapshot.getKey());
-                System.out.println("Login successful for user: " + dataSnapshot.getValue(User.class).getUserName());
+                // get userlist of current user - no Firebase-Support for Array or List
+                // need to fetch ref and iterate through it
+                String userID;
+                DataSnapshot userListDS = dataSnapshot.child("users");
+                for (int i=0;i< userListDS.getChildrenCount() ; i++) {
+                    // get current User of User
+                    userID = userListDS.child(String.valueOf(i)).getValue(String.class);
+                    currentUser.addUser(userID);
+                }
 
                 // set Session
                 session = new Session(LoginActivity.context);
@@ -83,8 +96,9 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
+                finish();
             } else {
-                Toast.makeText(getApplicationContext(), "Login failed - e-mail or password incorrect.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Login failed - Password incorrect", Toast.LENGTH_LONG).show();
             }
         }
 

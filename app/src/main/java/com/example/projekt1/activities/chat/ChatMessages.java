@@ -1,4 +1,4 @@
-package com.example.projekt1.activities.chat;
+ package com.example.projekt1.activities.chat;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -22,10 +22,6 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     String userId;
 
     ArrayList<Message> data;
-    Activity context;
-
-    public ChatMessages(){
-    }
 
     public ChatMessages(ArrayList<Message> data, String userId)
     {
@@ -73,7 +69,6 @@ public class ChatMessages extends RecyclerView.Adapter<ChatMessages.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         TextView sendMessage;
         TextView receiveMessage;
 

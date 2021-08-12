@@ -1,6 +1,7 @@
 package com.example.projekt1.activities.authentication;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,6 +47,11 @@ public class AuthenticationActivity_third extends AppCompatActivity {
         next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (editTextPhone.toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Empty fields", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 // get Data from Stage3
                 phoneNumber = countryCodePicker.getSelectedCountryCode() + editTextPhone.getText().toString();
 
@@ -67,26 +73,25 @@ public class AuthenticationActivity_third extends AppCompatActivity {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
-
             }
         });
     }
 
+    @SuppressLint("HardwareIds")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSON_READ_STATE: {
-                if (grantResults.length >= 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    mPhoneNumber = tMgr.getLine1Number();
-                    System.out.println(mPhoneNumber);
-                } else {
-                    Toast.makeText(getApplicationContext(), "You do not have the Permisson.", Toast.LENGTH_SHORT).show();
+        if (requestCode == PERMISSON_READ_STATE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
                 }
+                //throw assertion-error if tMgr is null
+                assert tMgr != null;
+                mPhoneNumber = tMgr.getLine1Number();
+            } else {
+                Toast.makeText(getApplicationContext(), "You do not have the permission.", Toast.LENGTH_SHORT).show();
             }
         }
     }

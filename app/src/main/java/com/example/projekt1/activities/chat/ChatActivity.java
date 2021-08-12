@@ -6,39 +6,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.text.SpannableString;
+import android.util.ArraySet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.home.HomeActivity;
-import com.example.projekt1.activities.launcher.LauncherActivity;
-import com.example.projekt1.activities.login.LoginActivity;
+import com.example.projekt1.dialog.AddUserToChatDialog;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.Session;
-import com.example.projekt1.models.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
-public class ChatActivity extends AppCompatActivity {
-    public static Context context;
+public class ChatActivity extends AppCompatActivity implements AddUserToChatDialog.UserDialogListener {
     RecyclerView recyclerView;
-    ImageButton sendMessageButton;
+    ImageButton sendMessageButton, addUser;
     EditText enteredText;
 
     // recylcer adapter
@@ -54,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
+    DatabaseReference chatref = root.getReference("Chat");
 
     // Session for current-user
     Session session;
@@ -63,13 +57,14 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        ChatActivity.context = getApplicationContext();
-
         // get Session
         session = new Session(getApplicationContext());
 
         // get chat passed as value to activity and extract messages
         chat = getIntent().getParcelableExtra("CHAT");
+        // get user to current chat
+        ArrayList<String> userList = (ArrayList<String>) getIntent().getSerializableExtra("users");
+        chat.addUsers(userList);
 
         // init adapter for recycler-view
         chatMessages = new ChatMessages(chat_messages, session.getId());
@@ -79,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // init Recycler-View with chatMessages
         recyclerView = findViewById(R.id.chat_activity_RecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
         recyclerView.setAdapter(chatMessages);
 
         // init sendMessageButton and editText
@@ -92,12 +87,32 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // generate unique ID
                 String key =  messageref.push().getKey();
+                // add Username to message
+                String message =  session.getUserName() + "\n\n" + enteredText.getText().toString();
+                // throw assertion-error if null
+                assert key != null;
                 // save message to firebase
-                messageref.child(key).setValue(new Message(key, enteredText.getText().toString(), session.getId(), chat.getId()));
+                messageref.child(key).setValue(new Message(key, message, session.getId(), chat.getId()));
                 // reset message-input
                 enteredText.setText("");
             }
         });
+
+        // init addUser-Button
+        addUser = findViewById(R.id.addUsersButtonChat);
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddUserToChatDialog addUserToChatDialog = new AddUserToChatDialog();
+                addUserToChatDialog.show(getSupportFragmentManager(), "Add User to Chat - Dialog");
+            }
+        });
+    }
+
+    @Override
+    public void applyData(ArraySet<String> users) {
+        this.chat.addUsers(users);
+        chatref.child(this.chat.getId()).setValue(this.chat);
     }
 
     private class ChildListener implements ChildEventListener {

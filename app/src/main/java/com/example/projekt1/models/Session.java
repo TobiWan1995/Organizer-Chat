@@ -2,21 +2,26 @@ package com.example.projekt1.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.ArraySet;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.Set;
 
 public class Session {
 
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
     public Session(Context cntx) {
         // TODO Auto-generated constructor stub
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void setUser(User user) {
+        ArraySet<String> userSet = new ArraySet<String>(user.getUsers());
         prefs.edit().putString("id", user.getId()).apply();
         prefs.edit().putString("username", user.getUserName()).apply();
         prefs.edit().putString("fullname", user.getFullname()).apply();
@@ -24,7 +29,8 @@ public class Session {
         prefs.edit().putString("password", user.getPassword()).apply();
         prefs.edit().putString("gender", user.getGender()).apply();
         prefs.edit().putString("birth", user.getBirth()).apply();
-        prefs.edit().putStringSet("users", (Set<String>) user.getUsers()).apply();
+        prefs.edit().putString("phoneNumber", user.getPhoneNumber()).apply();
+        prefs.edit().putStringSet("users", userSet).apply();
     }
 
     public String getId() {
@@ -55,5 +61,7 @@ public class Session {
         return prefs.getString("birth", "");
     }
 
-    public ArraySet<String> getUsers() { return (ArraySet<String>) prefs.getStringSet("users", null ); }
+    public String getPhoneNumber() { return  prefs.getString("phoneNumber", ""); }
+
+    public Set<String> getUsers() { return prefs.getStringSet("users", null ); }
 }

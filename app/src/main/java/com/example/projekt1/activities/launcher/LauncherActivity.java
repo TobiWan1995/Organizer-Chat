@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class LauncherActivity extends AppCompatActivity {
-    public static Context context;
 
     // Selection (Login/Auth) Buttons
     Button login, auth;
@@ -25,8 +24,6 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_selection);
-
-        LauncherActivity.context = getApplicationContext();
 
         // init Selection Buttons
         login = findViewById(R.id.loginButton);

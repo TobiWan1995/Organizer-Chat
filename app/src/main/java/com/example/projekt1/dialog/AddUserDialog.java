@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 public class AddUserDialog extends AppCompatDialogFragment {
@@ -54,9 +55,9 @@ public class AddUserDialog extends AppCompatDialogFragment {
     ArraySet<String> users = new ArraySet<>();
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+    public @NotNull Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
         View view = inflater.inflate(R.layout.add_user_dialog, null);
 
         // init session
@@ -70,6 +71,9 @@ public class AddUserDialog extends AppCompatDialogFragment {
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(addUserEditText.getText().toString().isEmpty()){
+                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Enter a Username", Toast.LENGTH_SHORT).show();
+                }
                 userref.orderByChild("userName").equalTo(addUserEditText.getText().toString()).addChildEventListener(new AddUserDialog.ChildListener());
             }
         });
@@ -93,7 +97,7 @@ public class AddUserDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         try {
             userDialogListener = (UserDialogListener) context;
@@ -110,9 +114,10 @@ public class AddUserDialog extends AppCompatDialogFragment {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
             User currUser = dataSnapshot.getValue(User.class);
-            Toast.makeText(getActivity().getApplicationContext(), ("User added: " + currUser.getUserName()), Toast.LENGTH_SHORT).show();
+            // throws assertion error when currUser is null, during runtime
+            assert currUser != null;
+            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), ("User added: " + "\n" + currUser.getUserName()), Toast.LENGTH_SHORT).show();
             users.add(currUser.getId());
-            System.out.println(Arrays.toString(users.toArray()));
         }
 
         @Override

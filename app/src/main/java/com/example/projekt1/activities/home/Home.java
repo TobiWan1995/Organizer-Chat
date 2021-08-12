@@ -1,6 +1,7 @@
 package com.example.projekt1.activities.home;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +22,11 @@ import java.util.ArrayList;
 public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
 
     ArrayList<Chat> data;
-    // Context context;
-    Activity context;
+    Context context;
 
-    public Home(){
-    }
-
-    public Home(ArrayList<Chat> data){
+    public Home(ArrayList<Chat> data, Context context){
         this.data = data;
+        this.context = context;
     }
 
     @NonNull
@@ -62,10 +60,11 @@ public class Home extends RecyclerView.Adapter<Home.ViewHolder> {
     }
 
     public void openChat(Chat chat){
-        Intent intent = new Intent(HomeActivity.context, ChatActivity.class);
+        Intent intent = new Intent(this.context, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("CHAT", chat);
-        HomeActivity.context.startActivity(intent);
+        intent.putExtra("users", chat.getUsers());
+        this.context.startActivity(intent);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
