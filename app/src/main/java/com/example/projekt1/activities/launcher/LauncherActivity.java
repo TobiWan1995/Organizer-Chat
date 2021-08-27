@@ -1,6 +1,5 @@
 package com.example.projekt1.activities.launcher;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.projekt1.R;
 import com.example.projekt1.activities.authentication.AuthenticationActivity_first;
 import com.example.projekt1.activities.login.LoginActivity;
-import com.example.projekt1.models.User;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class LauncherActivity extends AppCompatActivity {
 
@@ -23,7 +19,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_selection);
+        setContentView(R.layout.activity_selection);
 
         // init Selection Buttons
         login = findViewById(R.id.loginButton);
