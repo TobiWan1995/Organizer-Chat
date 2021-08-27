@@ -2,18 +2,71 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.projekt1">
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Organizer-Chat"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Projekt1">
-        <activity android:name=".activities.main.HomeActivity">
+        android:theme="@style/Theme.Projekt1"
+        >
+
+        <activity android:name=".activities.launcher.LauncherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".activities.login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.LOGIN" />
+
+                <category android:name="android.intent.category.LOGIN" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.authentication.AuthenticationActivity_first">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTHENTICATION" />
+
+                <category android:name="android.intent.category.AUTHENTICATION" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.authentication.AuthenticationActivity_second">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTHENTICATION" />
+
+                <category android:name="android.intent.category.AUTHENTICATION" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.authentication.AuthenticationActivity_third">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTHENTICATION" />
+
+                <category android:name="android.intent.category.AUTHENTICATION" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.authentication.AuthenticationActivity_verifyPhone">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTHENTICATION" />
+
+                <category android:name="android.intent.category.AUTHENTICATION" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.HOME" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
 

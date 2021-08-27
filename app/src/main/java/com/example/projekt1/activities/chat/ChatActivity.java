@@ -1,123 +1,141 @@
 package com.example.projekt1.activities.chat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.util.ArraySet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.login.LoginActivity;
+import com.example.projekt1.dialog.AddUserToChatDialog;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
-import com.example.projekt1.models.User;
+import com.example.projekt1.models.Session;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
-public class ChatActivity extends AppCompatActivity {
-    public static Context context;
+public class ChatActivity extends AppCompatActivity implements AddUserToChatDialog.UserDialogListener {
     RecyclerView recyclerView;
-    ImageButton sendMessageButton;
+    ImageButton sendMessageButton, addUser;
     EditText enteredText;
+
+    // recylcer adapter
+    ChatMessages chatMessages;
+
+    // current Chat
+    Chat chat;
+
+    // List to hold firebase-messages
+    ArrayList<Message> chat_messages = new ArrayList<Message>();
 
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
+    DatabaseReference chatref = root.getReference("Chat");
 
-    // Testuser2
-    User testuser = new User(1, "sdds", "sdds", "ssd");
+    // Session for current-user
+    Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        ChatActivity.context = getApplicationContext();
+        // get Session
+        session = new Session(getApplicationContext());
 
         // get chat passed as value to activity and extract messages
-        Chat chat = getIntent().getParcelableExtra("CHAT");
-        ArrayList<Message> chat_messages = chat.getMessages();
-
-        // init chat data
-        messageref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
-                for(DataSnapshot child : snapshot.getChildren()){
-                    chat_messages.add(child.getValue(Message.class));
-                }
-                System.out.println("first");
-            }
-
-            @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-                Toast.makeText(ChatActivity.context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        // fix async
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        chat = getIntent().getParcelableExtra("CHAT");
+        // get user to current chat
+        ArrayList<String> userList = (ArrayList<String>) getIntent().getSerializableExtra("users");
+        chat.addUsers(userList);
 
         // init adapter for recycler-view
-        System.out.println("second");
-        ChatMessages chatMessages = new ChatMessages(chat_messages);
+        chatMessages = new ChatMessages(chat_messages, session.getId());
 
-        // get data from Firebase and also listen to changes
-        messageref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for(DataSnapshot child : snapshot.getChildren()){
-                    chat_messages.add(child.getValue(Message.class));
-                    chatMessages.setMessages(chat_messages);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Toast.makeText(ChatActivity.context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // get data from Firebase when changed and update chat with new messageList
+        messageref.orderByChild("chatId").equalTo(chat.getId()).addChildEventListener(new ChatActivity.ChildListener());
 
         // init Recycler-View with chatMessages
         recyclerView = findViewById(R.id.chat_activity_RecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
         recyclerView.setAdapter(chatMessages);
-
-        // init dummy Messages - Firebase
-        /*
-        Message m1 = new Message(1, "testmessage", LoginActivity.currentUser);
-        Message m2 = new Message(2, "testmessage", testuser);
-        messageref.child(String.valueOf(1)).setValue(m1);
-        messageref.child(String.valueOf(2)).setValue(m2); */
 
         // init sendMessageButton and editText
         sendMessageButton = findViewById(R.id.sendMessageButton);
         enteredText = findViewById(R.id.enterMessageET);
 
+        // set sendMessageButton onClickListener
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageref.child(String.valueOf(chat_messages.size()+1)).setValue(new Message(chat_messages.size()+1, enteredText.getText().toString(), LoginActivity.currentUser));
+                // generate unique ID
+                String key =  messageref.push().getKey();
+                // add Username to message
+                String message =  session.getUserName() + "\n\n" + enteredText.getText().toString();
+                // throw assertion-error if null
+                assert key != null;
+                // save message to firebase
+                messageref.child(key).setValue(new Message(key, message, session.getId(), chat.getId()));
+                // reset message-input
                 enteredText.setText("");
             }
         });
+
+        // init addUser-Button
+        addUser = findViewById(R.id.addUsersButtonChat);
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddUserToChatDialog addUserToChatDialog = new AddUserToChatDialog();
+                addUserToChatDialog.show(getSupportFragmentManager(), "Add User to Chat - Dialog");
+            }
+        });
+    }
+
+    @Override
+    public void applyData(ArraySet<String> users) {
+        this.chat.addUsers(users);
+        chatref.child(this.chat.getId()).setValue(this.chat);
+    }
+
+    private class ChildListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+            chat_messages.add(dataSnapshot.getValue(Message.class));
+            chatMessages.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+        }
+
+        @Override
+        public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+        }
+
+        @Override
+        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+        }
     }
 }

@@ -5,85 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="50dp"
-        android:text="Login"
-        android:textSize="40sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
-        android:id="@+id/login_emailAdressET"
+        android:id="@+id/editTextLoginEMail"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
         android:ems="10"
-        android:hint="E-Mail"
         android:inputType="textEmailAddress"
+        android:hint="E-Mail"
         android:textSize="20sp"
-        android:translationY="-200dp"
-        app:layout_constraintBottom_toTopOf="@+id/login_passwordET"
+        app:layout_constraintBottom_toTopOf="@+id/editTextLoginPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/login_passwordET"
+        android:id="@+id/editTextLoginPassword"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:translationY="-150dp"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintBottom_toTopOf="@+id/loginLoginButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/login_emailAdressET" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="40sp"
+        android:layout_margin="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/login_emailAdressET"
-
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteY="381dp">
-
-
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="28dp"
-                android:layout_weight="1"
-                android:text="No Account yet?"
-                android:textAlignment="viewEnd" />
-
-            <TextView
-                android:id="@+id/createNewAccountSelectionTV"
-                android:textColor="@color/blue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-20dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:text="Create a new Account" />
-       
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/login_button"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        android:layout_margin="100dp"
+        android:id="@+id/loginLoginButton"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="50dp"
         android:text="Login"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
