@@ -16,5 +16,10 @@
     <string name="contact_us">Kontaktiere uns</string>
     <string name="silent_chat">Chat stummschalten</string>
     <string name="write_message">Schreibe deine Nachricht..</string>
+    <string name="no_account">No Account yet?</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="password">Password</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="login">Login</string>
 
 </resources>
