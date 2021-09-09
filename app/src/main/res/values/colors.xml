@@ -22,4 +22,10 @@
     <color name="chat_grün">#D5E8B7</color>
     <color name="transparent">#00000000</color>
 
+
+    <!-- Todo Farben -->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#80ba24</color>
+    <color name="colorAccent">#000000</color>
+
 </resources>

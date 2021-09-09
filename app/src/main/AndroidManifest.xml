@@ -77,6 +77,16 @@
                 <category android:name="android.intent.category.APP_MESSAGING" />
             </intent-filter>
         </activity>
+
+        <!-- ToDo -->
+        <activity android:name=".activities.plugins.ToDo.ToDo_Main_Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+
+                <category android:name="android.intent.category.ALTERNATIVE" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

@@ -6,14 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.util.ArraySet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.projekt1.R;
+import com.example.projekt1.activities.plugins.ToDo.ToDo_Main_Activity;
 import com.example.projekt1.dialog.AddUserToChatDialog;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
@@ -44,13 +47,16 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
     ArrayList<Message> chat_messages = new ArrayList<Message>();
 
     // Setup Firebase-Database
-    FirebaseDatabase root =  FirebaseDatabase.getInstance();
+    FirebaseDatabase root = FirebaseDatabase.getInstance();
     // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
     DatabaseReference chatref = root.getReference("Chat");
 
     // Session for current-user
     Session session;
+
+    //Test für Button mit Intent zu ToDo
+    Button todoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +87,25 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
         sendMessageButton = findViewById(R.id.sendMessageButton);
         enteredText = findViewById(R.id.enterMessageET);
 
+
+        // Test für Intent mit Todo Button
+        Intent intentToDo = new Intent(this, ToDo_Main_Activity.class);
+        todoButton = findViewById(R.id.buttonToDo);
+        todoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                startActivity(intentToDo);
+            }
+        });
+
         // set sendMessageButton onClickListener
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // generate unique ID
-                String key =  messageref.push().getKey();
+                String key = messageref.push().getKey();
                 // add Username to message
-                String message =  session.getUserName() + "\n\n" + enteredText.getText().toString();
+                String message = session.getUserName() + "\n\n" + enteredText.getText().toString();
                 // throw assertion-error if null
                 assert key != null;
                 // save message to firebase
