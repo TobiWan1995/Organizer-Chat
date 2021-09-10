@@ -29,24 +29,29 @@ import java.util.Objects;
 public class ToDo_Main_Activity extends AppCompatActivity implements DialogCloseListener{
 
     private DatabaseHandler db;
-
     private RecyclerView tasksRecyclerView;
     private ToDoAdapter tasksAdapter;
     private FloatingActionButton fab;
-
+    //List with type ToDoModel
     private List<ToDoModel> taskList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_main);
+
+        //hide Actionbar
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        //Database
         db = new DatabaseHandler(this);
         db.openDatabase();
 
+        //assign RecyclerView
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //RecyclerView Adapter
         tasksAdapter = new ToDoAdapter(db,ToDo_Main_Activity.this);
         tasksRecyclerView.setAdapter(tasksAdapter);
 
@@ -54,6 +59,7 @@ public class ToDo_Main_Activity extends AppCompatActivity implements DialogClose
                 ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
         itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
 
+        //fab = + Button
         fab = findViewById(R.id.fab);
 
         taskList = db.getAllTasks();
@@ -61,6 +67,7 @@ public class ToDo_Main_Activity extends AppCompatActivity implements DialogClose
 
         tasksAdapter.setTasks(taskList);
 
+        //if + Button is pressed call AddNewTask
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

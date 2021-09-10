@@ -1,7 +1,14 @@
 package com.example.projekt1.activities.plugins.ToDo;
 
 public class ToDoModel {
+
+    //id = row in Database
+    //status 0 = not checked
+    //Status 1 = checked
     private int id, status;
+
+    //String task is the actual name of the task
+    //each task has id and status
     private String task;
 
     public int getId() {
