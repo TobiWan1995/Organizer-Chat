@@ -101,7 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getApplicationContext().startActivity(intent);
-                            finish();
+                            // cant return back if finished
+                            // finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Login failed - E-Mail incorrect", Toast.LENGTH_LONG).show();
                         }

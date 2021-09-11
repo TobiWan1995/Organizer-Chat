@@ -28,40 +28,42 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:translationZ="1dp"
-        android:orientation="horizontal"
         android:background="@color/white"
+        android:orientation="horizontal"
+        android:translationZ="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:id="@+id/addChatsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginBottom="5dp"
-            android:background="@color/transparent"
-            android:padding="15dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:srcCompat="@drawable/ic_new_chat" />
-
-        <ImageButton
             android:id="@+id/addUsersButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginBottom="5dp"
             android:background="@color/transparent"
             android:padding="15dp"
             android:scaleX="1.5"
             android:scaleY="1.5"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
-    </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_person_add_24" />
+
+        <ImageButton
+            android:id="@+id/addChatsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:padding="15dp"
+            android:scaleX="1.75"
+            android:scaleY="1.75"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

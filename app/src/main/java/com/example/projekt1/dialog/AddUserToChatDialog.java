@@ -40,7 +40,7 @@ public class AddUserToChatDialog extends AppCompatDialogFragment {
     @Override
     public @NotNull Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_usertochat_dialog, null);
 
         // init session
@@ -62,11 +62,11 @@ public class AddUserToChatDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 if(spinner.getSelectedItem() == null || spinner.getSelectedItem().toString().isEmpty()) {
-                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "No selection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity().getApplicationContext(), "No selection", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 users.add(spinner.getSelectedItem().toString());
-                Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "User added:" + "\n" + spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity().getApplicationContext(), "User added:" + "\n" + spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
