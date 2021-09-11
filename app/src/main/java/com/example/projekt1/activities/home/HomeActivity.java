@@ -116,8 +116,8 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                         assert currUser != null;
                         // add user to tempUserSet - save after loop
                         tempUsers.add(currUser);
-                        // check if user sessionUser belongs to chat
-                        if(currUser.equals(session.getId())){
+                        // check if currUser belongs to chat
+                        if(currUser.equals(session.getUserName())){
                             isChatFromUser = true;
                         }
                     }

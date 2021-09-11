@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class LoginActivity extends AppCompatActivity {
-    public static Context context;
 
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
@@ -48,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        LoginActivity.context = getApplicationContext();
 
         // initialize Login
         editTexteMail = findViewById(R.id.editTextLoginEMail);
@@ -94,14 +92,15 @@ public class LoginActivity extends AppCompatActivity {
                             });
 
                             // set Session
-                            session = new Session(LoginActivity.context);
+                            session = new Session(getApplicationContext());
                             session.setUser(currentUser.get());
 
                             // redirect view to home
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             getApplicationContext().startActivity(intent);
-                            finish();
+                            // cant return back if finished
+                            // finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Login failed - E-Mail incorrect", Toast.LENGTH_LONG).show();
                         }

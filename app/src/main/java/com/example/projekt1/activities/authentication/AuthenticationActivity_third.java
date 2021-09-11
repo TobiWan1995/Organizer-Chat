@@ -73,6 +73,7 @@ public class AuthenticationActivity_third extends AppCompatActivity {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
+                finish();
             }
         });
     }

@@ -38,58 +38,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
+    <TextView
         android:id="@+id/buttonBirth"
         android:layout_width="300dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
         android:background="@color/transparent"
-        android:text="00/Jan/0000"
+        android:text="00/00/0000"
+        android:textAlignment="textStart"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginBottom="15dp"
-        android:text="Date of birth:"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBirth"
-        app:layout_constraintStart_toStartOf="@+id/buttonBirth" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="15dp"
-        android:text="Gender:"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="275dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginBottom="25dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/buttonBirth">
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_marginRight="20dp"
             android:checked="true"
             android:text="Female"
             tools:layout_editor_absoluteX="16dp"
@@ -99,7 +75,7 @@
             android:id="@+id/radioButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_marginRight="20dp"
             android:text="Male"
             tools:layout_editor_absoluteX="172dp"
             tools:layout_editor_absoluteY="323dp" />
@@ -108,12 +84,33 @@
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:text="Diverse"
             tools:layout_editor_absoluteX="-3dp"
             tools:layout_editor_absoluteY="484dp" />
 
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="gender"
+        android:textColor="@color/dark_grey"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintStart_toStartOf="@+id/radioGroup" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="date of birth"
+        android:textColor="@color/dark_grey"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBirth"
+        app:layout_constraintStart_toStartOf="@+id/buttonBirth" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

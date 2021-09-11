@@ -41,11 +41,11 @@
         android:id="@+id/editTextPhone"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="300dp"
         android:ems="10"
         android:hint="Phonenumber"
         android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/authNext3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
