@@ -34,7 +34,7 @@ public abstract class PluginBaseFragment extends Fragment {
         // init plugins specific code
         this.plugin = initializePlugin();
         // init firebase for plugin
-        this.chatRef = getArguments().getString("chatRef");
+        this.chatRef = getArguments() != null ? getArguments().getString("chatRef") : null;
         // return the initialized fragment as view
         return inflater.inflate(layout, container, false);
     }
