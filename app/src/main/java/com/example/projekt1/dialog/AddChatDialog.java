@@ -14,10 +14,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.projekt1.R;
 import com.example.projekt1.models.Session;
+import com.example.projekt1.models.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +47,10 @@ public class AddChatDialog extends AppCompatDialogFragment{
     // set session
     Session session;
 
+    // Setup Firebase-Database
+    FirebaseDatabase root =  FirebaseDatabase.getInstance();
+    DatabaseReference userRef = root.getReference("User");
+
     @Override
     public @NotNull Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -47,10 +58,11 @@ public class AddChatDialog extends AppCompatDialogFragment{
         View view = inflater.inflate(R.layout.add_chat_dialog, null);
 
         // init session
-        session = new Session(getActivity().getApplicationContext());
+        session = new Session(requireActivity().getApplicationContext());
 
         // init Dialog elements
         chatTitleEditText = view.findViewById(R.id.editTextAddUser);
+        spinner = view.findViewById(R.id.spinner2);
         addUserButton = view.findViewById(R.id.addUserButton);
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,20 +75,34 @@ public class AddChatDialog extends AppCompatDialogFragment{
                 Toast.makeText(requireActivity().getApplicationContext(), "User added", Toast.LENGTH_SHORT).show();
             }
         });
-        // set Drop
-        // down-List with users to add
-        spinner = view.findViewById(R.id.spinner2);
+
+        // fetch users from
+        this.userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String[] arr = new String[(int) snapshot.getChildrenCount()];
+                int index = 0;
+                for(DataSnapshot userDs : snapshot.getChildren()){
+                    User user = userDs.getValue(User.class);
+                    arr[index] = user.getUserName();
+                    index++;
+                }
+
+                //build dropdown from all users
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
+                        android.R.layout.simple_spinner_item , arr);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
 
         // user-hashset to array
-        String[] arr = new String[session.getUsers().size()];
-        int i=0;
-        for(String el:session.getUsers()){
-            arr[i++] = el;
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
-                android.R.layout.simple_spinner_item , arr);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        // String[] arr = session.getUsers().toArray(new String[0]);
 
         // build Dialog
         builder.setView(view)

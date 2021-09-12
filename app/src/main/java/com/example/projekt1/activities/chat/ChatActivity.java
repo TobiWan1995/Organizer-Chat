@@ -2,21 +2,15 @@ package com.example.projekt1.activities.chat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.ClipData;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.util.ArraySet;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -39,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChatActivity extends AppCompatActivity implements AddUserToChatDialog.UserDialogListener, NavigationView.OnNavigationItemSelectedListener {
     RecyclerView recyclerView;
@@ -61,7 +54,6 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
 
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
-    // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
     DatabaseReference chatref = root.getReference("Chat");
 
@@ -85,7 +77,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
         // init adapter for recycler-view
         chatMessages = new ChatMessages(chat_messages, session.getId());
 
-        // get data from Firebase when changed and update chat with new messageList
+        // get data from Firebase when changed and update chat with new message/messageList
         messageref.orderByChild("chatId").equalTo(chat.getId()).addChildEventListener(new ChatActivity.ChildListener());
 
         // init Recycler-View with chatMessages
@@ -134,16 +126,6 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
         navigationView = findViewById(R.id.nav_view);
         fragmentContainer = findViewById(R.id.chat_activity_fragment_container);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // init addUser-Button
-        //addUser = findViewById(R.id.add_users_button_chat);
-        /*addUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddUserToChatDialog addUserToChatDialog = new AddUserToChatDialog();
-                addUserToChatDialog.show(getSupportFragmentManager(), "Add User to Chat - Dialog");
-            }
-        });*/
     }
 
     @Override
@@ -189,7 +171,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
                 // hide fragmentContainer
                 this.fragmentContainer.setTranslationZ(-10.00f);
                 // remove current fragment selection
-                navigationView.getCheckedItem().setChecked(false);
+                if(navigationView.getCheckedItem() != null) navigationView.getCheckedItem().setChecked(false);
                 break;
             default: break;
         }

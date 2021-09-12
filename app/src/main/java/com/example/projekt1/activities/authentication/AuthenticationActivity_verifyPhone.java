@@ -60,12 +60,11 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
 
             pinview = findViewById(R.id.pinview);
 
-
             // send phoneVerification TODO: uncomment on deployment
-            // sendPhoneVerificationCode(phoneNumber);
+            sendPhoneVerificationCode(phoneNumber);
 
             // for testing - TODO: delete line on deployment
-            saveUserToFirebase();
+            // saveUserToFirebase();
         }
 
         void sendPhoneVerificationCode(String phoneNo){
@@ -170,9 +169,9 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
         // throw assertion-error if null
         assert key != null;
         // initial userList
-        ArraySet<String> users = new ArraySet<>();
+        // ArraySet<String> users = new ArraySet<>();
 
-        User newUser = new User(key, fullName, username, eMail, password, gender, birth, phoneNumber, users);
+        User newUser = new User(key, fullName, username, eMail, password, gender, birth, phoneNumber);
 
         userRef.child(key).setValue(newUser);
 

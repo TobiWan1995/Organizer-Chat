@@ -21,7 +21,7 @@ public class Session {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void setUser(User user) {
-        ArraySet<String> userSet = new ArraySet<String>(user.getUsers());
+        //ArraySet<String> userSet = new ArraySet<String>(user.getUsers());
         prefs.edit().putString("id", user.getId()).apply();
         prefs.edit().putString("username", user.getUserName()).apply();
         prefs.edit().putString("fullname", user.getFullname()).apply();
@@ -30,7 +30,7 @@ public class Session {
         prefs.edit().putString("gender", user.getGender()).apply();
         prefs.edit().putString("birth", user.getBirth()).apply();
         prefs.edit().putString("phoneNumber", user.getPhoneNumber()).apply();
-        prefs.edit().putStringSet("users", userSet).apply();
+        //prefs.edit().putStringSet("users", userSet).apply();
     }
 
     public String getId() {
@@ -63,5 +63,5 @@ public class Session {
 
     public String getPhoneNumber() { return  prefs.getString("phoneNumber", ""); }
 
-    public Set<String> getUsers() { return prefs.getStringSet("users", null ); }
+    // public Set<String> getUsers() { return prefs.getStringSet("users", null ); }
 }

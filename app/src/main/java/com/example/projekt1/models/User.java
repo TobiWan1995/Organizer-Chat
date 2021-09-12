@@ -12,7 +12,7 @@ public class User {
     private String fullname, userName;
     private String eMail, password, phoneNumber;
     private String gender, birth;
-    private ArrayList<String> userList = new ArrayList<>();
+    // private ArrayList<String> userList = new ArrayList<>(); // implement when contact-activity
 
     public User(){}
 
@@ -36,7 +36,7 @@ public class User {
         this.gender = gender;
         this.birth = birth;
         this.phoneNumber = phoneNumber;
-        userList.addAll(users);
+        // userList.addAll(users);
     }
 
 
@@ -56,6 +56,7 @@ public class User {
 
     public String getPhoneNumber(){ return this.phoneNumber;}
 
+    /*
     public ArrayList<String> getUsers(){ return this.userList;}
     
     public void addUserCollection(Collection<String> users){
@@ -65,6 +66,6 @@ public class User {
     public void addUser(String user){
         this.userList.add(user);
     }
-
+      */
 
 }
