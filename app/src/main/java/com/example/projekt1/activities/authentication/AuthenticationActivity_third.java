@@ -69,7 +69,7 @@ public class AuthenticationActivity_third extends AppCompatActivity {
                 intent.putExtra("birth", getIntent().getStringExtra("birth"));
 
                 // pass data from Stage3
-                intent.putExtra("phoneNumber", mPhoneNumber);
+                intent.putExtra("phoneNumber", mPhoneNumber.replace("+", ""));
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);

@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
+// not implemented - implement later - only with activity to manage friends
 public class AddUserDialog extends AppCompatDialogFragment {
 
     // Setup Firebase-Database

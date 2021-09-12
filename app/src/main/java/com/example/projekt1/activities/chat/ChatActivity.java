@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity implements AddUserToChatDialog.UserDialogListener, NavigationView.OnNavigationItemSelectedListener {
     RecyclerView recyclerView;
@@ -61,7 +62,6 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
 
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
-    // Get Message-Table-Reference from FireDB
     DatabaseReference messageref = root.getReference("Message");
     DatabaseReference chatref = root.getReference("Chat");
 
@@ -85,7 +85,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
         // init adapter for recycler-view
         chatMessages = new ChatMessages(chat_messages, session.getId());
 
-        // get data from Firebase when changed and update chat with new messageList
+        // get data from Firebase when changed and update chat with new message/messageList
         messageref.orderByChild("chatId").equalTo(chat.getId()).addChildEventListener(new ChatActivity.ChildListener());
 
         // init Recycler-View with chatMessages
@@ -134,16 +134,6 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
         navigationView = findViewById(R.id.nav_view);
         fragmentContainer = findViewById(R.id.chat_activity_fragment_container);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // init addUser-Button
-        //addUser = findViewById(R.id.add_users_button_chat);
-        /*addUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddUserToChatDialog addUserToChatDialog = new AddUserToChatDialog();
-                addUserToChatDialog.show(getSupportFragmentManager(), "Add User to Chat - Dialog");
-            }
-        });*/
     }
 
     @Override
@@ -189,7 +179,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
                 // hide fragmentContainer
                 this.fragmentContainer.setTranslationZ(-10.00f);
                 // remove current fragment selection
-                navigationView.getCheckedItem().setChecked(false);
+                if(navigationView.getCheckedItem() != null) navigationView.getCheckedItem().setChecked(false);
                 break;
             default: break;
         }

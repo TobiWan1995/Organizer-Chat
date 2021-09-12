@@ -79,7 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                                     return;
                                 }
 
+                                // implement when contact-activity
                                 // reference to extract contacts from User -> no firebase support for list
+                                /*
                                 DataSnapshot userListDS = user.child("users");
 
                                 if(userListDS.hasChildren()){
@@ -89,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                         currentUser.get().addUser(userID);
                                     }
                                 }
+                                */
                             });
 
                             // set Session
