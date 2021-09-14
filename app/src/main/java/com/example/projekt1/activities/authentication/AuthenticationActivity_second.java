@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class AuthenticationActivity_second extends AppCompatActivity {
 
         // init Stage2
         RadioGroup radioGender = findViewById(R.id.radioGroup);
-        Button buttonBirth = findViewById(R.id.buttonBirth);
+        TextView buttonBirth = findViewById(R.id.buttonBirth);
 
         // set Calender for Datepicker-Dialog
         Calendar calendar = Calendar.getInstance();
@@ -101,7 +102,7 @@ public class AuthenticationActivity_second extends AppCompatActivity {
                 intent.putExtra("birth", birth);
 
                 getApplicationContext().startActivity(intent);
-
+                finish();
             }
         });
     }

@@ -3,6 +3,9 @@
     package="com.example.projekt1">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
 
     <application
         android:allowBackup="true"
@@ -10,8 +13,7 @@
         android:label="Organizer-Chat"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Projekt1"
-        >
+        android:theme="@style/Theme.Projekt1">
 
         <activity android:name=".activities.launcher.LauncherActivity">
             <intent-filter>
@@ -73,7 +75,6 @@
         <activity android:name=".activities.chat.ChatActivity">
             <intent-filter>
                 <action android:name="android.intent.action.CHAT" />
-
                 <category android:name="android.intent.category.APP_MESSAGING" />
             </intent-filter>
         </activity>

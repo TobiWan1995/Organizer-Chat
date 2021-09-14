@@ -19,7 +19,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selection);
+        setContentView(R.layout.activity_launcher);
 
         // init Selection Buttons
         login = findViewById(R.id.loginButton);
@@ -32,6 +32,8 @@ public class LauncherActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
+                // cant return back if finished
+                // finish();
             }
         });
 
@@ -41,6 +43,8 @@ public class LauncherActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AuthenticationActivity_first.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
+                // cant return back if finished
+                // finish();
             }
         });
     }
