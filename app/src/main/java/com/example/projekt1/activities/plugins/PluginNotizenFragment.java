@@ -8,7 +8,6 @@ public class PluginNotizenFragment extends PluginBaseFragment {
     @Override
     public Plugin initializePlugin() {
         this.layout = R.layout.fragment_notizen_plugin;
-        System.out.println(this.chatRef);
 
         return new Plugin<Notiz>() {
             @Override

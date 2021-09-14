@@ -2,11 +2,15 @@ package com.example.projekt1.activities.home;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.ArraySet;
@@ -15,12 +19,15 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.projekt1.R;
+import com.example.projekt1.activities.chat.ChatActivity;
 import com.example.projekt1.activities.login.LoginActivity;
 import com.example.projekt1.dialog.AddChatDialog;
 import com.example.projekt1.dialog.AddUserDialog;
+import com.example.projekt1.dialog.ConfirmDialog;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Session;
 import com.example.projekt1.models.User;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,10 +39,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class HomeActivity extends AppCompatActivity implements AddChatDialog.ChatDialogListener // AddUserDialog.UserDialogListener
+public class HomeActivity extends AppCompatActivity implements AddChatDialog.ChatDialogListener, ConfirmDialog.ConfirmDialogListener // AddUserDialog.UserDialogListener
 {
     // Setup Firebase-Database
-    FirebaseDatabase root =  FirebaseDatabase.getInstance();
+    FirebaseDatabase root = FirebaseDatabase.getInstance();
     // Get User-Table-Reference from FireDB
     DatabaseReference userref = root.getReference("User");
     // Get Chat-Table-Reference from FireDB
@@ -45,6 +52,9 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
     Home home;
     ImageButton addChatButton;
     ImageButton addUsersButton;
+    ItemTouchHelper itemTouchHelper;
+    // position for remove of chat
+    int positionRecyclerAdapter;
 
     // Session for current-user
     Session session;
@@ -90,6 +100,10 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         home = new Home(chats, this.getApplicationContext());
         recyclerView.setAdapter(home);
 
+        // attach itemTouchHelper for swipe gestures (delete chat)
+        itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         // init chat data with data from firebase
         // to get every chat for the user, we need to iterate through every chats userList and check
         // if the current user is present - because of this complex situation the approach without a Query and a ChildEventListener
@@ -98,9 +112,9 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 chats.clear();
-                for(DataSnapshot child : snapshot.getChildren()){
+                for (DataSnapshot child : snapshot.getChildren()) {
                     // get current chat - will always hold an empty userList (missing list support)
-                    Chat currChat  = child.getValue(Chat.class);
+                    Chat currChat = child.getValue(Chat.class);
                     // throw assertion error if currChat is null
                     assert currChat != null;
                     // get userList of current chat - no Firebase-Support for Array or List
@@ -111,7 +125,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                     // temp flag - to check if user belongs to chat - autoReset to false 'cause of loop
                     boolean isChatFromUser = false;
                     // iterate through users of chat and check for matches
-                    for (int i=0;i< userListDS.getChildrenCount() ;i++) {
+                    for (int i = 0; i < userListDS.getChildrenCount(); i++) {
                         // get current User of chat
                         String currUser = userListDS.child(String.valueOf(i)).getValue(String.class);
                         // throw assertion-error if currUser is null
@@ -119,11 +133,11 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                         // add user to tempUserSet - save after loop
                         tempUsers.add(currUser);
                         // check if currUser belongs to chat
-                        if(currUser.equals(session.getUserName())){
+                        if (currUser.equals(session.getUserName())) {
                             isChatFromUser = true;
                         }
                     }
-                    if(isChatFromUser) {
+                    if (isChatFromUser) {
                         currChat.addUsers(tempUsers);
                         chats.add(currChat);
                     }
@@ -138,6 +152,22 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         });
     }
 
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull @NotNull RecyclerView.ViewHolder viewHolder, int direction) {
+            positionRecyclerAdapter = viewHolder.getAdapterPosition();
+            if (direction == ItemTouchHelper.LEFT) {
+                ConfirmDialog confirmDialog = new ConfirmDialog();
+                confirmDialog.show(getSupportFragmentManager(), "Confirm Dialog");
+            }
+        }
+    };
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void applyData(String chatTitle, ArraySet<String> users) {
@@ -149,6 +179,25 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         // throw assertion-error if key is null
         assert key != null;
         chatref.child(key).setValue(new Chat(key, chatTitle, newUsers));
+    }
+
+    @Override
+    public void applyData(boolean result) {
+        if (result) {
+            // firebase delete
+            Chat tempChat = chats.get(this.positionRecyclerAdapter);
+            tempChat.removeUser(session.getUserName());
+            // remove whole chat if no user is present
+            if (tempChat.getUsers().size() == 0) {
+                chatref.child(tempChat.getId()).removeValue();
+            } else {
+                chatref.child(tempChat.getId()).setValue(tempChat);
+            }
+            // local delete
+            chats.remove(this.positionRecyclerAdapter);
+            home.notifyItemRemoved(this.positionRecyclerAdapter);
+        }
+        home.notifyDataSetChanged();
     }
 
     /*
