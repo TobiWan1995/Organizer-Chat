@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
+// not implemented - implement later - only with activity to manage friends
 public class AddUserDialog extends AppCompatDialogFragment {
 
     // Setup Firebase-Database
@@ -57,7 +58,7 @@ public class AddUserDialog extends AppCompatDialogFragment {
     @Override
     public @NotNull Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_user_dialog, null);
 
         // init session
@@ -72,7 +73,7 @@ public class AddUserDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 if(addUserEditText.getText().toString().isEmpty()){
-                    Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "Enter a Username", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity().getApplicationContext(), "Enter a Username", Toast.LENGTH_SHORT).show();
                 }
                 userref.orderByChild("userName").equalTo(addUserEditText.getText().toString()).addChildEventListener(new AddUserDialog.ChildListener());
             }
@@ -116,8 +117,8 @@ public class AddUserDialog extends AppCompatDialogFragment {
             User currUser = dataSnapshot.getValue(User.class);
             // throws assertion error when currUser is null, during runtime
             assert currUser != null;
-            Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), ("User added: " + "\n" + currUser.getUserName()), Toast.LENGTH_SHORT).show();
-            users.add(currUser.getId());
+            Toast.makeText(requireActivity().getApplicationContext(), ("User added: " + "\n" + currUser.getUserName()), Toast.LENGTH_SHORT).show();
+            users.add(currUser.getUserName());
         }
 
         @Override

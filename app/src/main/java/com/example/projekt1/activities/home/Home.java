@@ -1,6 +1,5 @@
 package com.example.projekt1.activities.home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -14,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projekt1.R;
 import com.example.projekt1.activities.chat.ChatActivity;
 import com.example.projekt1.models.Chat;
-import com.example.projekt1.models.Message;
-import com.example.projekt1.models.User;
 
 import java.util.ArrayList;
 

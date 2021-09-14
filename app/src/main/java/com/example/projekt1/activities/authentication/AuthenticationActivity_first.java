@@ -91,6 +91,7 @@ public class AuthenticationActivity_first extends AppCompatActivity {
                                     intent.putExtra("email", email);
                                     intent.putExtra("password", password);
                                     getApplicationContext().startActivity(intent);
+                                    finish();
                                 }
                             }
                         }

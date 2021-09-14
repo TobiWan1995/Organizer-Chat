@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class HomeActivity extends AppCompatActivity implements AddChatDialog.ChatDialogListener, AddUserDialog.UserDialogListener
+public class HomeActivity extends AppCompatActivity implements AddChatDialog.ChatDialogListener // AddUserDialog.UserDialogListener
 {
     // Setup Firebase-Database
     FirebaseDatabase root =  FirebaseDatabase.getInstance();
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         setContentView(R.layout.activity_home);
 
         // init session
-        session = new Session(LoginActivity.context);
+        session = new Session(getApplicationContext());
 
         // init home elements
         addChatButton = findViewById(R.id.addChatsButton);
@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
             }
         });
 
+        /*
         addUsersButton = findViewById(R.id.addUsersButton);
         addUsersButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                 addUserDialog.show(getSupportFragmentManager(), "Add User - Dialog");
             }
         });
+         */
 
         // Chats
         chats = new ArrayList<Chat>();
@@ -116,8 +118,8 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
                         assert currUser != null;
                         // add user to tempUserSet - save after loop
                         tempUsers.add(currUser);
-                        // check if user sessionUser belongs to chat
-                        if(currUser.equals(session.getId())){
+                        // check if currUser belongs to chat
+                        if(currUser.equals(session.getUserName())){
                             isChatFromUser = true;
                         }
                     }
@@ -149,6 +151,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         chatref.child(key).setValue(new Chat(key, chatTitle, newUsers));
     }
 
+    /*
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void applyData(ArraySet<String> users) {
@@ -161,4 +164,5 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
         // update Session
         this.session.setUser(updatedUser);
     }
+    */
 }
