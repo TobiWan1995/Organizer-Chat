@@ -76,7 +76,18 @@ public class LoginActivity extends AppCompatActivity {
                                 // check if password is correct
                                 if(!currentUser.get().getPassword().equals(password)){
                                     Toast.makeText(getApplicationContext(), "Login failed - Password incorrect", Toast.LENGTH_LONG).show();
-                                    return;
+
+                                } else {
+                                    // set Session
+                                    session = new Session(getApplicationContext());
+                                    session.setUser(currentUser.get());
+
+                                    // redirect view to home
+                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    getApplicationContext().startActivity(intent);
+                                    // cant return back if finished
+                                    // finish();
                                 }
 
                                 // implement when contact-activity
@@ -93,17 +104,6 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 */
                             });
-
-                            // set Session
-                            session = new Session(getApplicationContext());
-                            session.setUser(currentUser.get());
-
-                            // redirect view to home
-                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getApplicationContext().startActivity(intent);
-                            // cant return back if finished
-                            // finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Login failed - E-Mail incorrect", Toast.LENGTH_LONG).show();
                         }
