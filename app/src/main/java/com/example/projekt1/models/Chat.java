@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.util.ArraySet;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Chat implements Parcelable {
@@ -72,5 +73,10 @@ public class Chat implements Parcelable {
             users = (ArrayList<String>) users.stream().filter(u -> !u.equals(user)).collect(Collectors.toList());
         }
         this.userList.addAll(users);
+    }
+
+    public void removeUser(String username){
+        List<String> templist =  this.userList.stream().filter(value -> !value.equals(username)).collect(Collectors.toList());
+        this.userList = new ArrayList<String>(templist);
     }
 }
