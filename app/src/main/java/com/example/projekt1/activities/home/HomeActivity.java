@@ -2,15 +2,11 @@ package com.example.projekt1.activities.home;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.ArraySet;
@@ -19,15 +15,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.projekt1.R;
-import com.example.projekt1.activities.chat.ChatActivity;
-import com.example.projekt1.activities.login.LoginActivity;
 import com.example.projekt1.dialog.AddChatDialog;
-import com.example.projekt1.dialog.AddUserDialog;
 import com.example.projekt1.dialog.ConfirmDialog;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Session;
-import com.example.projekt1.models.User;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity implements AddChatDialog.ChatDialogListener, ConfirmDialog.ConfirmDialogListener // AddUserDialog.UserDialogListener
 {
@@ -163,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
             positionRecyclerAdapter = viewHolder.getAdapterPosition();
             if (direction == ItemTouchHelper.LEFT) {
                 ConfirmDialog confirmDialog = new ConfirmDialog();
-                confirmDialog.show(getSupportFragmentManager(), "Confirm Dialog");
+                confirmDialog.show(getSupportFragmentManager(), "Delete chat");
             }
         }
     };
