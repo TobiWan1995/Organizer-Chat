@@ -1,7 +1,6 @@
 package com.example.projekt1.activities.plugins;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.projekt1.models.plugins.Plugin;
-import com.example.projekt1.models.plugins.PluginNotizen;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 
 public abstract class PluginBaseFragment extends Fragment {
     // contains the ViewLayoutId for the Fragment as Int - you have to initialize this in setPluginlayout()
@@ -36,13 +33,15 @@ public abstract class PluginBaseFragment extends Fragment {
     Plugin plugin;
     String pluginType;
 
+    // logic
     public abstract void initializePlugin();
 
-    public abstract Plugin setNewPlugin();
-
-    protected abstract Plugin castToSpecifiedPlugin(DataSnapshot pluginSpecificData, DataSnapshot pluginDataList);
-
+    // set your layout here
     protected abstract void setPluginLayout();
+
+    public abstract Plugin setNewPlugin(String key);
+
+    protected abstract Plugin castToSpecifiedPlugin(DataSnapshot pluginData, DataSnapshot pluginSpefificData);
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -56,8 +55,6 @@ public abstract class PluginBaseFragment extends Fragment {
         if (getArguments() != null) {
             this.chatId = getArguments().getString("chatId");
             this.pluginType = getArguments().getString("pluginType");
-        } else {
-            this.plugin = setNewPlugin();
         }
         pluginRefFirebase.orderByChild("chatRef").equalTo(this.chatId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -75,9 +72,8 @@ public abstract class PluginBaseFragment extends Fragment {
                     plugin = castToSpecifiedPlugin(pluginData, pluginDataList);
                 } else {
                     // create plugin if there is none
-                    plugin = setNewPlugin();
                     String key = pluginRefFirebase.push().getKey();
-                    plugin.setId(key);
+                    plugin = setNewPlugin(key);
                     pluginRefFirebase.child(key).setValue(plugin);
                 }
 

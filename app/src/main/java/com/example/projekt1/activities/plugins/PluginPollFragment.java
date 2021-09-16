@@ -12,7 +12,7 @@ public class PluginPollFragment extends PluginBaseFragment {
     }
 
     @Override
-    public Plugin setNewPlugin() {
+    public Plugin setNewPlugin(String key) {
         return null;
     }
 
