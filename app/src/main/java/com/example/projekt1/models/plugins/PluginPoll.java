@@ -1,5 +1,6 @@
 package com.example.projekt1.models.plugins;
 
+<<<<<<< HEAD
 import android.app.Activity;
 import android.app.Application;
 import android.graphics.Color;
@@ -52,10 +53,18 @@ public class PluginPoll extends Plugin<Poll> {
     Button pollSubmitButton;
 
 
+=======
+import com.example.projekt1.models.plugins.Plugin;
+import com.example.projekt1.models.plugins.pluginData.Poll;
+
+public class PluginPoll extends Plugin<Poll> {
+
+>>>>>>> origin/master
     @Override
     public void doPluginStuff() {
 
     }
+<<<<<<< HEAD
 
 
 
@@ -63,4 +72,6 @@ public class PluginPoll extends Plugin<Poll> {
 
 
 
+=======
+>>>>>>> origin/master
 }

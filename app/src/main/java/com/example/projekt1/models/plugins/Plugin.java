@@ -11,6 +11,12 @@ public abstract class Plugin <T> {
 
     public Plugin(){};
 
+    public Plugin(String id, String bescheibung, String chatRef, String typ){
+        this.typ = typ;
+        this.beschreibung = bescheibung;
+        this.chatRef = chatRef;
+    }
+
     public Plugin(String typ, String bescheibung, String chatRef){
         this.typ = typ;
         this.beschreibung = bescheibung;

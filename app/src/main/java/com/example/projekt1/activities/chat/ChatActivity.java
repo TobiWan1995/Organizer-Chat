@@ -179,6 +179,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
                 break;
             default: break;
         }
+        drawer.closeDrawer(Gravity.LEFT);
         return true;
     }
 

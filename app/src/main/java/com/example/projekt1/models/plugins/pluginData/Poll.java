@@ -1,5 +1,6 @@
 package com.example.projekt1.models.plugins.pluginData;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 public class Poll {
@@ -40,3 +41,7 @@ public class Poll {
 }
 
 
+=======
+public class Poll {
+}
+>>>>>>> origin/master
