@@ -12,7 +12,7 @@ public class User {
     private String fullname, userName;
     private String eMail, password, phoneNumber;
     private String gender, birth;
-    // private ArrayList<String> userList = new ArrayList<>(); // implement when contact-activity
+    // private ArrayList<String> userList = new ArrayList<>(); // implement if/when contact-activity
 
     public User(){}
 

@@ -17,7 +17,7 @@ public abstract class Plugin <T> {
         this.chatRef = chatRef;
     }
 
-    public Plugin(String typ, String bescheibung, String chatRef, ArrayList<T> pluginData){
+    public Plugin(String id, String typ, String bescheibung, String chatRef, ArrayList<T> pluginData){
         this.typ = typ;
         this.beschreibung = bescheibung;
         this.chatRef = chatRef;
@@ -25,6 +25,8 @@ public abstract class Plugin <T> {
     }
 
     public abstract void doPluginStuff();
+
+    public String getId() { return this.Id; }
 
     public String getTyp(){
         return this.typ;
@@ -41,5 +43,7 @@ public abstract class Plugin <T> {
     public ArrayList<T> getPluginData(){
         return this.pluginData;
     }
+
+    public void setId(String id){ this.Id = id; }
 
 }
