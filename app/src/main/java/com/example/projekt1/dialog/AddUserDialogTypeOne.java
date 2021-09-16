@@ -71,11 +71,11 @@ public class AddUserDialogTypeOne extends AppCompatDialogFragment {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                         if(snapshot.hasChildren()){
-                            User currUser = snapshot.getValue(User.class);
-                            // throws assertion error when currUser is null, during runtime
-                            assert currUser != null;
-                            Toast.makeText(requireActivity().getApplicationContext(), ("User added: " + "\n" + currUser.getUserName()), Toast.LENGTH_SHORT).show();
-                            users.add(currUser.getUserName());
+                            for(DataSnapshot userDs : snapshot.getChildren()){
+                                User currUser = userDs.getValue(User.class);
+                                Toast.makeText(requireActivity().getApplicationContext(), ("User added: " + "\n" + currUser.getUserName()), Toast.LENGTH_SHORT).show();
+                                users.add(currUser.getUserName());
+                            }
                         } else {
                             Toast.makeText(requireActivity().getApplicationContext(), addUserEditText.getText().toString() + " is not present", Toast.LENGTH_SHORT).show();
                         }
