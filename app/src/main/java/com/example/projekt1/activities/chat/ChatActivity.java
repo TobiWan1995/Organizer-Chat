@@ -20,7 +20,8 @@ import android.widget.ImageButton;
 import com.example.projekt1.R;
 import com.example.projekt1.activities.plugins.PluginNotizenFragment;
 import com.example.projekt1.activities.plugins.PluginToDoFragment;
-import com.example.projekt1.dialog.AddUserToChatDialog;
+import com.example.projekt1.dialog.AddUserDialogTypeOne;
+import com.example.projekt1.dialog.AddUserDialogTypeTwo;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.Session;
@@ -35,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class ChatActivity extends AppCompatActivity implements AddUserToChatDialog.UserDialogListener, NavigationView.OnNavigationItemSelectedListener {
+public class ChatActivity extends AppCompatActivity implements AddUserDialogTypeOne.UserDialogListener, NavigationView.OnNavigationItemSelectedListener {
     RecyclerView recyclerView;
     ImageButton sendMessageButton;
     NavigationView navigationView;
@@ -107,7 +108,6 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
             }
         });
 
-
         // init drawer - toggle
         drawer = findViewById(R.id.drawer_layout);
         drawerToggleButton = findViewById(R.id.chatSideBarButton);
@@ -140,11 +140,13 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
         Fragment fragment;
         // to pass and identify chat in plugin
         Bundle bundle = new Bundle();
-        bundle.putString("chatRef", this.chat.getId());
+        bundle.putString("chatId", this.chat.getId());
         switch (item.getItemId()){
             case R.id.plugin_open_notiz:
                 // set fragment and attach data
                 fragment = new PluginNotizenFragment();
+                // set pluginType for firebase check
+                bundle.putString("pluginType", "pluginNotizen");
                 fragment.setArguments(bundle);
                 // show fragmentContainer
                 this.fragmentContainer.setTranslationZ(10.00f);
@@ -154,6 +156,8 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
             case R.id.plugin_open_todo:
                 // set fragment and attach data
                 fragment = new PluginToDoFragment();
+                // set pluginType for firebase check
+                bundle.putString("pluginType", "pluginToDo");
                 fragment.setArguments(bundle);
                 // show fragmentContainer
                 this.fragmentContainer.setTranslationZ(10.00f);
@@ -161,8 +165,8 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
                         replace(R.id.chat_activity_fragment_container, fragment).commit();
                 break;
             case R.id.add_users_button_chat:
-                AddUserToChatDialog addUserToChatDialog = new AddUserToChatDialog();
-                addUserToChatDialog.show(getSupportFragmentManager(), "Add User to Chat - Dialog");
+                AddUserDialogTypeOne addUserDialogTypeOne = new AddUserDialogTypeOne();
+                addUserDialogTypeOne.show(getSupportFragmentManager(), "Add User");
                 break;
             case R.id.close_fragment:
                 // remove all Fragments
@@ -176,6 +180,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserToChatDial
                 break;
             default: break;
         }
+        drawer.closeDrawer(Gravity.LEFT);
         return true;
     }
 

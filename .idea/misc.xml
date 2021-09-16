@@ -3,15 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.3828125" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/drawable/ic_baseline_delete.xml" value="0.3828125" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/drawable/ic_baseline_edit.xml" value="0.3828125" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/layout/activity_chat.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/layout/activity_todo_main.xml" value="0.33" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/layout/authenticate_verifyphone.xml" value="0.18206521739130435" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/layout/new_task_todo.xml" value="0.2740036231884058" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/layout/plugin_notizen.xml" value="0.26358695652173914" />
-        <entry key="..\:/Users/Achilleus/AndroidStudioProjects/Projekt1xy/app/src/main/res/layout/task_todo.xml" value="0.2740036231884058" />
+        <entry key="..\:/Users/walte/AndroidStudioProjects/Projekt1/app/src/main/res/layout/activity_chat.xml" value="0.1" />
       </map>
     </option>
   </component>
