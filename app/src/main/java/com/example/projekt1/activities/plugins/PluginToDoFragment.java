@@ -12,7 +12,7 @@ public class PluginToDoFragment extends PluginBaseFragment {
     }
 
     @Override
-    public Plugin<ToDo> setNewPlugin() {
+    public Plugin<ToDo> setNewPlugin(String key) {
         return new Plugin<ToDo>() {
             @Override
             public void doPluginStuff() {
