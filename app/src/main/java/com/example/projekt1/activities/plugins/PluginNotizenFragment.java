@@ -12,9 +12,9 @@ public class PluginNotizenFragment extends PluginBaseFragment {
     @Override
     public void initializePlugin() {
 
-        // PluginNotizen actualPlugin = (PluginNotizen) plugin;
-        // actualPlugin.addNotiz(new Notiz("0", "hello"));
-        // this.pluginRefFirebase.child(actualPlugin.getId()).setValue(actualPlugin);
+        PluginNotizen actualPlugin = (PluginNotizen) plugin;
+        actualPlugin.addNotiz(new Notiz("0", "hello"));
+        this.pluginRefFirebase.child(actualPlugin.getId()).setValue(actualPlugin);
     }
 
     @Override

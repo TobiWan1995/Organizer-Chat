@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public class PluginNotizen extends Plugin<Notiz> {
 
     public PluginNotizen(String id, String beschreibung, String chatRef, ArrayList<Notiz> notizen) {
-        super(id, "pluginNotizen", beschreibung, chatRef, notizen);
+        super(id, beschreibung, chatRef, "pluginNotizen", notizen);
     }
 
     public PluginNotizen(String id, String beschreibung, String chatRef, String typ) {
-        super(id, typ, beschreibung, chatRef);
+        super(id, beschreibung, chatRef, typ);
     }
 
     public PluginNotizen(){

@@ -3,7 +3,7 @@ package com.example.projekt1.models.plugins;
 import java.util.ArrayList;
 
 public abstract class Plugin <T> {
-    String Id;
+    String id;
     String typ;
     String beschreibung;
     String chatRef;
@@ -11,28 +11,33 @@ public abstract class Plugin <T> {
 
     public Plugin(){};
 
-    public Plugin(String id, String bescheibung, String chatRef, String typ){
-        this.typ = typ;
-        this.beschreibung = bescheibung;
+    public Plugin(String id, String beschreibung, String chatRef, String typ){
+        this.id = id;
+        typ = typ;
+        this.beschreibung = beschreibung;
         this.chatRef = chatRef;
     }
 
-    public Plugin(String typ, String bescheibung, String chatRef){
+
+    // for new plugin - not for firebase
+    public Plugin(String typ, String beschreibung, String chatRef){
+        this.id = id;
         this.typ = typ;
-        this.beschreibung = bescheibung;
+        this.beschreibung = beschreibung;
         this.chatRef = chatRef;
     }
 
-    public Plugin(String id, String typ, String bescheibung, String chatRef, ArrayList<T> pluginData){
+    public Plugin(String id, String beschreibung, String typ, String chatRef, ArrayList<T> pluginData){
+        this.id = id;
         this.typ = typ;
-        this.beschreibung = bescheibung;
+        this.beschreibung = beschreibung;
         this.chatRef = chatRef;
         this.pluginData = pluginData;
     }
 
     public abstract void doPluginStuff();
 
-    public String getId() { return this.Id; }
+    public String getId() { return this.id; }
 
     public String getTyp(){
         return this.typ;
@@ -50,6 +55,6 @@ public abstract class Plugin <T> {
         return this.pluginData;
     }
 
-    public void setId(String id){ this.Id = id; }
+    public void setId(String id){ this.id = id; }
 
 }
