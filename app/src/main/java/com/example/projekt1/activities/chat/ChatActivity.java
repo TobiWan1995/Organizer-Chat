@@ -139,11 +139,13 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
         Fragment fragment;
         // to pass and identify chat in plugin
         Bundle bundle = new Bundle();
-        bundle.putString("chatRef", this.chat.getId());
+        bundle.putString("chatId", this.chat.getId());
         switch (item.getItemId()){
             case R.id.plugin_open_notiz:
                 // set fragment and attach data
                 fragment = new PluginNotizenFragment();
+                // set pluginType for firebase check
+                bundle.putString("pluginType", "pluginNotizen");
                 fragment.setArguments(bundle);
                 // show fragmentContainer
                 this.fragmentContainer.setTranslationZ(10.00f);
@@ -153,6 +155,8 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
             case R.id.plugin_open_todo:
                 // set fragment and attach data
                 fragment = new PluginToDoFragment();
+                // set pluginType for firebase check
+                bundle.putString("pluginType", "pluginToDo");
                 fragment.setArguments(bundle);
                 // show fragmentContainer
                 this.fragmentContainer.setTranslationZ(10.00f);
