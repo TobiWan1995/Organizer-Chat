@@ -11,15 +11,14 @@ import java.util.ArrayList;
 public class PluginNotizenFragment extends PluginBaseFragment {
     @Override
     public void initializePlugin() {
-
         PluginNotizen actualPlugin = (PluginNotizen) plugin;
-        actualPlugin.addNotiz(new Notiz("0", "hello"));
-        this.pluginRefFirebase.child(actualPlugin.getId()).setValue(actualPlugin);
+
+        actualPlugin.getTyp();
     }
 
     @Override
     public PluginNotizen setNewPlugin(String key) {
-        return new PluginNotizen(key, "Mit diesem Plugin lassen sich Notizen verfassen", this.chatId, this.pluginType) {
+        return new PluginNotizen(key, "Mit diesem Plugin lassen sich Notizen verfassen", this.chatId, this.pluginType, new ArrayList<Notiz>()) {
             @Override
             public void doPluginStuff() {
 
@@ -39,7 +38,7 @@ public class PluginNotizenFragment extends PluginBaseFragment {
             }
         }
 
-        return new PluginNotizen(tempPlugin.getId(), tempPlugin.getBeschreibung(), tempPlugin.getChatRef(), notizen);
+        return new PluginNotizen(tempPlugin.getId(), tempPlugin.getBeschreibung(), pluginType, tempPlugin.getChatRef(), notizen);
     }
 
     @Override

@@ -10,7 +10,7 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
-        android:text="Add User"
+        android:text="Add"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

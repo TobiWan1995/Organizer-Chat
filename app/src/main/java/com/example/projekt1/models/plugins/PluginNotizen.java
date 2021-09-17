@@ -6,14 +6,9 @@ import java.util.ArrayList;
 
 public class PluginNotizen extends Plugin<Notiz> {
 
-    public PluginNotizen(String id, String beschreibung, String chatRef, ArrayList<Notiz> notizen) {
-        super(id, beschreibung, chatRef, "pluginNotizen", notizen);
+    public PluginNotizen(String id, String beschreibung, String typ, String chatRef, ArrayList<Notiz> notizen) {
+        super(id, beschreibung, chatRef, typ, notizen);
     }
-
-    public PluginNotizen(String id, String beschreibung, String chatRef, String typ) {
-        super(id, beschreibung, chatRef, typ);
-    }
-
     public PluginNotizen(){
         super();
     }

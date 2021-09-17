@@ -1,5 +1,4 @@
-package com.example.projekt1.activities.plugins.ToDo;
-
+package com.example.projekt1.dialog;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -19,21 +18,26 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.example.projekt1.R;
+
+import com.example.projekt1.models.plugins.PluginToDo;
+import com.example.projekt1.models.plugins.pluginData.ToDo;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-
-import java.util.Objects;
-
-public class AddNewTask extends BottomSheetDialogFragment {
-
-    public static final String TAG = "ActionBottomDialog";
+public class AddNewToDoDialog extends BottomSheetDialogFragment {
     private EditText newTaskText;
     private Button newTaskSaveButton;
+    // firebase
+    private FirebaseDatabase root = FirebaseDatabase.getInstance();
+    private DatabaseReference pluginRefFirebase = root.getReference("Plugin");
+    // current Plugin
+    PluginToDo pluginToDo;
 
-    private DatabaseHandler db;
+    public AddNewToDoDialog(){};
 
-    public static AddNewTask newInstance(){
-        return new AddNewTask();
+    public AddNewToDoDialog(PluginToDo pluginToDo) {
+        this.pluginToDo = pluginToDo;
     }
 
     @Override
@@ -62,17 +66,14 @@ public class AddNewTask extends BottomSheetDialogFragment {
         boolean isUpdate = false;
 
         final Bundle bundle = getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             isUpdate = true;
             String task = bundle.getString("task");
             newTaskText.setText(task);
             assert task != null;
-            if(task.length()>0)
+            if (task.length() > 0)
                 newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
         }
-
-        db = new DatabaseHandler(getActivity());
-        db.openDatabase();
 
         newTaskText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -81,11 +82,10 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().equals("")){
+                if (s.toString().equals("")) {
                     newTaskSaveButton.setEnabled(false);
                     newTaskSaveButton.setTextColor(Color.GRAY);
-                }
-                else{
+                } else {
                     newTaskSaveButton.setEnabled(true);
                     newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark));
                 }
@@ -101,14 +101,17 @@ public class AddNewTask extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String text = newTaskText.getText().toString();
-                if(finalIsUpdate){
-                    db.updateTask(bundle.getInt("id"), text);
-                }
-                else {
-                    ToDoModel task = new ToDoModel();
+                if (finalIsUpdate) {
+                    pluginToDo.updateToDoTaskText(bundle.getString("id"), text);
+                    pluginRefFirebase.child(pluginToDo.getId()).setValue(pluginToDo);
+                } else {
+                    ToDo task = new ToDo();
+                    String key = pluginRefFirebase.child(pluginToDo.getId()).child("pluginData").push().getKey();
+                    task.setId(key);
                     task.setTask(text);
                     task.setStatus(0);
-                    db.insertTask(task);
+                    pluginToDo.addToDoTask(task);
+                    pluginRefFirebase.child(pluginToDo.getId()).setValue(pluginToDo);
                 }
                 dismiss();
             }
@@ -116,9 +119,13 @@ public class AddNewTask extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onDismiss(@NonNull DialogInterface dialog){
+    public void onDismiss(@NonNull DialogInterface dialog) {
         Activity activity = getActivity();
-        if(activity instanceof DialogCloseListener)
-            ((DialogCloseListener)activity).handleDialogClose(dialog);
+        if (activity instanceof DialogCloseListener)
+            ((DialogCloseListener) activity).handleDialogClose(dialog);
+    }
+
+    public interface DialogCloseListener {
+        public void handleDialogClose(DialogInterface dialog);
     }
 }
