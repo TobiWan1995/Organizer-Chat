@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity implements AddUserDialogTypeOne.UserDialogListener, NavigationView.OnNavigationItemSelectedListener {
@@ -98,8 +99,9 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
             public void onClick(View v) {
                 // generate unique ID
                 String key =  messageref.push().getKey();
-                // add Username to message
-                String message =  session.getUserName() + "\n\n" + enteredText.getText().toString();
+                // add username and date to message
+                String date = DateFormat.getDateTimeInstance().format(System.currentTimeMillis());
+                String message = session.getUserName() + "\n\n" + date + "\n\n" + enteredText.getText().toString();
                 // throw assertion-error if null
                 assert key != null;
                 // save message to firebase
