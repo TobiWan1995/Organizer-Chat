@@ -19,7 +19,7 @@ public class ConfirmDialog extends AppCompatDialogFragment {
     @Override
     public @NotNull Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Are you sure?");
+        builder.setMessage("Sind Sie sicher?");
         builder.setTitle(getTag());
 
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {

@@ -23,11 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projekt1.R;
-import com.example.projekt1.dialog.AddNewToDoDialog;
+import com.example.projekt1.dialog.PluginListElementDialog;
 import com.example.projekt1.models.plugins.Plugin;
-import com.example.projekt1.models.plugins.PluginNotizen;
 import com.example.projekt1.models.plugins.PluginToDo;
-import com.example.projekt1.models.plugins.pluginData.Notiz;
 import com.example.projekt1.models.plugins.pluginData.ToDo;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PluginToDoFragment extends PluginBaseFragment implements AddNewToDoDialog.DialogCloseListener {
+public class PluginToDoFragment extends PluginBaseFragment implements PluginListElementDialog.DialogCloseListener {
 
     ItemTouchHelper itemTouchHelper;
     private RecyclerView tasksRecyclerView;
@@ -70,13 +68,13 @@ public class PluginToDoFragment extends PluginBaseFragment implements AddNewToDo
         itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
 
         //fab = + Button
-        fab = view.findViewById(R.id.fab);
+        fab = view.findViewById(R.id.fabToDo);
 
         //if + Button is pressed call AddNewTask
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomSheetDialogFragment addNewToDoDialog = new AddNewToDoDialog(actualPlugin);
+                BottomSheetDialogFragment addNewToDoDialog = new PluginListElementDialog(actualPlugin);
                 addNewToDoDialog.show(getActivity().getSupportFragmentManager(), "Add ToDo-Task");
             }
         });
@@ -151,7 +149,7 @@ public class PluginToDoFragment extends PluginBaseFragment implements AddNewToDo
 // Recycler-Adapter for ToDoFragment
 class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
-    private List<ToDo> todoList;
+    private ArrayList<ToDo> todoList;
     private FragmentActivity activity;
     private PluginToDo pluginToDo;
     // firebase
@@ -229,9 +227,9 @@ class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ToDo item = todoList.get(position);
         todoList.remove(position);
         notifyItemRemoved(position);
-
+        pluginToDo.setToDo(todoList);
         // firebase delete
-        pluginRefFirebase.child(pluginToDo.getId()).child(item.getId()).removeValue();
+        pluginRefFirebase.child(pluginToDo.getId()).setValue(pluginToDo);
     }
 
     //Edit function
@@ -240,9 +238,9 @@ class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         Bundle bundle = new Bundle();
         bundle.putString("id", item.getId());
         bundle.putString("task", item.getTask());
-        BottomSheetDialogFragment addNewToDoDialog = new AddNewToDoDialog(pluginToDo);
+        BottomSheetDialogFragment addNewToDoDialog = new PluginListElementDialog(pluginToDo);
         addNewToDoDialog.setArguments(bundle);
-        addNewToDoDialog.show(activity.getSupportFragmentManager(), "Add ToDo-Task");
+        addNewToDoDialog.show(activity.getSupportFragmentManager(), "Task hinzufügen");
     }
 
 

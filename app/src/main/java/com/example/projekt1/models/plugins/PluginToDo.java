@@ -1,5 +1,6 @@
 package com.example.projekt1.models.plugins;
 
+import com.example.projekt1.models.plugins.pluginData.Notiz;
 import com.example.projekt1.models.plugins.pluginData.ToDo;
 
 import java.util.ArrayList;
@@ -36,4 +37,9 @@ public class PluginToDo extends Plugin<ToDo> {
     public void addToDoTask(ToDo todo){
         this.pluginData.add(todo);
     }
+
+    public void setToDo(ArrayList<ToDo> toDo){
+        this.pluginData = toDo;
+    }
+
 }

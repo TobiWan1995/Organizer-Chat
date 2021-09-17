@@ -17,9 +17,8 @@
     <string name="silent_chat">Chat stummschalten</string>
     <string name="write_message">Schreibe deine Nachricht..</string>
 
-    <!-- toDO -->
+    <!-- new pluginlist element -->
     <string name="save">Speichern</string>
-    <string name="new_task">ToDo</string>
-    <string name="tasks">ToDo</string>
+    <string name="new_task">Text...</string>
 
 </resources>
