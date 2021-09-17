@@ -60,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements AddChatDialog.Cha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getSupportActionBar().setTitle("Übersicht");
 
         // init session
         session = new Session(getApplicationContext());
