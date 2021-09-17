@@ -13,15 +13,6 @@ public abstract class Plugin <T> {
 
     public Plugin(String id, String beschreibung, String chatRef, String typ){
         this.id = id;
-        typ = typ;
-        this.beschreibung = beschreibung;
-        this.chatRef = chatRef;
-    }
-
-
-    // for new plugin - not for firebase
-    public Plugin(String typ, String beschreibung, String chatRef){
-        this.id = id;
         this.typ = typ;
         this.beschreibung = beschreibung;
         this.chatRef = chatRef;

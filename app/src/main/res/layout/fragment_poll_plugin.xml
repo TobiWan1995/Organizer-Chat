@@ -30,7 +30,6 @@
         android:background="@color/transparent"
         android:scaleX="1.8"
         android:scaleY="1.8"
-        android:src="@drawable/ic_add_poll_option"
         app:layout_constraintBottom_toTopOf="@+id/poll_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tV_TitleOfPoll"
