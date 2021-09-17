@@ -19,25 +19,28 @@ import androidx.core.content.ContextCompat;
 
 import com.example.projekt1.R;
 
+import com.example.projekt1.models.plugins.Plugin;
+import com.example.projekt1.models.plugins.PluginNotizen;
 import com.example.projekt1.models.plugins.PluginToDo;
+import com.example.projekt1.models.plugins.pluginData.Notiz;
 import com.example.projekt1.models.plugins.pluginData.ToDo;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class AddNewToDoDialog extends BottomSheetDialogFragment {
+public class PluginListElementDialog extends BottomSheetDialogFragment {
     private EditText newTaskText;
     private Button newTaskSaveButton;
     // firebase
     private FirebaseDatabase root = FirebaseDatabase.getInstance();
     private DatabaseReference pluginRefFirebase = root.getReference("Plugin");
     // current Plugin
-    PluginToDo pluginToDo;
+    Plugin plugin;
 
-    public AddNewToDoDialog(){};
+    public PluginListElementDialog(){};
 
-    public AddNewToDoDialog(PluginToDo pluginToDo) {
-        this.pluginToDo = pluginToDo;
+    public PluginListElementDialog(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class AddNewToDoDialog extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.new_task_todo, container, false);
+        View view = inflater.inflate(R.layout.new_pluginlist_element, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         return view;
@@ -101,17 +104,28 @@ public class AddNewToDoDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String text = newTaskText.getText().toString();
-                if (finalIsUpdate) {
-                    pluginToDo.updateToDoTaskText(bundle.getString("id"), text);
-                    pluginRefFirebase.child(pluginToDo.getId()).setValue(pluginToDo);
-                } else {
-                    ToDo task = new ToDo();
-                    String key = pluginRefFirebase.child(pluginToDo.getId()).child("pluginData").push().getKey();
-                    task.setId(key);
-                    task.setTask(text);
-                    task.setStatus(0);
-                    pluginToDo.addToDoTask(task);
-                    pluginRefFirebase.child(pluginToDo.getId()).setValue(pluginToDo);
+                if (plugin instanceof PluginToDo) {
+                    if (finalIsUpdate) {
+                        ((PluginToDo) plugin).updateToDoTaskText(bundle.getString("id"), text);
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+                    } else {
+                        ToDo task = new ToDo();
+                        String key = pluginRefFirebase.child(plugin.getId()).child("pluginData").push().getKey();
+                        task.setId(key);
+                        task.setTask(text);
+                        task.setStatus(0);
+                        ((PluginToDo) plugin).addToDoTask(task);
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+                    }
+                } else if (plugin instanceof PluginNotizen){
+                    if (finalIsUpdate) {
+                        ((PluginNotizen) plugin).updateNotizText(bundle.getString("id"), text);
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+                    } else {
+                        String key = pluginRefFirebase.child(plugin.getId()).child("pluginData").push().getKey();
+                        ((PluginNotizen) plugin).addNotiz(new Notiz(key, text));
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+                    }
                 }
                 dismiss();
             }

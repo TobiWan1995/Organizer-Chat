@@ -72,6 +72,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
 
         // get chat passed as value to activity and extract messages
         chat = getIntent().getParcelableExtra("CHAT");
+        getSupportActionBar().setTitle(chat.getTitel());
         // get user to current chat
         ArrayList<String> userList = (ArrayList<String>) getIntent().getSerializableExtra("users");
         chat.addUsers(userList);
