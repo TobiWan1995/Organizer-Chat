@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/tV_TitleOfPoll"
+        android:id="@+id/tVTitleOfPoll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -16,12 +16,12 @@
         android:layout_marginEnd="20dp"
         android:hint="Add Title of Poll"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/iB_addPollOptions"
+        app:layout_constraintEnd_toStartOf="@+id/iBaddPollOptions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/iB_addPollOptions"
+        android:id="@+id/iBaddPollOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -30,21 +30,21 @@
         android:background="@color/transparent"
         android:scaleX="1.8"
         android:scaleY="1.8"
-        app:layout_constraintBottom_toTopOf="@+id/poll_recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/pollRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tV_TitleOfPoll"
+        app:layout_constraintStart_toEndOf="@+id/tVTitleOfPoll"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/poll_recyclerView"
+        android:id="@+id/pollRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iB_addPollOptions"
+        app:layout_constraintTop_toBottomOf="@+id/iBaddPollOptions"
         app:layout_constraintBottom_toTopOf="@id/pollSubmitButton"
         tools:listitem="@layout/poll_list"
         tools:visibility="visible" />

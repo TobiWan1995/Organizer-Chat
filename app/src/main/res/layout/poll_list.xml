@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/checkBox_Poll"
+            android:id="@+id/checkBoxPoll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -25,7 +25,7 @@
             />
 
         <EditText
-            android:id="@+id/eT_PollOption"
+            android:id="@+id/eTPollOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
