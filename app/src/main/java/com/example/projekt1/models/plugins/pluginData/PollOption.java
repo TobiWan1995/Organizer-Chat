@@ -7,6 +7,24 @@ public class PollOption {
     String id;
     String optionTitle;
     ArrayList<String> userRef;
+    private ArrayList<Boolean> pollOptionCheckboxList;
+    private boolean isChecked;
+
+    public ArrayList<Boolean> getPollOptionCheckboxList() {
+        return pollOptionCheckboxList;
+    }
+
+    public void setPollOptionCheckboxList(ArrayList<Boolean> pollOptionCheckboxList) {
+        this.pollOptionCheckboxList = pollOptionCheckboxList;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     public String getId() {
         return id;

@@ -174,7 +174,7 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     }
 }
 
-class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
+class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
 
         private ArrayList<Poll> pollList;
         private FragmentActivity activity;
@@ -193,14 +193,14 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
 
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public PollViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.poll_recylleritem, parent, false);
-            return new PollAdapter.ViewHolder(itemView);
+            return new PollAdapter.PollViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        public void onBindViewHolder(@NonNull PollViewHolder holder, @SuppressLint("RecyclerView") int position) {
             final Poll item = pollList.get(position);
 
             // submit poll
@@ -224,13 +224,25 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                 public void onClick(View view) {
                     PollOption pollOption = new PollOption();
                     pollOption.setOptionTitle(holder.pollOptionEditText.getText().toString());
-                    //holder.tVPollOption.setText(holder.pollOptionEditText.getText().toString());
+
+
+
+                    //OptionsAdapter.OptionViewHolder optionViewHolder = new OptionsAdapter.OptionViewHolder(holder);
+                    //optionViewHolder.tVPollOption.setText(holder.pollOptionEditText.getText().toString());
                     pollList.get(position).addPollOption(pollOption);
                     pluginPoll.setPolls(pollList);
                     pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
                     optionsAdapter.notifyDataSetChanged();
                 }
             });
+
+            holder.subPollBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
 
         }
 
@@ -244,27 +256,29 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
         }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class PollViewHolder extends RecyclerView.ViewHolder {
         TextView pollTitle;
         EditText pollOptionEditText;
         ImageButton addPollOption;
         RecyclerView optionsRecyclerView;
         Button subPollBtn;
-        TextView tVPollOption;
 
-        ViewHolder(View view) {
+
+        PollViewHolder(View view) {
             super(view);
             pollTitle = view.findViewById(R.id.tVTitleOfPoll);
             pollOptionEditText = view.findViewById(R.id.pollOptionInput);
             addPollOption = view.findViewById(R.id.iBaddPollOptions);
             subPollBtn = view.findViewById(R.id.pollSubmitButton);
             optionsRecyclerView = view.findViewById(R.id.pollOptionRecyclerView);
-            tVPollOption = view.findViewById(R.id.tVPollOption);
+
         }
     }
+
+
 }
 
-class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder> {
+class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolder> {
 
     private ArrayList<PollOption> pollOptionList;
     private FragmentActivity activity;
@@ -283,18 +297,18 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.poll_list, parent, false);
-        return new OptionsAdapter.ViewHolder(itemView);
+        return new OptionsAdapter.OptionViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OptionViewHolder holder, int position) {
         final PollOption item = pollOptionList.get(position);
 
-
-
+        //holder.tVPollOption.setText(holder.pollOptionEditText.getText().toString());
+        final PollOption pollItem = pollOptionList.get(position)
     }
 
     @Override
@@ -306,13 +320,21 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHolder> {
         this.pollOptionList = pollOptionList;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class OptionViewHolder extends RecyclerView.ViewHolder {
+        TextView tVPollOption;
+        CheckBox pollCheckBox;
 
-        ViewHolder(View view) {
+
+        OptionViewHolder(View view) {
             super(view);
-
+            tVPollOption = view.findViewById(R.id.tVPollOption);
+            pollCheckBox = view.findViewById(R.id.checkBoxPoll);
         }
+
     }
+
+
+
 }
 
 
