@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,24 +26,23 @@ import com.example.projekt1.models.PollOption;
 import com.example.projekt1.models.plugins.Plugin;
 import com.example.projekt1.models.plugins.PluginPoll;
 import com.example.projekt1.models.plugins.pluginData.Poll;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class PluginPollFragment extends PluginBaseFragment implements PluginListElementDialog.DialogCloseListener {
 
     ItemTouchHelper itemTouchHelper;
     private RecyclerView pollRecyclerView;
-    private PollOptionAdapter pollOptionAdapter;
+    private PollAdapter pollOptionAdapter;
     private CheckBox checkBoxPoll;
     private EditText etPollOption;
     private Button pollSubmitButton;
 
     //List for PollOptions
     private ArrayList<PollOption> pollOptionList;
-
 
 
     @Override
@@ -54,20 +55,20 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         //Initialize RecyclerView and Adapter
         pollRecyclerView = view.findViewById(R.id.pollRecyclerView);
         pollRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        pollOptionAdapter = new PollOptionAdapter(this.pollOptionList, getActivity(), actualPlugin);
+        pollOptionAdapter = new PollAdapter(this.pollOptionList, getActivity(), actualPlugin);
         pollRecyclerView.setAdapter(pollOptionAdapter);
 
 
         //attach itemTouchHelper to RecyclerView
-        itemTouchHelper = new ItemTouchHelper(new PollRecyclerItemTouchHelper(pollOptionAdapter));
-        itemTouchHelper.attachToRecyclerView(pollRecyclerView);
+        //itemTouchHelper = new ItemTouchHelper(new PollRecyclerItemTouchHelper(pollOptionAdapter));
+        //itemTouchHelper.attachToRecyclerView(pollRecyclerView);
 
         pollSubmitButton = view.findViewById(R.id.pollSubmitButton);
 
         pollSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(this, "Du hast abgestimmt", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Du hast abgestimmt", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -76,10 +77,10 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     public Plugin setNewPlugin(String key) {
 
         return new PluginPoll(key, "Mit diesem Plugin lassen sich Abstimmungen durchführen", this.chatId, this.pluginType) {
-         @Override
-         public void doPluginStuff() {
+            @Override
+            public void doPluginStuff() {
 
-         }
+            }
         };
     }
 
@@ -88,8 +89,8 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         ArrayList<Poll> polls = new ArrayList<>();
         PluginPoll tempPluginPoll = pluginSpecificData.getValue(PluginPoll.class);
 
-        if(pluginSpecificData != null) {
-            for( DataSnapshot pollDs : pluginSpecificData.getChildren()){
+        if (pluginSpecificData != null) {
+            for (DataSnapshot pollDs : pluginSpecificData.getChildren()) {
                 Poll poll = pollDs.getValue(Poll.class);
                 polls.add(poll);
 
@@ -99,99 +100,62 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     }
 
     @Override
-    protected void setPluginLayout() { this.layout = R.layout.fragment_poll_plugin; }
-
-    public static class PollOptionAdapter extends RecyclerView.Adapter<PollOptionAdapter.ViewHolder>{
-
+    protected void setPluginLayout() {
+        this.layout = R.layout.fragment_poll_plugin;
     }
 
-    public static class PluginPollOptionFragment {
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+
     }
+}
 
-    public static class PollRecyclerItemTouchHelper {
-        private NotizenAdapter adapter;
+    class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
 
-        public NotizenRecyclerItemTouchHelper(NotizenAdapter adapter) {
-            super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-            this.adapter = adapter;
+        private ArrayList<PollOption> pollOptionList;
+        private FragmentActivity activity;
+        private PluginPoll pluginPoll;
+
+        //firebase
+        private FirebaseDatabase root = FirebaseDatabase.getInstance();
+        private DatabaseReference pluginRefFirebase = root.getReference("plugin");
+
+        //constructor passing database and activity
+        public PollAdapter(ArrayList<PollOption> pollOptionList, FragmentActivity activity, PluginPoll pluginPoll) {
+            this.pollOptionList = pollOptionList;
+            this.activity = activity;
+            this.pluginPoll = pluginPoll;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return null;
         }
 
         @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         }
 
         @Override
-        public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-            final int position = viewHolder.getAdapterPosition();
-            if (direction == ItemTouchHelper.LEFT) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
-                builder.setTitle("Löschen");
-                builder.setMessage("Wollen Sie den Inhalt wirklich löschen?");
-                builder.setPositiveButton("Bestätigen",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adapter.deleteItem(position);
-                            }
-                        });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        adapter.notifyItemChanged(viewHolder.getAdapterPosition());
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                adapter.editItem(position);
-            }
-            adapter.notifyDataSetChanged();
+        public int getItemCount() {
+            return 0;
         }
 
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-            Drawable icon;
-            ColorDrawable background;
+        //public static class PluginPollOptionFragment {
+    //}
 
-            View itemView = viewHolder.itemView;
-            int backgroundCornerOffset = 20;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        EditText etPollOption;
 
-            if (dX > 0) {
-                icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_edit);
-                background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.colorPrimaryDark));
-            } else {
-                icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_delete);
-                background = new ColorDrawable(Color.RED);
-            }
-
-            assert icon != null;
-            int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-            int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-            int iconBottom = iconTop + icon.getIntrinsicHeight();
-
-            if (dX > 0) { // Swiping to the right
-                int iconLeft = itemView.getLeft() + iconMargin;
-                int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
-                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-                background.setBounds(itemView.getLeft(), itemView.getTop(),
-                        itemView.getLeft() + ((int) dX) + backgroundCornerOffset, itemView.getBottom());
-            } else if (dX < 0) { // Swiping to the left
-                int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
-                int iconRight = itemView.getRight() - iconMargin;
-                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-                background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-                        itemView.getTop(), itemView.getRight(), itemView.getBottom());
-            } else { // view is unSwiped
-                background.setBounds(0, 0, 0, 0);
-            }
-
-            background.draw(c);
-            icon.draw(c);
+        ViewHolder(View view) {
+            super(view);
+            etPollOption = view.findViewById(R.id.eTPollOption);
         }
     }
 }
+
+
+

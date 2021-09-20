@@ -15,6 +15,10 @@ public class PluginPoll extends Plugin<Poll> {
         super(id, beschreibung, typ, chatRef, polls);
     }
 
+    public PluginPoll () {
+        super();
+    }
+
     @Override
     public void doPluginStuff() {
 

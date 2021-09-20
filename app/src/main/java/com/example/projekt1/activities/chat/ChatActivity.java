@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 
 import com.example.projekt1.R;
 import com.example.projekt1.activities.plugins.PluginNotizenFragment;
+import com.example.projekt1.activities.plugins.PluginPollFragment;
 import com.example.projekt1.activities.plugins.PluginToDoFragment;
 import com.example.projekt1.dialog.AddUserDialogTypeOne;
 import com.example.projekt1.dialog.AddUserDialogTypeTwo;
@@ -161,6 +162,17 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
                 fragment = new PluginToDoFragment();
                 // set pluginType for firebase check
                 bundle.putString("pluginType", "pluginToDo");
+                fragment.setArguments(bundle);
+                // show fragmentContainer
+                this.fragmentContainer.setTranslationZ(10.00f);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.chat_activity_fragment_container, fragment).commit();
+                break;
+            case R.id.plugin_open_poll:
+                // set fragment and attach data
+                fragment = new PluginPollFragment();
+                // set pluginType for firebase check
+                bundle.putString("pluginType", "pluginPoll");
                 fragment.setArguments(bundle);
                 // show fragmentContainer
                 this.fragmentContainer.setTranslationZ(10.00f);
