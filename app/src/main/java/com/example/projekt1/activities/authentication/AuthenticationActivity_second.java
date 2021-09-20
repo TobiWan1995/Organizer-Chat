@@ -60,6 +60,7 @@ public class AuthenticationActivity_second extends AppCompatActivity {
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
                 String date = dayOfMonth+"/"+month+"/"+year;
                 buttonBirth.setText(date);
             }

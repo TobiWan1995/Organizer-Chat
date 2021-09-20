@@ -2,7 +2,6 @@ package com.example.projekt1.activities.plugins;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,6 +224,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
                 public void onClick(View view) {
                     PollOption pollOption = new PollOption();
                     pollOption.setOptionTitle(holder.pollOptionEditText.getText().toString());
+                    //holder.tVPollOption.setText(holder.pollOptionEditText.getText().toString());
                     pollList.get(position).addPollOption(pollOption);
                     pluginPoll.setPolls(pollList);
                     pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
@@ -250,6 +250,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
         ImageButton addPollOption;
         RecyclerView optionsRecyclerView;
         Button subPollBtn;
+        TextView tVPollOption;
 
         ViewHolder(View view) {
             super(view);
@@ -258,6 +259,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.ViewHolder> {
             addPollOption = view.findViewById(R.id.iBaddPollOptions);
             subPollBtn = view.findViewById(R.id.pollSubmitButton);
             optionsRecyclerView = view.findViewById(R.id.pollOptionRecyclerView);
+            tVPollOption = view.findViewById(R.id.tVPollOption);
         }
     }
 }
