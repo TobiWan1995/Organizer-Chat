@@ -20,11 +20,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:gravity="center"
+            android:textColor="@color/transparent"
             android:text=""
 
             />
 
-        <EditText
+        <TextView
             android:id="@+id/eTPollOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,9 +33,9 @@
             android:hint="Abstimmungsoption"
             android:inputType="textMultiLine"
             android:textColor="@color/thm_grün"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"
             android:textColorHint="@color/thm_grün" />
-
-
 
 
     </androidx.cardview.widget.CardView>
