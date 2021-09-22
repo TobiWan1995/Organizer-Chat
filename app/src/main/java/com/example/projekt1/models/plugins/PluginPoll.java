@@ -4,6 +4,7 @@ import com.example.projekt1.models.plugins.pluginData.Poll;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PluginPoll extends Plugin<Poll> {
 
@@ -23,6 +24,18 @@ public class PluginPoll extends Plugin<Poll> {
     public void doPluginStuff() {
 
     }
+
+    public void updatePollText (String id, String text ){
+        this.pluginData = this.pluginData.stream().map(val -> {
+            if(id.equals(val.getId())) val.setTitle(text);
+            return val;
+        }).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public void updatePollCheckBox (String id, Boolean isChecked ){
+
+    }
+
 
     public void addPoll(Poll p){ this.pluginData.add(p);}
 

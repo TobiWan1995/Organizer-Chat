@@ -3,14 +3,19 @@ package com.example.projekt1.activities.plugins;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -24,6 +29,8 @@ import com.example.projekt1.models.plugins.pluginData.PollOption;
 import com.example.projekt1.models.plugins.Plugin;
 import com.example.projekt1.models.plugins.PluginPoll;
 import com.example.projekt1.models.plugins.pluginData.Poll;
+import com.example.projekt1.models.plugins.pluginData.ToDo;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -47,11 +54,28 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     private ImageButton ibAddPoll;
     private FloatingActionButton addPollFab;
 
+    private Toolbar appbar_Layout_in_Chat;
+
     //List for Poll
     private ArrayList<Poll> pollList;
 
+    String zwischenspeicher;
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+
+            case R.id.delete_poll:
+                break;
+        }
+
+        return true;
+    }
+
     @Override
     public void initializePlugin() {
+
 
         //cast plugin to PollPlugin
         PluginPoll actualPlugin = (PluginPoll) plugin;
@@ -61,6 +85,8 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         // init viewElements
 
         addPollFab = view.findViewById(R.id.addPollFab);
+        appbar_Layout_in_Chat = view.findViewById(R.id.appbar_Layout_in_Chat);
+
 
         addPollFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +198,19 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         pollAdapter.setPolls(this.pollList);
         pollAdapter.notifyDataSetChanged();
     }
+
+    public void deletePoll(int position) {
+        Poll item = pollList.get(position);
+        pollList.remove(position);
+        pollAdapter.notifyItemRemoved(position);
+        pollAdapter.setPolls(pollList);
+        // firebase delete
+        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+        /*
+        Nochmal diesen Teil checken
+         */
+    }
+
 }
 
 class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
@@ -224,8 +263,12 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
                 public void onClick(View view) {
                     PollOption pollOption = new PollOption();
                     pollOption.setOptionTitle(holder.pollOptionEditText.getText().toString());
+                    Container.getInstance().btnRefZws = holder.subPollBtn;
 
-
+                    Container.getInstance().zwischenspeicher = holder.pollOptionEditText.getText().toString(); /*
+                    Den Inhalt der Abstimmungsoption in den Zwischenspeicher speichern
+                    */
+                    holder.pollOptionEditText.setText(""); //Eingegebenen Text entfernen
 
                     //OptionsAdapter.OptionViewHolder optionViewHolder = new OptionsAdapter.OptionViewHolder(holder);
                     //optionViewHolder.tVPollOption.setText(holder.pollOptionEditText.getText().toString());
@@ -307,9 +350,30 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
     public void onBindViewHolder(@NonNull OptionViewHolder holder, int position) {
         final PollOption item = pollOptionList.get(position);
 
-        //holder.tVPollOption.setText(holder.pollOptionEditText.getText().toString());
-        final PollOption pollItem = pollOptionList.get(position)
+        if (!Container.getInstance().zwischenspeicher.isEmpty()) {
+            holder.tVPollOption.setText(Container.getInstance().zwischenspeicher);
+        }
+
+        final PollOption pollItem = pollOptionList.get(position);
+        holder.pollCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                /* Logik für nur einmal checken*/
+
+
+            }
+        });
+        if (item.isChecked()) {
+            holder.pollCheckBox.setChecked(true);
+            //Einf. von Methode zum updaten des Texts / Status der CheckBox
+            pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
+            if(Container.getInstance().btnRefZws.getVisibility() == View.INVISIBLE) {
+                Button submitBtn = Container.getInstance().getBtnRefZws();
+                submitBtn.setVisibility(View.VISIBLE);
+            }
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -335,6 +399,27 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
 
 
 
+}
+
+class Container{
+    String zwischenspeicher;
+
+    Button btnRefZws;
+
+
+    public String getZwischenspeicher() {return zwischenspeicher;}
+    public void setZwischenspeicher(String zwischenspeicher) {this.zwischenspeicher = zwischenspeicher;}
+    public Button getBtnRefZws() {return btnRefZws;}
+    public void setBtnRefZws(Button btnRefZws) {this.btnRefZws = btnRefZws;}
+
+    private static Container instance = null;
+    private void Container(){}
+    public static Container getInstance(){
+        if(instance==null){
+            instance = new Container();
+        }
+        return instance;
+    }
 }
 
 

@@ -133,6 +133,8 @@ public class PluginListElementDialog extends BottomSheetDialogFragment {
                     }
                 } else if (plugin instanceof PluginPoll) {
                     if (finalIsUpdate) {
+                        ((PluginPoll) plugin).updatePollText(bundle.getString("id"),text);
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
                         // implementieren wenn man den titel bearbeiten möchte
                     } else {
                         String key = pluginRefFirebase.child(plugin.getId()).child("pluginData").push().getKey();

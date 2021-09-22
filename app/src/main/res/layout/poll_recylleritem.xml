@@ -24,19 +24,7 @@
             android:hint="Add Title of Poll"
             android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/iBaddPollOptions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/transparent"
-            android:scaleX="1.8"
-            android:scaleY="1.8"
 
-            android:src="@drawable/ic_baseline_add_24"
-            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 
     <View
@@ -49,12 +37,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/pollOptionInput"
-            android:layout_width="387dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_margin="10dp"
+            android:inputType="textMultiLine"
             android:hint="Gebe Abstimmungs Option ein..." />
+
+            <ImageButton
+                android:id="@+id/iBaddPollOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/transparent"
+                android:scaleX="1.8"
+                android:scaleY="1.8"
+
+                android:src="@drawable/ic_baseline_add_24"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -89,7 +99,7 @@
             android:text="Auswahl bestätigen"
             android:textSize="14sp"
             android:textStyle="italic"
-            android:visibility="gone"
+            android:visibility="invisible"
             tools:visibility="visible" />
 
 
