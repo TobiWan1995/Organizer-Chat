@@ -13,13 +13,12 @@ public class PluginPollFragment extends PluginBaseFragment {
     @Override
     public void initializePlugin() {
 
-        ;
     }
 
     @Override
     public Plugin setNewPlugin(String key) {
 
-        return new PluginPoll(key, "Mit diesem Plugin lassen sich Abstimmungen durchführen", this.chatId, this.pluginType) {
+        return new PluginPoll(key, "Mit diesem Plugin lassen sich Abstimmungen durchführen", this.chatId, this.pluginType, new ArrayList<>()) {
          @Override
          public void doPluginStuff() {
 
@@ -28,9 +27,9 @@ public class PluginPollFragment extends PluginBaseFragment {
     }
 
     @Override
-    protected PluginPoll castToSpecifiedPlugin(DataSnapshot pluginSpecificData, DataSnapshot pluginDataList) {
+    protected PluginPoll castToSpecifiedPlugin(DataSnapshot pluginData, DataSnapshot pluginSpecificData) {
         ArrayList<Poll> polls = new ArrayList<>();
-        PluginPoll tempPluginPoll = pluginSpecificData.getValue(PluginPoll.class);
+        PluginPoll tempPluginPoll = pluginData.getValue(PluginPoll.class);
 
         if(pluginSpecificData != null) {
             for( DataSnapshot pollDs : pluginSpecificData.getChildren()){
