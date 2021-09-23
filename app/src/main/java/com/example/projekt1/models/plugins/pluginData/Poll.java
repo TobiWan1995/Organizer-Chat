@@ -1,30 +1,23 @@
 package com.example.projekt1.models.plugins.pluginData;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-
 public class Poll {
-
     private String id;
-    //private boolean chooseMultiple;
+    private boolean multiOption;
     private String title;
-    private ArrayList<String> userRef;
+    private ArrayList<PollOption> pollOptions;
 
 
-    public Poll(String id, ArrayList<String> userRef, String title) {
+    public Poll(String id, boolean multiOption,  String title, ArrayList<PollOption> pollOptions) {
         this.id = id;
+        this.multiOption = multiOption;
         this.title = title;
-        this.userRef = userRef;
+        this.pollOptions = pollOptions;
 
 
     }
 
-    public ArrayList<String> getUserRef() {
-        return userRef;
-    }
+    public Poll () {
 
-    public void setUserRef(ArrayList<String> userRef) {
-        this.userRef = userRef;
     }
 
     public String getId() {return id;}
@@ -35,13 +28,22 @@ public class Poll {
 
     public void setTitle(String title) {this.title = title;}
 
+    public boolean isMultiOption() {
+        return multiOption;
+    }
 
+    public void setMultiOption(boolean multiOption) {
+        this.multiOption = multiOption;
+    }
 
+    public ArrayList<PollOption> getPollOptions() {
+        return pollOptions;
+    }
+
+    public void setPollOptions(ArrayList<PollOption> pollOptions) {
+        this.pollOptions = pollOptions;
+    }
+
+    public void addPollOption(PollOption n){ this.pollOptions.add(n); }
 
 }
-
-
-=======
-public class Poll {
-}
->>>>>>> origin/master

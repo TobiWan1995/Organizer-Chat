@@ -5,6 +5,8 @@ public class Notiz {
     private String inhalt;
     private String datum;
 
+    public Notiz(){};
+
     public Notiz(String id, String inhalt){
         this.id = id;
         this.inhalt = inhalt;
@@ -21,5 +23,9 @@ public class Notiz {
 
     public String getDatum() {
         return datum;
+    }
+
+    public void setInhalt(String inhalt) {
+        this.inhalt = inhalt;
     }
 }
