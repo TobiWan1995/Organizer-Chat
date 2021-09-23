@@ -111,4 +111,5 @@
         app:headerLayout="@layout/nav_header">
 
     </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>

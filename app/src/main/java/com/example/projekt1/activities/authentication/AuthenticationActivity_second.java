@@ -25,6 +25,7 @@ import com.example.projekt1.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -87,7 +88,7 @@ public class AuthenticationActivity_second extends AppCompatActivity {
                 // get Data from Stage2
                 gender = String.valueOf(spinnerGender.getSelectedItem().toString());
                 birth = buttonBirth.getText().toString();
-
+                System.out.println(birth);
                 if(birth.isEmpty() || !isValidDate(birth)) {
                     Toast.makeText(getApplicationContext(), "Invalid Date", Toast.LENGTH_LONG).show();
                     return;
