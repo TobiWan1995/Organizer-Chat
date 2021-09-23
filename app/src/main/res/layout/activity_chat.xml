@@ -63,14 +63,14 @@
 
 
         <!-- for Fragments - change translationZ to show and hide current fragment -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/chat_activity_fragment_container"
-            android:translationZ="-10dp"
-            android:background="@color/white"
-            >
-        </androidx.constraintlayout.widget.ConstraintLayout>
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:id="@+id/chat_activity_fragment_container"
+           android:translationZ="-10dp"
+           android:background="@color/white"
+           >
+       </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -111,4 +111,5 @@
         app:headerLayout="@layout/nav_header">
 
     </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>
