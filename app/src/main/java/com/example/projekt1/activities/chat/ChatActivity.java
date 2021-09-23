@@ -45,7 +45,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
     EditText enteredText;
     ImageButton drawerToggleButton;
     ConstraintLayout fragmentContainer;
-    ImageButton deletePollBtn;
+
 
     // recylcer adapter
     ChatMessages chatMessages;
@@ -95,7 +95,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
         enteredText = findViewById(R.id.enterMessageET);
 
 
-        deletePollBtn = findViewById(R.id.deletePollBtn);
+
 
         // set sendMessageButton onClickListener
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +172,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
                         replace(R.id.chat_activity_fragment_container, fragment).commit();
                 break;
             case R.id.plugin_open_poll:
-                deletePollBtn.setVisibility(View.VISIBLE);
+
                 // set fragment and attach data
                 fragment = new PluginPollFragment();
                 // set pluginType for firebase check

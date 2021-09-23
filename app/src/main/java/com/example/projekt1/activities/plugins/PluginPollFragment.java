@@ -58,7 +58,7 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     private Button pollSubmitButton;
     private ImageButton ibAddPoll;
     private FloatingActionButton addPollFab;
-    private ImageButton deletePollBtn;
+
 
 
     //List for Poll
@@ -82,18 +82,9 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         // init viewElements
 
         addPollFab = view.findViewById(R.id.addPollFab);
-        deletePollBtn = view.findViewById(R.id.deletePollBtn);
 
-        //Hier fehler
-        /*deletePollBtn.setOnClickListener(new View.OnClickListener() { ///NullPointer Exception
-            @Override
-            public void onClick(View v) {
-                openDialog();
-                if(Container.getInstance().deleteValue){
-                    deletePoll(0);
-                }
-            }
-        });*/
+
+
 
 
 
@@ -161,12 +152,7 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         }); */
     }
 
-    public void openDialog(){
 
-        PollDialog pollDialog = new PollDialog();
-        pollDialog.show(getParentFragmentManager(), "Poll löschen Dialog");
-
-    }
 
 
     @Override
@@ -214,17 +200,7 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         pollAdapter.notifyDataSetChanged();
     }
 
-    public void deletePoll(int position) {
-        Poll item = pollList.get(position);
-        pollList.remove(position);
-        pollAdapter.notifyItemRemoved(position);
-        pollAdapter.setPolls(pollList);
-        // firebase delete
-        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
-        /*
-        Nochmal diesen Teil checken
-         */
-    }
+
 
 }
 
@@ -233,6 +209,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
         private ArrayList<Poll> pollList;
         private FragmentActivity activity;
         private PluginPoll pluginPoll;
+
 
         //firebase
         private FirebaseDatabase root = FirebaseDatabase.getInstance();
@@ -301,8 +278,40 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
                 }
             });
 
+            holder.deletePollBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Hier fehler
+
+                            openDialog();
+                            if(Container.getInstance().deleteValue){
+                                deletePoll(0);
+                            }
+
+                }
+            });
+
 
         }
+    public void openDialog(){
+
+        PollDialog pollDialog = new PollDialog();
+        pollDialog.show(activity.getSupportFragmentManager(), "Poll löschen Dialog");
+
+    }
+
+    public void deletePoll(int position) {
+        Poll item = pollList.get(position);
+        pollList.remove(position);
+        notifyItemRemoved(position);
+        pluginPoll.setPolls(pollList);
+
+        // firebase delete
+        pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
+        /*
+        Nochmal diesen Teil checken
+         */
+    }
 
         @Override
         public int getItemCount() {
@@ -320,6 +329,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
         ImageButton addPollOption;
         RecyclerView optionsRecyclerView;
         Button subPollBtn;
+        ImageButton deletePollBtn;
 
 
         PollViewHolder(View view) {
@@ -329,6 +339,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
             addPollOption = view.findViewById(R.id.iBaddPollOptions);
             subPollBtn = view.findViewById(R.id.pollSubmitButton);
             optionsRecyclerView = view.findViewById(R.id.pollOptionRecyclerView);
+            deletePollBtn = view.findViewById(R.id.deletePollBtn);
 
         }
     }
