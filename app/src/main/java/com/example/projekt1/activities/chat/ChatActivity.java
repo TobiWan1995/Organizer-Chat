@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.util.ArraySet;
 import android.view.Gravity;
@@ -22,7 +22,6 @@ import com.example.projekt1.activities.plugins.PluginNotizenFragment;
 import com.example.projekt1.activities.plugins.PluginPollFragment;
 import com.example.projekt1.activities.plugins.PluginToDoFragment;
 import com.example.projekt1.dialog.AddUserDialogTypeOne;
-import com.example.projekt1.dialog.AddUserDialogTypeTwo;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.Session;
@@ -46,6 +45,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
     EditText enteredText;
     ImageButton drawerToggleButton;
     ConstraintLayout fragmentContainer;
+    ImageButton deletePollBtn;
 
     // recylcer adapter
     ChatMessages chatMessages;
@@ -93,6 +93,9 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
         // init sendMessageButton and editText
         sendMessageButton = findViewById(R.id.sendMessageButton);
         enteredText = findViewById(R.id.enterMessageET);
+
+
+        deletePollBtn = findViewById(R.id.deletePollBtn);
 
         // set sendMessageButton onClickListener
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +172,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
                         replace(R.id.chat_activity_fragment_container, fragment).commit();
                 break;
             case R.id.plugin_open_poll:
+                deletePollBtn.setVisibility(View.VISIBLE);
                 // set fragment and attach data
                 fragment = new PluginPollFragment();
                 // set pluginType for firebase check

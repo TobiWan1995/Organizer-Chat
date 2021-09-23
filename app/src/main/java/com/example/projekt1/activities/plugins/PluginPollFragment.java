@@ -1,7 +1,9 @@
 package com.example.projekt1.activities.plugins;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,25 +58,17 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     private Button pollSubmitButton;
     private ImageButton ibAddPoll;
     private FloatingActionButton addPollFab;
+    private ImageButton deletePollBtn;
 
-    private Toolbar appbar_Layout_in_Chat;
 
     //List for Poll
     private ArrayList<Poll> pollList;
 
+
+
     String zwischenspeicher;
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch(item.getItemId()){
-
-            case R.id.delete_poll:
-                break;
-        }
-
-        return true;
-    }
 
     @Override
     public void initializePlugin() {
@@ -85,7 +82,19 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         // init viewElements
 
         addPollFab = view.findViewById(R.id.addPollFab);
-        appbar_Layout_in_Chat = view.findViewById(R.id.appbar_Layout_in_Chat);
+        deletePollBtn = view.findViewById(R.id.deletePollBtn);
+
+        //Hier fehler
+        /*deletePollBtn.setOnClickListener(new View.OnClickListener() { ///NullPointer Exception
+            @Override
+            public void onClick(View v) {
+                openDialog();
+                if(Container.getInstance().deleteValue){
+                    deletePoll(0);
+                }
+            }
+        });*/
+
 
 
         addPollFab.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +161,12 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         }); */
     }
 
+    public void openDialog(){
+
+        PollDialog pollDialog = new PollDialog();
+        pollDialog.show(getParentFragmentManager(), "Poll löschen Dialog");
+
+    }
 
 
     @Override
@@ -406,6 +421,8 @@ class Container{
 
     Button btnRefZws;
 
+    boolean deleteValue;
+
 
     public String getZwischenspeicher() {return zwischenspeicher;}
     public void setZwischenspeicher(String zwischenspeicher) {this.zwischenspeicher = zwischenspeicher;}
@@ -422,4 +439,30 @@ class Container{
     }
 }
 
+class PollDialog extends AppCompatDialogFragment {
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        dialogBuilder.setTitle("Alle Polls löschen?");
+        dialogBuilder.setPositiveButton("Ja, löschen!", new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getContext(),"Yes you clicked", Toast.LENGTH_SHORT).show();
+                Container.getInstance().deleteValue = true;
+
+            }
+        });
+        dialogBuilder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Container.getInstance().deleteValue = false;
+              dismiss();
+            }
+        });
+
+        return dialogBuilder.create();
+    }
+}
 
