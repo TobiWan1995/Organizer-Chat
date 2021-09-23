@@ -1,10 +1,8 @@
 package com.example.projekt1.models.plugins.pluginData;
 
-
 import java.util.ArrayList;
 
 public class Poll {
-
     private String id;
     private boolean multiOption;
     private String title;
@@ -49,4 +47,5 @@ public class Poll {
     }
 
     public void addPollOption(PollOption n){ this.pollOptions.add(n); }
+
 }

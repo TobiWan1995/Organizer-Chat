@@ -79,13 +79,6 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         this.pollList = this.plugin.getPluginData();
 
 
-        // init viewElements
-
-        addPollFab = view.findViewById(R.id.addPollFab);
-
-
-
-
 
 
         addPollFab.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +143,7 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
                 Toast.makeText(getContext(), "Du hast abgestimmt", Toast.LENGTH_SHORT).show();
             }
         }); */
+
     }
 
 
@@ -157,7 +151,6 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
 
     @Override
     public Plugin setNewPlugin(String key) {
-
         return new PluginPoll(key, "Mit diesem Plugin lassen sich Abstimmungen durchführen", this.pluginType, this.chatId, new ArrayList<Poll>()) {
             @Override
             public void doPluginStuff() {
