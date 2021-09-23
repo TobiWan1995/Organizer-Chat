@@ -14,27 +14,13 @@
         android:layout_marginEnd="20dp"
         android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/checkBoxPoll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="center"
-            android:textColor="@color/transparent"
-            android:text=""
-
-            />
-
-        <TextView
-            android:id="@+id/tVPollOption"
+        <EditText
+            android:id="@+id/eTPollOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
             android:hint="Abstimmungsoption"
             android:inputType="textMultiLine"
             android:textColor="@color/thm_grün"
-            android:layout_gravity="center_vertical"
-            android:textSize="16sp"
             android:textColorHint="@color/thm_grün" />
 
 

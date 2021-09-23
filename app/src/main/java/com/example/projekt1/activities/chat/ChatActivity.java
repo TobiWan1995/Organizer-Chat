@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.util.ArraySet;
 import android.view.Gravity;
@@ -20,9 +20,9 @@ import android.widget.TextView;
 
 import com.example.projekt1.R;
 import com.example.projekt1.activities.plugins.PluginNotizenFragment;
+import com.example.projekt1.activities.plugins.PluginPollFragment;
 import com.example.projekt1.activities.plugins.PluginToDoFragment;
 import com.example.projekt1.dialog.AddUserDialogTypeOne;
-import com.example.projekt1.dialog.AddUserDialogTypeTwo;
 import com.example.projekt1.models.Chat;
 import com.example.projekt1.models.Message;
 import com.example.projekt1.models.Session;
@@ -47,6 +47,7 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
     ImageButton drawerToggleButton;
     ConstraintLayout fragmentContainer;
     TextView userIdTextView;
+
 
     // recylcer adapter
     ChatMessages chatMessages;
@@ -94,6 +95,9 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
         // init sendMessageButton and editText
         sendMessageButton = findViewById(R.id.sendMessageButton);
         enteredText = findViewById(R.id.enterMessageET);
+
+
+
 
         // set sendMessageButton onClickListener
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +172,18 @@ public class ChatActivity extends AppCompatActivity implements AddUserDialogType
                 fragment = new PluginToDoFragment();
                 // set pluginType for firebase check
                 bundle.putString("pluginType", "pluginToDo");
+                fragment.setArguments(bundle);
+                // show fragmentContainer
+                this.fragmentContainer.setTranslationZ(10.00f);
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.chat_activity_fragment_container, fragment).commit();
+                break;
+            case R.id.plugin_open_poll:
+
+                // set fragment and attach data
+                fragment = new PluginPollFragment();
+                // set pluginType for firebase check
+                bundle.putString("pluginType", "pluginPoll");
                 fragment.setArguments(bundle);
                 // show fragmentContainer
                 this.fragmentContainer.setTranslationZ(10.00f);
