@@ -43,21 +43,9 @@ public class PluginPoll extends Plugin<Poll> {
     PollOptionen bennenen und speichern um auf anderen Geräten anzuzeigen
     Ob PollOption ausgewählt wurde muss auch gespeichert werden
 
-
-
-
     Least Priority:
     Visuelle Darstellung der Ergebnisse
      */
-
-    //public PluginPoll()
-    RecyclerView recyclerView;
-    PollAdapter pollAdapter;
-    EditText pollTitle;
-    CheckBox pollChecked;
-    Button pollSubmitButton;
-
-  
 
     public PluginPoll (String id, String beschreibung, String chatRef, String typ) {
         super(id, beschreibung, chatRef, "pluginPoll");
@@ -83,10 +71,7 @@ public class PluginPoll extends Plugin<Poll> {
         }).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void updatePollCheckBox (String id, Boolean isChecked ){
-
-    }
-
+    public void updatePollCheckBox (String id, Boolean isChecked ){ }
 
     public void addPoll(Poll p){ this.pluginData.add(p);}
 

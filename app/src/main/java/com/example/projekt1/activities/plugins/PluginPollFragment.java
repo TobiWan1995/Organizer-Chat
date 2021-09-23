@@ -58,29 +58,18 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
     private Button pollSubmitButton;
     private ImageButton ibAddPoll;
     private FloatingActionButton addPollFab;
-
-
-
     //List for Poll
     private ArrayList<Poll> pollList;
 
-
-
     String zwischenspeicher;
-
-
 
     @Override
     public void initializePlugin() {
-
-
         //cast plugin to PollPlugin
         PluginPoll actualPlugin = (PluginPoll) plugin;
         this.pollList = this.plugin.getPluginData();
 
-
-
-
+        addPollFab = view.findViewById(R.id.addPollFab);
         addPollFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,9 +135,6 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
 
     }
 
-
-
-
     @Override
     public Plugin setNewPlugin(String key) {
         return new PluginPoll(key, "Mit diesem Plugin lassen sich Abstimmungen durchführen", this.pluginType, this.chatId, new ArrayList<Poll>()) {
@@ -192,17 +178,12 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
         pollAdapter.setPolls(this.pollList);
         pollAdapter.notifyDataSetChanged();
     }
-
-
-
 }
 
 class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
-
         private ArrayList<Poll> pollList;
         private FragmentActivity activity;
         private PluginPoll pluginPoll;
-
 
         //firebase
         private FirebaseDatabase root = FirebaseDatabase.getInstance();
@@ -357,7 +338,6 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
         this.pluginPoll = pluginPoll;
     }
 
-    @NonNull
     @Override
     public OptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -411,13 +391,10 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
         OptionViewHolder(View view) {
             super(view);
             tVPollOption = view.findViewById(R.id.tVPollOption);
-            pollCheckBox = view.findViewById(R.id.checkBoxPoll);
+            pollCheckBox = view.findViewById(R.id.checkBox_Poll);
         }
 
     }
-
-
-
 }
 
 class Container{
@@ -429,8 +406,11 @@ class Container{
 
 
     public String getZwischenspeicher() {return zwischenspeicher;}
+
     public void setZwischenspeicher(String zwischenspeicher) {this.zwischenspeicher = zwischenspeicher;}
+
     public Button getBtnRefZws() {return btnRefZws;}
+
     public void setBtnRefZws(Button btnRefZws) {this.btnRefZws = btnRefZws;}
 
     private static Container instance = null;
