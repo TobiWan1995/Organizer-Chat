@@ -19,14 +19,19 @@ import androidx.core.content.ContextCompat;
 
 import com.example.projekt1.R;
 
+import com.example.projekt1.models.plugins.pluginData.PollOption;
 import com.example.projekt1.models.plugins.Plugin;
 import com.example.projekt1.models.plugins.PluginNotizen;
+import com.example.projekt1.models.plugins.PluginPoll;
 import com.example.projekt1.models.plugins.PluginToDo;
 import com.example.projekt1.models.plugins.pluginData.Notiz;
+import com.example.projekt1.models.plugins.pluginData.Poll;
 import com.example.projekt1.models.plugins.pluginData.ToDo;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class PluginListElementDialog extends BottomSheetDialogFragment {
     private EditText newTaskText;
@@ -124,6 +129,16 @@ public class PluginListElementDialog extends BottomSheetDialogFragment {
                     } else {
                         String key = pluginRefFirebase.child(plugin.getId()).child("pluginData").push().getKey();
                         ((PluginNotizen) plugin).addNotiz(new Notiz(key, text));
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+                    }
+                } else if (plugin instanceof PluginPoll) {
+                    if (finalIsUpdate) {
+                        ((PluginPoll) plugin).updatePollText(bundle.getString("id"),text);
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
+                        // implementieren wenn man den titel bearbeiten möchte
+                    } else {
+                        String key = pluginRefFirebase.child(plugin.getId()).child("pluginData").push().getKey();
+                        ((PluginPoll) plugin).addPoll(new Poll(key, false, text, new ArrayList<PollOption>()));
                         pluginRefFirebase.child(plugin.getId()).setValue(plugin);
                     }
                 }

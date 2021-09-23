@@ -15,26 +15,27 @@
         android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/checkBox_Poll"
+            android:id="@+id/checkBoxPoll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:gravity="center"
+            android:textColor="@color/transparent"
             android:text=""
 
             />
 
-        <EditText
-            android:id="@+id/eT_PollOption"
+        <TextView
+            android:id="@+id/tVPollOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:hint="Abstimmungsoption"
             android:inputType="textMultiLine"
             android:textColor="@color/thm_grün"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"
             android:textColorHint="@color/thm_grün" />
-
-
 
 
     </androidx.cardview.widget.CardView>
