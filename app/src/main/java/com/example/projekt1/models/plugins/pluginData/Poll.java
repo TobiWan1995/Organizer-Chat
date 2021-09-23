@@ -1,7 +1,5 @@
 package com.example.projekt1.models.plugins.pluginData;
 
-import java.util.ArrayList;
-
 public class Poll {
     private String id;
     private boolean multiOption;
