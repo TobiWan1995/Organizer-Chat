@@ -1,43 +1,55 @@
 package com.example.projekt1.models.plugins.pluginData;
 
-
 import java.util.ArrayList;
 
 public class PollOption {
+    String id;
+    String optionTitle;
+    ArrayList<String> userRef;
+    private ArrayList<Boolean> pollOptionCheckboxList;
+    private boolean isItChecked;
 
-    private String id;
-    // private boolean chooseMultiple;
-    private String title;
-    private String thema;
-    private String pollRef; // ist doppelt - liste in poll reicht aus
-    private ArrayList<String> users; // counter implicit
+    public ArrayList<Boolean> getPollOptionCheckboxList() {
+        return pollOptionCheckboxList;
+    }
 
+    public void setPollOptionCheckboxList(ArrayList<Boolean> pollOptionCheckboxList) {
+        this.pollOptionCheckboxList = pollOptionCheckboxList;
+    }
 
+    public boolean isChecked() {
+        return isItChecked;
+    }
 
+    public void setChecked(boolean checked) {
+        isItChecked = checked;
+    }
 
-    public PollOption(String id, ArrayList<String> userRef, String title) {
+    public String getId() {
+        return id;
+    }
+
+    public PollOption () {
+
+    }
+
+    public void setId(String id) {
         this.id = id;
-        this.title = title;
-        this.users = users;
     }
 
-    public ArrayList<String> getUsers() {
-        return users;
+    public String getOptionTitle() {
+        return optionTitle;
     }
 
-    public void setUsers(ArrayList<String> users) {
-        this.users = users;
+    public void setOptionTitle(String optionTitle) {
+        this.optionTitle = optionTitle;
     }
 
-    public String getId() {return id;}
+    public ArrayList<String> getUserRef() {
+        return userRef;
+    }
 
-    public void setId(String id) {this.id = id;}
-
-    public String getTitle() {return title;}
-
-    public void setTitle(String title) {this.title = title;}
-
-
-
-
+    public void setUserRef(ArrayList<String> userRef) {
+        this.userRef = userRef;
+    }
 }
