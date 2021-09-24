@@ -47,5 +47,4 @@ public abstract class Plugin <T> {
     }
 
     public void setId(String id){ this.id = id; }
-
 }

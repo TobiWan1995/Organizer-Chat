@@ -27,26 +27,6 @@ import java.util.stream.Collectors;
 
 public class PluginPoll extends Plugin<Poll> {
 
-    /*  Abstimmung = Poll
-        Abstimmungsoptionen = PollOptionen
-    TODO:
-    Wie eine Abstimmung worked einbauen
-        Option für mehrfaches auswählen von PollOptionen
-        Anzeigen der Ergebnisse in Prozent
-        Poll zurücksetzen
-
-    Firebase anbindung
-    Layout und Design beenden
-    PollAdapter Klasse speziell onBindViewHolder checken ob worked
-    anbindung an bestehende App
-    Poll zurücksetzen funktion^^^^
-    PollOptionen bennenen und speichern um auf anderen Geräten anzuzeigen
-    Ob PollOption ausgewählt wurde muss auch gespeichert werden
-
-    Least Priority:
-    Visuelle Darstellung der Ergebnisse
-     */
-
     public PluginPoll (String id, String beschreibung, String chatRef, String typ) {
         super(id, beschreibung, chatRef, "pluginPoll");
     }
@@ -64,16 +44,26 @@ public class PluginPoll extends Plugin<Poll> {
 
     }
 
-    public void updatePollText (String id, String text ){
+    public void updatePoll (Poll p){
         this.pluginData = this.pluginData.stream().map(val -> {
-            if(id.equals(val.getId())) val.setTitle(text);
+            if(val.equals(p)) val = p;
             return val;
         }).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void updatePollCheckBox (String id, Boolean isChecked ){ }
+    public void updatePollText(String id, String text){
+        this.pluginData = this.pluginData.stream().map(val -> {
+            if(id == val.getId()) val.setTitle(text);
+            return val;
+        }).collect(Collectors.toCollection(ArrayList::new));
+    };
 
     public void addPoll(Poll p){ this.pluginData.add(p);}
+
+    public Poll getPollById(String id){
+        ArrayList<Poll> temp = this.pluginData.stream().filter(val -> val.getId().equals(id)).collect(Collectors.toCollection(ArrayList::new));
+        return temp.get(0) != null ? temp.get(0) : null;
+    }
 
     public void setPolls(ArrayList<Poll> newPolls){
         this.pluginData = newPolls;

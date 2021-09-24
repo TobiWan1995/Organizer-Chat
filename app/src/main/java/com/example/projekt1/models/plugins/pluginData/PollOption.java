@@ -3,34 +3,19 @@ package com.example.projekt1.models.plugins.pluginData;
 import java.util.ArrayList;
 
 public class PollOption {
-    String id;
-    String optionTitle;
-    ArrayList<String> userRef;
-    private ArrayList<Boolean> pollOptionCheckboxList;
-    private boolean isItChecked;
+    private String id;
+    private String optionTitle;
+    private ArrayList<String> userRef;
 
-    public ArrayList<Boolean> getPollOptionCheckboxList() {
-        return pollOptionCheckboxList;
-    }
+    public PollOption(){ };
 
-    public void setPollOptionCheckboxList(ArrayList<Boolean> pollOptionCheckboxList) {
-        this.pollOptionCheckboxList = pollOptionCheckboxList;
-    }
-
-    public boolean isChecked() {
-        return isItChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isItChecked = checked;
-    }
+    public PollOption(String id, ArrayList<String> userRef){
+        this.userRef = userRef;
+        this.id = id;
+    };
 
     public String getId() {
         return id;
-    }
-
-    public PollOption () {
-
     }
 
     public void setId(String id) {
@@ -51,5 +36,17 @@ public class PollOption {
 
     public void setUserRef(ArrayList<String> userRef) {
         this.userRef = userRef;
+    }
+
+    public boolean containsUser(String username){
+        return this.userRef.contains(username);
+    }
+
+    public void removeUserFromSub(String username){
+        this.userRef.remove(username);
+    }
+
+    public void addUserToSub(String username){
+        this.userRef.add(username);
     }
 }

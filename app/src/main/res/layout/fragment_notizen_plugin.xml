@@ -26,8 +26,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_baseline_add"
-        app:tint="@color/white"
-        />
+        app:tint="@color/white" />
 
 
 </RelativeLayout>
