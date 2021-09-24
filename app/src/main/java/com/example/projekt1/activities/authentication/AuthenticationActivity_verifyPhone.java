@@ -61,10 +61,10 @@ public class AuthenticationActivity_verifyPhone extends AppCompatActivity implem
             pinview = findViewById(R.id.pinview);
 
             // send phoneVerification TODO: uncomment on deployment
-            sendPhoneVerificationCode(phoneNumber);
+            // sendPhoneVerificationCode(phoneNumber);
 
             // for testing - TODO: delete line on deployment
-            // saveUserToFirebase();
+            saveUserToFirebase();
         }
 
         void sendPhoneVerificationCode(String phoneNo){
