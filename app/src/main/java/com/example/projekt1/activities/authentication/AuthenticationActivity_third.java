@@ -25,17 +25,11 @@ public class AuthenticationActivity_third extends AppCompatActivity {
     Button next3;
     // auth3 Data
     String phoneNumber;
-    String mPhoneNumber;
-
-    static final int PERMISSON_READ_STATE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authenticate_stage3);
-
-        // display device-phoneNumber
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, PERMISSON_READ_STATE);
 
         // init Stage3
         CountryCodePicker countryCodePicker = findViewById(R.id.countryPicker);
@@ -76,24 +70,5 @@ public class AuthenticationActivity_third extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @SuppressLint("HardwareIds")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSON_READ_STATE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                //throw assertion-error if tMgr is null
-                assert tMgr != null;
-                mPhoneNumber = tMgr.getLine1Number();
-            } else {
-                Toast.makeText(getApplicationContext(), "You do not have the permission.", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }
