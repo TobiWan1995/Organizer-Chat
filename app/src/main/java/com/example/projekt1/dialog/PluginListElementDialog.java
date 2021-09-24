@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PluginListElementDialog extends BottomSheetDialogFragment {
     private EditText newTaskText;
@@ -133,12 +134,19 @@ public class PluginListElementDialog extends BottomSheetDialogFragment {
                     }
                 } else if (plugin instanceof PluginPoll) {
                     if (finalIsUpdate) {
-                        ((PluginPoll) plugin).updatePollText(bundle.getString("id"),text);
-                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
                         // implementieren wenn man den titel bearbeiten möchte
+                        if (bundle.getBoolean("pollOption")){
+                            // get current poll
+                            Poll tempPoll = ((PluginPoll) plugin).getPollById(bundle.getString("pollId"));
+                            tempPoll.updatePollOptionText(bundle.getString("id"), text);
+                            ((PluginPoll) plugin).updatePoll(tempPoll);
+                        } else {
+                            ((PluginPoll) plugin).updatePollText(bundle.getString("id"),text);
+                        }
+                        pluginRefFirebase.child(plugin.getId()).setValue(plugin);
                     } else {
                         String key = pluginRefFirebase.child(plugin.getId()).child("pluginData").push().getKey();
-                        ((PluginPoll) plugin).addPoll(new Poll(key, false, text, new ArrayList<PollOption>()));
+                        ((PluginPoll) plugin).addPoll(new Poll(key, false, text, new ArrayList<PollOption>(), new ArrayList<String>()));
                         pluginRefFirebase.child(plugin.getId()).setValue(plugin);
                     }
                 }

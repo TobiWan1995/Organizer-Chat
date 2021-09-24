@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.projekt1">
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
-
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,16 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Projekt1">
-
         <activity android:name=".activities.launcher.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".activities.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.LOGIN" />
@@ -31,15 +25,12 @@
                 <category android:name="android.intent.category.LOGIN" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.authentication.AuthenticationActivity_first">
             <intent-filter>
                 <action android:name="android.intent.action.AUTHENTICATION" />
-
                 <category android:name="android.intent.category.AUTHENTICATION" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.authentication.AuthenticationActivity_second">
             <intent-filter>
                 <action android:name="android.intent.action.AUTHENTICATION" />
@@ -47,23 +38,18 @@
                 <category android:name="android.intent.category.AUTHENTICATION" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.authentication.AuthenticationActivity_third">
             <intent-filter>
                 <action android:name="android.intent.action.AUTHENTICATION" />
-
                 <category android:name="android.intent.category.AUTHENTICATION" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.authentication.AuthenticationActivity_verifyPhone">
             <intent-filter>
                 <action android:name="android.intent.action.AUTHENTICATION" />
-
                 <category android:name="android.intent.category.AUTHENTICATION" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.HOME" />
@@ -78,16 +64,5 @@
                 <category android:name="android.intent.category.APP_MESSAGING" />
             </intent-filter>
         </activity>
-
-        <!-- ToDo -->
-        <activity android:name=".activities.plugins.ToDo.ToDo_Main_Activity">
-            <intent-filter>
-                <action android:name="android.intent.action.ASSIST" />
-
-                <category android:name="android.intent.category.ALTERNATIVE" />
-            </intent-filter>
-        </activity>
-
     </application>
-
 </manifest>
