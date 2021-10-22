@@ -5,8 +5,13 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="20dp">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/thm_grau"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,8 +46,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/black"/>
+        android:layout_height="1dp"
+        android:background="@color/thm_grau"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,11 +83,6 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/black"/>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -98,10 +98,6 @@
 
         </ScrollView>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/black"/>
 
         <Button
             android:id="@+id/pollSubmitButton"
@@ -113,7 +109,6 @@
             android:textStyle="italic"
             android:visibility="invisible"
             tools:visibility="visible" />
-
 
 
     </LinearLayout>

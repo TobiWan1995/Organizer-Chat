@@ -86,6 +86,7 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
             public void onClick(View view) {
                 BottomSheetDialogFragment addNewToDoDialog = new PluginListElementDialog(actualPlugin);
                 addNewToDoDialog.show(getActivity().getSupportFragmentManager(), "Poll hinzufügen");
+                pollAdapter.notifyDataSetChanged();
             }
         });
 
@@ -105,24 +106,37 @@ public class PluginPollFragment extends PluginBaseFragment implements PluginList
                     pluginDataList = pluginDs.hasChild("pluginData") ? pluginDs.child("pluginData") : null;
                 }
 
-                ArrayList<Poll> tempArrayList = new ArrayList<>();
-
-                if (pluginDataList != null) {
+                if (pluginDataList!= null) {
+                    pollList.clear();
                     for (DataSnapshot pollDs : pluginDataList.getChildren()) {
                         Poll poll = pollDs.getValue(Poll.class);
+                        // pollOptions
                         DataSnapshot pollOptionsDs = pollDs.child("pollOptions");
-                        if (pollDs != null && pollOptionsDs != null) {
-                            ArrayList<PollOption> options = new ArrayList<>();
-                            for (DataSnapshot pollOptionDs : pollOptionsDs.getChildren()) {
-                                PollOption pollOption = pollOptionDs.getValue(PollOption.class);
-                                options.add(pollOption);
+                        ArrayList<PollOption> options = new ArrayList<>();
+                        for (DataSnapshot pollOptionDs : pollOptionsDs.getChildren()) {
+                            PollOption pollOption = pollOptionDs.getValue(PollOption.class);
+                            options.add(pollOption);
+                            // userRefs of pollOption
+                            DataSnapshot userRefDs = pollOptionDs.child("userRef");
+                            ArrayList<String> userRefs = new ArrayList<>();
+                            for(DataSnapshot userRef : userRefDs.getChildren()){
+                                userRefs.add(userRef.getValue(String.class));
                             }
-                            poll.setPollOptions(options);
+                            pollOption.setUserRef(userRefs);
                         }
-                        tempArrayList.add(poll);
+                        poll.setPollOptions(options);
+                        // subbed users for poll
+                        DataSnapshot subUserDs = pollDs.child("subUser");
+                        ArrayList<String> subUserList = new ArrayList<>();
+                        for (DataSnapshot subUser : subUserDs.getChildren()){
+                            subUserList.add(subUser.getValue(String.class));
+                        }
+                        poll.setSubUser(subUserList);
+                        // add poll to list
+                        pollList.add(poll);
                     }
                 }
-                pollList = tempArrayList;
+
                 pollAdapter.notifyDataSetChanged();
             }
 
@@ -197,7 +211,8 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
     private ArrayList<Poll> pollList;
     private FragmentActivity activity;
     private PluginPoll pluginPoll;
-    ItemTouchHelper itemTouchHelper;
+    private ItemTouchHelper itemTouchHelper;
+    private Session session;
 
     //firebase
     private FirebaseDatabase root = FirebaseDatabase.getInstance();
@@ -208,6 +223,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
         this.pollList = pollList;
         this.activity = activity;
         this.pluginPoll = pluginPoll;
+        this.session = new Session(activity.getApplicationContext());
     }
 
     @NonNull
@@ -238,18 +254,20 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
         holder.addPollOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (pollList.get(position).containsSubUser(session.getUserName()) || holder.pollOptionEditText.getText().toString().isEmpty()) return;
                 String key = pluginRefFirebase.child(pluginPoll.getId()).child("pluginData").child(pollList.get(position).getId()).child("pollOptions").push().getKey();
                 PollOption pollOption = new PollOption(key, new ArrayList<String>());
                 pollOption.setOptionTitle(holder.pollOptionEditText.getText().toString());
                 holder.pollOptionEditText.setText("");
-
+                pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
                 pollList.get(position).addPollOption(pollOption);
                 pluginPoll.setPolls(pollList);
-                pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
+                notifyDataSetChanged();
                 optionsAdapter.notifyDataSetChanged();
             }
         });
 
+        // not in use
         holder.subPollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -263,6 +281,7 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
                 pollList.remove(item);
                 pluginPoll.setPolls(pollList);
                 pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
+                optionsAdapter.resetAdapterViewHolder();
             }
         });
 
@@ -292,7 +311,6 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
         this.pollList = pollList;
     }
 
-
     public class PollViewHolder extends RecyclerView.ViewHolder {
         TextView pollTitle;
         EditText pollOptionEditText;
@@ -313,8 +331,6 @@ class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollViewHolder> {
 
         }
     }
-
-
 }
 
 class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolder> {
@@ -352,6 +368,12 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
         return new OptionsAdapter.OptionViewHolder(itemView);
     }
 
+    public void resetAdapterViewHolder(){
+        submitPollBtn.setText("Vote");
+        submitPollBtn.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public void onBindViewHolder(@NonNull OptionViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -361,7 +383,6 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
 
         // if voted change view
         ArrayList<String> temp = poll.getSubUser().stream().filter(val -> session.getUserName().equals(val)).collect(Collectors.toCollection(ArrayList::new));
-        // let the user return if already voted
         if (temp.size() > 0) {
             // get result
             PollOption currentWinner = poll.returnResult();
@@ -369,7 +390,7 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
             submitPollBtn.setText(currentWinner.getOptionTitle() + ": " + currentWinner.getUserRef().size() + "votes");
             submitPollBtn.setVisibility(View.VISIBLE);
             // set options invisible
-            recyclerView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.GONE);
         }
 
         holder.pollCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -381,20 +402,14 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
                         final OptionsAdapter.OptionViewHolder optionViewHolder = (OptionViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
                         if (!holder.equals(optionViewHolder))
                             optionViewHolder.pollCheckBox.setChecked(false);
-                        // remove user from every other poll
-                        pollOptionList = pollOptionList.stream().map(val  -> {
-                            val.removeUserFromSub(session.getUserName());
-                            return val;
-                        }).collect(Collectors.toCollection(ArrayList::new));
-                        // add user to item
-                        item.addUserToSub(session.getUserName());
-                        // update values
-                        pollOptionList.set(position, item);
-                        poll.setPollOptions(pollOptionList);
-                        pluginPoll.updatePoll(poll);
-                        pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
                     }
-
+                    // remove user from every other poll
+                    pollOptionList = pollOptionList.stream().map(val  -> {
+                        val.removeUserFromSub(session.getUserName());
+                        return val;
+                    }).collect(Collectors.toCollection(ArrayList::new));
+                    // add user to item
+                    item.addUserToSub(session.getUserName());
                 } else {
                     item.removeUserFromSub(session.getUserName());
                 }
@@ -432,7 +447,6 @@ class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.OptionViewHolde
                 pluginPoll.updatePoll(poll);
                 // update firebase
                 pluginRefFirebase.child(pluginPoll.getId()).setValue(pluginPoll);
-
             }
         });
     }

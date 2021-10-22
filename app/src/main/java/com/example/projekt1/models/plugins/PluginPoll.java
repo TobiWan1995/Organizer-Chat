@@ -46,7 +46,7 @@ public class PluginPoll extends Plugin<Poll> {
 
     public void updatePoll (Poll p){
         this.pluginData = this.pluginData.stream().map(val -> {
-            if(val.equals(p)) val = p;
+            if(val.getId().equals(p.getId())) val = p;
             return val;
         }).collect(Collectors.toCollection(ArrayList::new));
     }

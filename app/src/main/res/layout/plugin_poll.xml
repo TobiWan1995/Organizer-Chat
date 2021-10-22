@@ -58,47 +58,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vote"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvPollResult"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_marginBottom="100dp"
-        app:layout_constraintBottom_toBottomOf="@+id/pollSubmitButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/resultVote"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:hint="pollOptionText"
-                android:textColor="@color/black"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/resultVoteCount"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:hint="5"
-                android:textColor="@color/black"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

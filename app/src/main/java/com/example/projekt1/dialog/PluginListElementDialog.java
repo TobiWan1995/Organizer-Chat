@@ -141,7 +141,7 @@ public class PluginListElementDialog extends BottomSheetDialogFragment {
                             tempPoll.updatePollOptionText(bundle.getString("id"), text);
                             ((PluginPoll) plugin).updatePoll(tempPoll);
                         } else {
-                            ((PluginPoll) plugin).updatePollText(bundle.getString("id"),text);
+                            ((PluginPoll) plugin).updatePollText(bundle.getString("id"), text);
                         }
                         pluginRefFirebase.child(plugin.getId()).setValue(plugin);
                     } else {
