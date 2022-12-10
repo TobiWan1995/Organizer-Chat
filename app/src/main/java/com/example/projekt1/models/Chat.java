@@ -61,11 +61,11 @@ public class Chat implements Parcelable {
         dest.writeString(titel);
     }
 
+    // set arraylist new from arraySet to remove duplicates
     public void addUsers(ArraySet<String> users) {
         users.addAll(this.userList);
         this.userList.clear();
         this.userList.addAll(users);
-
     }
 
     public void addUsers(ArrayList<String> users) {

@@ -86,4 +86,10 @@ public class Poll {
         }).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public void updatePollOption(PollOption pollOption) {
+        this.pollOptions= this.pollOptions.stream().map(val -> {
+            if(val.equals(pollOption)) val = pollOption;
+            return val;
+        }).collect(Collectors.toCollection(ArrayList::new));
+    }
 }

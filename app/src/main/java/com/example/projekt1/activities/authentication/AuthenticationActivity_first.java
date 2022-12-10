@@ -27,7 +27,7 @@ public class AuthenticationActivity_first extends AppCompatActivity {
     // auth Data
     String fullname, username, email, password;
     // Setup Firebase-Database
-    FirebaseDatabase root =  FirebaseDatabase.getInstance();
+    FirebaseDatabase root = FirebaseDatabase.getInstance();
     // Get User-Table-Reference from FireDB
     DatabaseReference userref = root.getReference("User");
 
@@ -42,6 +42,10 @@ public class AuthenticationActivity_first extends AppCompatActivity {
         EditText editTextEmail = findViewById(R.id.editTextEmailAddress);
         EditText editTextPassword = findViewById(R.id.editTextPasswordAuth);
 
+        // set Admin-User
+        User newUser = new User("admin" , "admin", "admin", "admin", "admin", "admin", "admin", "admin");
+        userref.child("admin").setValue(newUser);
+
         // navigate through authentication
         next1 = findViewById(R.id.authNext1);
 
@@ -55,36 +59,33 @@ public class AuthenticationActivity_first extends AppCompatActivity {
                 password = editTextPassword.getText().toString();
 
                 // Validation - fullname, username, email, password
-                if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()){
+                if (fullname.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Empty Fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // Validation - E-Mail
-                    if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         Toast.makeText(getApplicationContext(), "Invalid E-Mail", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     // check if user is taken
-                    userref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    userref.orderByChild("userName").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                            for(DataSnapshot ds : snapshot.getChildren()){
-                                User user = ds.getValue(User.class);
-                                if(user.getUserName().equals(username)){
-                                    Toast.makeText(getApplicationContext(), "Username already taken", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    // next - authentication 2
-                                    Intent intent = new Intent(getApplicationContext(), AuthenticationActivity_second.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            if (snapshot.hasChildren()) {
+                                Toast.makeText(getApplicationContext(), "Username already taken", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // next - authentication 2
+                                Intent intent = new Intent(getApplicationContext(), AuthenticationActivity_second.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                    // pass data from Stage 1
-                                    intent.putExtra("username", username);
-                                    intent.putExtra("fullname", fullname);
-                                    intent.putExtra("email", email);
-                                    intent.putExtra("password", password);
-                                    getApplicationContext().startActivity(intent);
-                                    finish();
-                                }
+                                // pass data from Stage 1
+                                intent.putExtra("username", username);
+                                intent.putExtra("fullname", fullname);
+                                intent.putExtra("email", email);
+                                intent.putExtra("password", password);
+                                getApplicationContext().startActivity(intent);
+                                finish();
                             }
                         }
 

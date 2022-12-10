@@ -138,7 +138,7 @@ public class PluginNotizenFragment extends PluginBaseFragment implements PluginL
             }
         }
 
-        return new PluginNotizen(tempPlugin.getId(), tempPlugin.getBeschreibung(), pluginType, tempPlugin.getChatRef(), notizen);
+        return new PluginNotizen(tempPlugin.getId(), tempPlugin.getBeschreibung(), tempPlugin.getChatRef(), pluginType, notizen);
     }
 
     @Override
